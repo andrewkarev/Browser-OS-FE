@@ -2,30 +2,13 @@
 
 // inspired by https://codepen.io/sstephenson/pen/kawawV?editors=1100
 .menu {
-  position: absolute;
-  display: block;
+  @extend %modal;
+  border-radius: $border-radius-s;
   min-width: 200px;
-  padding: 3px 0 4px;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: $box-shadow-context-menu;
-  border-radius: 4px;
-  line-height: 15px;
-  backdrop-filter: blur(10px);
-  user-select: none;
-  z-index: 2;
 }
 
 .menu::before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  bottom: -1px;
-  right: -1px;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  z-index: -1;
+  @extend %modal-before;
 }
 
 .separator {
