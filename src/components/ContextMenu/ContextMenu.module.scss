@@ -1,0 +1,55 @@
+@import '../../styles/main.scss';
+
+// inspired by https://codepen.io/sstephenson/pen/kawawV?editors=1100
+.menu {
+  position: absolute;
+  display: block;
+  min-width: 200px;
+  padding: 3px 0 4px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: $box-shadow-context-menu;
+  border-radius: 4px;
+  line-height: 15px;
+  backdrop-filter: blur(10px);
+  user-select: none;
+  z-index: 2;
+}
+
+.menu::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  bottom: -1px;
+  right: -1px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  z-index: -1;
+}
+
+.separator {
+  height: 1px;
+  margin: 6px 10px 5px;
+  padding: 0;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.menuitem {
+  padding: 0 17px;
+  margin: 0 3px;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-radius: 2.5px;
+  color: $grey-l;
+  text-transform: capitalize;
+}
+
+.menuitem:hover {
+  background: -webkit-linear-gradient(top, #648bf5, #2866f2);
+  background: linear-gradient(to bottom, #648bf5 0%, #2866f2 100%);
+  border-top-color: #5a82eb;
+  border-bottom-color: #1758e7;
+  color: $light-primary;
+}
