@@ -1,0 +1,70 @@
+@import '../../styles/main.scss';
+
+.topBar {
+  @include flexItem(row, 12px);
+  align-items: center;
+  padding: 8px 124px 8px 8px;
+  border-bottom: 1px solid $grey-m;
+
+  .buttonsContainer {
+    @include flexItem(row);
+
+    .controlElement {
+      padding: 4px;
+
+      .circle {
+        display: block;
+        width: 12px;
+        height: 12px;
+        padding: 1px;
+        border-radius: 50%;
+        overflow: hidden;
+
+        &.close {
+          background-color: $red;
+        }
+        &.hide {
+          background-color: $yellow;
+        }
+        &.maximize {
+          background-color: $green;
+        }
+      }
+    }
+  }
+
+  .controlsContainer {
+    .backward,
+    .forward {
+      width: 20px;
+      height: 20px;
+      color: $grey-l;
+      text-align: center;
+      border-radius: $border-radius-s;
+
+      .icon {
+        width: 12px;
+        margin: 0 auto;
+        color: $dark-primary;
+      }
+
+      &:hover {
+        background-color: $grey-s;
+      }
+
+      &:disabled {
+        background-color: transparent;
+
+        .icon {
+          color: $grey-m;
+        }
+      }
+    }
+  }
+
+  .itemTitle {
+    margin: 0 auto;
+    font-weight: 700;
+    @include textLimit(1);
+  }
+}
