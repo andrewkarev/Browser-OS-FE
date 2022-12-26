@@ -1,0 +1,13 @@
+@mixin flexItem($direction: column, $gap: 0px) {
+  display: flex;
+  flex-direction: $direction;
+  gap: $gap;
+}
+
+@mixin textLimit($linesCount) {
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $linesCount;
+}
