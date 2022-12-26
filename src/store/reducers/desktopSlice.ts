@@ -4,10 +4,12 @@ import { addFile, addFolder, deleteFile, getItems, removeFolder, updateWindow } 
 
 interface DesktopState {
   openedWindows: IWindow[];
+  isConfirmFormOpened: boolean;
 }
 
 const initialState: DesktopState = {
   openedWindows: [],
+  isConfirmFormOpened: false,
 };
 
 export const desktopSlice = createSlice({
@@ -19,6 +21,9 @@ export const desktopSlice = createSlice({
         (window) => window.window.id !== action.payload
       );
       state.openedWindows = updatedWindows;
+    },
+    setIsConfirmFormOpened(state, action: PayloadAction<boolean>) {
+      state.isConfirmFormOpened = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -88,5 +93,5 @@ export const desktopSlice = createSlice({
   },
 });
 
-export const { setOpenedWindows } = desktopSlice.actions;
+export const { setOpenedWindows, setIsConfirmFormOpened } = desktopSlice.actions;
 export default desktopSlice.reducer;

@@ -7,12 +7,14 @@ import { useAppSelector } from 'hooks/redux';
 import ContextMenu from 'components/ContextMenu';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
+import ConfirmForm from 'components/ConfirmForm';
 
 const Desktop = () => {
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
   const coordinates = useAppSelector((state) => state.contextMenu.coordinates);
   const isContextMenuOpened = useAppSelector((state) => state.contextMenu.isContextMenuOpened);
   const menuItems = useAppSelector((state) => state.contextMenu.menuItems);
+  const isConfirmFormOpened = useAppSelector((state) => state.desktop.isConfirmFormOpened);
 
   const { handleContextMenu, closeContextMenu } = useContextMenu();
 
@@ -34,6 +36,7 @@ const Desktop = () => {
           menuItems={menuItems}
         />
       )}
+      {isConfirmFormOpened && <ConfirmForm />}
       <Taskbar />
     </>
   );

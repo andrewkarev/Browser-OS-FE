@@ -1,0 +1,62 @@
+@import '../../styles/main.scss';
+
+.container {
+  @extend %modal;
+  top: calc(50% - 30.5px);
+  left: calc(50% - 117px);
+  border-radius: $border-radius-m;
+}
+
+.container::before {
+  @extend %modal-before;
+}
+
+.form {
+  @include flexItem(row, 15px);
+  align-items: center;
+  padding: 15px;
+
+  .input {
+    padding: 2px 0;
+    outline: none;
+    border: none;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid $grey-s;
+    background-color: transparent;
+    font-size: 14px;
+
+    &::placeholder {
+      color: $grey-m;
+    }
+
+    &.inputInvalid {
+      color: $red;
+    }
+  }
+
+  .buttonsContainer {
+    @include flexItem(row, 5px);
+
+    .button {
+      border-radius: $border-radius-s;
+
+      .icon {
+        width: 18px;
+        color: $dark-primary;
+        font-weight: 700;
+      }
+
+      &:hover {
+        background-color: $grey-s;
+      }
+
+      &:disabled {
+        background-color: transparent;
+
+        .icon {
+          color: $grey-m;
+        }
+      }
+    }
+  }
+}
