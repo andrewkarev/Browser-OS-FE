@@ -1,0 +1,22 @@
+@import '../../styles/main.scss';
+
+.window {
+  position: absolute;
+  top: calc(100vh / 4);
+  left: calc(100vw / 4);
+  width: calc(100vw / 2);
+  height: calc(100vh / 2);
+  @include flexItem();
+  color: $grey-l;
+  border-radius: $border-radius-m;
+  box-shadow: $box-shadow-window;
+  background-color: $light-primary;
+  user-select: none;
+
+  .itemsContainer {
+    @include flexItem(row, 20px);
+    flex-wrap: wrap;
+    padding: 8px;
+    overflow-y: auto;
+  }
+}
