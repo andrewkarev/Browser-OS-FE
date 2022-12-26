@@ -32,5 +32,5 @@ export const contextMenuModel = {
     { option: '', title: 'separator' },
     { option: 'close', title: 'close' },
   ],
-  taskBar: [{ option: 'enter full screen', title: 'open' }],
+  taskBar: [{ option: 'enter full screen', title: 'enter full screen' }],
 };
