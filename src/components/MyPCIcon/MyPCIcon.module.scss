@@ -1,0 +1,35 @@
+@import '../../styles/main.scss';
+
+.wrapper {
+  width: 84px;
+  max-height: 87px;
+  user-select: none;
+}
+
+.content {
+  @include flexItem(column, 5px);
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2px;
+
+  // TODO select an item on click
+  &.active {
+    background-color: $grey-s;
+    border-radius: $border-radius-s;
+  }
+}
+
+.iconWrapper {
+  width: 45px;
+  height: 45px;
+}
+
+.title {
+  @include textLimit(2);
+  text-align: center;
+  font-size: 14px;
+  cursor: default;
+  text-shadow: rgb(0 0 0 / 75%) 0px 0px 1px, rgb(0 0 0 / 50%) 0px 0px 2px,
+    rgb(0 0 0 / 75%) 0px 1px 1px, rgb(0 0 0 / 50%) 0px 1px 2px, rgb(0 0 0 / 75%) 0px 2px 1px,
+    rgb(0 0 0 / 50%) 0px 2px 2px;
+}
