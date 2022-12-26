@@ -1,0 +1,26 @@
+@import '../../styles/main.scss';
+
+.desktop {
+  position: relative;
+  @include flexItem(column, 12px);
+  flex-grow: 1;
+  padding: 5px;
+  background-size: cover;
+  overflow: hidden;
+
+  &.wallpaper_1 {
+    background-image: url(../../assets/images/wallpaper-1.jpg);
+  }
+
+  &.wallpaper_2 {
+    background-image: url(../../assets/images/wallpaper-2.jpg);
+  }
+
+  &.wallpaper_3 {
+    background-image: url(../../assets/images/wallpaper-3.jpg);
+  }
+
+  &.wallpaper_4 {
+    background-image: url(../../assets/images/wallpaper-4.jpg);
+  }
+}
