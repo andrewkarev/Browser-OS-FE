@@ -1,0 +1,7 @@
+@import '../../styles/main.scss';
+
+.container {
+  @include flexItem();
+  width: 100vw;
+  height: 100vh;
+}
