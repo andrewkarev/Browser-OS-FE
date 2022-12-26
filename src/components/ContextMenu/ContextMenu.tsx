@@ -12,8 +12,8 @@ import {
   removeFolder,
   updateWindow,
 } from 'store/reducers/thunks';
-import { setIsContextMenuOpened } from 'store/reducers/contextMenuSlice';
 import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
+import { setConfirmModalOperation, setIsConfirmFormOpened } from 'store/reducers/desktopSlice';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -62,7 +62,13 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
       case 'open root folder':
         return () => {
           dispatch(getItems(''));
-          dispatch(setIsContextMenuOpened(false));
+          closeContextMenu();
+        };
+      case 'rename PC icon':
+        return () => {
+          dispatch(setConfirmModalOperation('rename PC icon'));
+          dispatch(setIsConfirmFormOpened(true));
+          closeContextMenu();
         };
       case 'open directory': {
         if (!selectedItem || !currentWindowId) return;

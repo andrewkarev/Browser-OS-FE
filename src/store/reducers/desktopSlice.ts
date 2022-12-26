@@ -5,11 +5,15 @@ import { addFile, addFolder, deleteFile, getItems, removeFolder, updateWindow } 
 interface DesktopState {
   openedWindows: IWindow[];
   isConfirmFormOpened: boolean;
+  confirmModalOperation: string;
+  myPCIconTitle: string;
 }
 
 const initialState: DesktopState = {
   openedWindows: [],
   isConfirmFormOpened: false,
+  confirmModalOperation: '',
+  myPCIconTitle: 'MyPC',
 };
 
 export const desktopSlice = createSlice({
@@ -24,6 +28,12 @@ export const desktopSlice = createSlice({
     },
     setIsConfirmFormOpened(state, action: PayloadAction<boolean>) {
       state.isConfirmFormOpened = action.payload;
+    },
+    setConfirmModalOperation(state, action: PayloadAction<string>) {
+      state.confirmModalOperation = action.payload;
+    },
+    setMyPCIconTitle(state, action: PayloadAction<string>) {
+      state.myPCIconTitle = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -93,5 +103,10 @@ export const desktopSlice = createSlice({
   },
 });
 
-export const { setOpenedWindows, setIsConfirmFormOpened } = desktopSlice.actions;
+export const {
+  setOpenedWindows,
+  setIsConfirmFormOpened,
+  setConfirmModalOperation,
+  setMyPCIconTitle,
+} = desktopSlice.actions;
 export default desktopSlice.reducer;
