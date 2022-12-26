@@ -20,7 +20,7 @@ const MyPCIcon = () => {
       <div
         className={styles.content}
         onDoubleClick={handleIconClick}
-        onContextMenu={(e) => handleContextMenu(e, contextMenuModel.myPC)}
+        onContextMenu={(e) => handleContextMenu(e, contextMenuModel.myPC, null)}
       >
         <div className={styles.iconWrapper}>
           <img src={MY_PC_ICON} alt="My PC icon" />

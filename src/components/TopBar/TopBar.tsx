@@ -59,7 +59,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
   return (
     <div
       className={styles.topBar}
-      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.topBar)}
+      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.topBar, null)}
     >
       <div
         className={styles.buttonsContainer}

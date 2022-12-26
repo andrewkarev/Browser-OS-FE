@@ -15,7 +15,7 @@ export const useContextMenu = () => {
   const handleContextMenu = (
     e: React.MouseEvent,
     menuItems: IMenuItem[],
-    selectedItem?: IDirItem,
+    selectedItem: IDirItem | null,
     windowId?: string
   ) => {
     e.preventDefault();

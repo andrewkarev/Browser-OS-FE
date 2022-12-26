@@ -17,7 +17,7 @@ const Taskbar = () => {
   return (
     <div
       className={styles.taskbar}
-      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.taskBar)}
+      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.taskBar, null)}
     >
       <div className={styles.logo}>λ</div>
       <div className={styles.tabsContainer}>{tabs}</div>

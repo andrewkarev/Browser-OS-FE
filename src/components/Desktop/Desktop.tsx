@@ -22,7 +22,7 @@ const Desktop = () => {
     <>
       <div
         className={`${styles.desktop} ${styles.wallpaper_3}`}
-        onContextMenu={(e) => handleContextMenu(e, contextMenuModel.desktop)}
+        onContextMenu={(e) => handleContextMenu(e, contextMenuModel.desktop, null)}
       >
         <MyPCIcon />
       </div>
