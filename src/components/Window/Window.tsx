@@ -20,7 +20,7 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
   return (
     <div
       className={styles.window}
-      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window)}
+      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, undefined, windowData.id)}
     >
       <TopBar id={windowData.id} folderTitle={windowData.folderTitle} />
       <div className={styles.itemsContainer}>{items}</div>

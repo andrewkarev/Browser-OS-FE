@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IWindow } from 'types/IWindow';
-import { getItems, updateWindow } from './thunks';
+import { addFile, addFolder, deleteFile, getItems, removeFolder, updateWindow } from './thunks';
 
 interface DesktopState {
   openedWindows: IWindow[];
@@ -45,6 +45,46 @@ export const desktopSlice = createSlice({
       });
     });
     builder.addCase(updateWindow.rejected, (state, action) => {});
+
+    builder.addCase(addFile.pending, (state) => {});
+    builder.addCase(addFile.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(addFile.rejected, (state, action) => {});
+
+    builder.addCase(deleteFile.pending, (state) => {});
+    builder.addCase(deleteFile.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(deleteFile.rejected, (state, action) => {});
+
+    builder.addCase(addFolder.pending, (state) => {});
+    builder.addCase(addFolder.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(addFolder.rejected, (state, action) => {});
+
+    builder.addCase(removeFolder.pending, (state) => {});
+    builder.addCase(removeFolder.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(removeFolder.rejected, (state, action) => {});
   },
 });
 

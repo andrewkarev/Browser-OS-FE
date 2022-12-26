@@ -4,8 +4,16 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import styles from './ContextMenu.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
-import { getItems, updateWindow } from 'store/reducers/thunks';
+import {
+  addFile,
+  addFolder,
+  deleteFile,
+  getItems,
+  removeFolder,
+  updateWindow,
+} from 'store/reducers/thunks';
 import { setIsContextMenuOpened } from 'store/reducers/contextMenuSlice';
+import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -46,6 +54,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   }, [coordinates]);
 
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
+  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
+  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
 
   const getHandler = (menuItem: IMenuItem) => {
     switch (menuItem.option) {
@@ -54,21 +64,62 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           dispatch(getItems(''));
           dispatch(setIsContextMenuOpened(false));
         };
-      case 'open directory':
-        if (!selectedItem) return;
+      case 'open directory': {
+        if (!selectedItem || !currentWindowId) return;
         return () => {
           dispatch(
             updateWindow({
-              itemPath: selectedItem?.item.path,
-              windowId: selectedItem?.windowId,
+              itemPath: selectedItem?.path,
+              windowId: currentWindowId,
               operation: 'updating',
             })
           );
-          dispatch(setIsContextMenuOpened(false));
+          closeContextMenu();
+        };
+      }
+      case 'add file':
+        if (!currentWindowId) return;
+        return () => {
+          dispatch(
+            addFile({
+              windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
+              windowId: currentWindowId,
+            })
+          );
+          closeContextMenu();
+        };
+      case 'delete file': {
+        if (!selectedItem || !currentWindowId) return;
+        return () => {
+          dispatch(deleteFile({ itemPath: selectedItem.path, windowId: currentWindowId }));
+          closeContextMenu();
+        };
+      }
+      case 'add folder':
+        if (!currentWindowId) return;
+        return () => {
+          dispatch(
+            addFolder({
+              windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
+              windowId: currentWindowId,
+            })
+          );
+          closeContextMenu();
+        };
+      case 'delete directory':
+        if (!currentWindowId || !selectedItem) return;
+        return () => {
+          dispatch(
+            removeFolder({
+              folderPath: selectedItem?.path,
+              windowId: currentWindowId,
+            })
+          );
+          closeContextMenu();
         };
       default:
         return () => {
-          dispatch(setIsContextMenuOpened(false));
+          closeContextMenu();
         };
     }
   };

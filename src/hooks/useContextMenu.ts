@@ -1,5 +1,6 @@
 import {
   setCoordinates,
+  setCurrentWindowId,
   setIsContextMenuOpened,
   setMenuItems,
   setSelectedItem,
@@ -14,16 +15,18 @@ export const useContextMenu = () => {
   const handleContextMenu = (
     e: React.MouseEvent,
     menuItems: IMenuItem[],
-    selectedItemStats?: {
-      item: IDirItem;
-      windowId: string;
-    }
+    selectedItem?: IDirItem,
+    windowId?: string
   ) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (selectedItemStats) {
-      dispatch(setSelectedItem(selectedItemStats));
+    if (selectedItem) {
+      dispatch(setSelectedItem(selectedItem));
+    }
+
+    if (windowId) {
+      dispatch(setCurrentWindowId(windowId));
     }
 
     dispatch(

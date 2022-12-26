@@ -7,7 +7,8 @@ interface contextMenuState {
   isContextMenuOpened: boolean;
   coordinates: Coordinates;
   menuItems: IMenuItem[];
-  selectedItem: { item: IDirItem; windowId: string } | null;
+  selectedItem: IDirItem | null;
+  currentWindowId: string | null;
 }
 
 const initialState: contextMenuState = {
@@ -15,6 +16,7 @@ const initialState: contextMenuState = {
   coordinates: { x: 0, y: 0 },
   menuItems: [],
   selectedItem: null,
+  currentWindowId: null,
 };
 
 export const contextMenuSlice = createSlice({
@@ -30,12 +32,20 @@ export const contextMenuSlice = createSlice({
     setMenuItems(state, action: PayloadAction<IMenuItem[]>) {
       state.menuItems = action.payload;
     },
-    setSelectedItem(state, action: PayloadAction<{ item: IDirItem; windowId: string } | null>) {
+    setSelectedItem(state, action: PayloadAction<IDirItem | null>) {
       state.selectedItem = action.payload;
+    },
+    setCurrentWindowId(state, action: PayloadAction<string | null>) {
+      state.currentWindowId = action.payload;
     },
   },
 });
 
-export const { setCoordinates, setIsContextMenuOpened, setMenuItems, setSelectedItem } =
-  contextMenuSlice.actions;
+export const {
+  setCoordinates,
+  setIsContextMenuOpened,
+  setMenuItems,
+  setSelectedItem,
+  setCurrentWindowId,
+} = contextMenuSlice.actions;
 export default contextMenuSlice.reducer;

@@ -38,10 +38,8 @@ const Item: React.FC<ItemProps> = ({ item, windowData }) => {
           handleContextMenu(
             e,
             item.extension === null ? contextMenuModel.directory : contextMenuModel.file,
-            {
-              item,
-              windowId: windowData.id,
-            }
+            item,
+            windowData.id
           )
         }
       >
