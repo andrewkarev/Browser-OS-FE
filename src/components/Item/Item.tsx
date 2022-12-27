@@ -8,6 +8,8 @@ import { IDirectory } from 'types/IDirectory';
 import { getItemIcon } from 'utils/getItemsIcon';
 import DIRECTORY from '../../assets/icons/folder.png';
 import styles from './Item.module.scss';
+import ItemType from 'common/itemType';
+import WindowOperation from 'common/windowOperation';
 
 interface ItemProps {
   item: IDirItem;
@@ -20,9 +22,13 @@ const Item: React.FC<ItemProps> = ({ item, windowData }) => {
   const { handleContextMenu } = useContextMenu();
 
   const handleItemClick = (dirItem: IDirItem) => {
-    if (dirItem.type === 'directory') {
+    if (dirItem.type === ItemType.directory) {
       dispatch(
-        updateWindow({ itemPath: dirItem.path, windowId: windowData.id, operation: 'updating' })
+        updateWindow({
+          itemPath: dirItem.path,
+          windowId: windowData.id,
+          operation: WindowOperation.update,
+        })
       );
     } else {
       console.log(dirItem.name);

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
+import WindowOperation from 'common/windowOperation';
 import { api } from 'services';
 import { IDirectory } from 'types/IDirectory';
 
@@ -25,7 +26,7 @@ export const updateWindow = createAsyncThunk(
       itemPath,
       windowId,
       operation,
-    }: { itemPath: string; windowId: string; operation: 'updating' | 'move' },
+    }: { itemPath: string; windowId: string; operation: WindowOperation },
     { rejectWithValue }
   ) => {
     try {

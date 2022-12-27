@@ -9,6 +9,7 @@ import { IWindow } from 'types/IWindow';
 import { updateWindow } from 'store/reducers/thunks';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
+import WindowOperation from 'common/windowOperation';
 
 interface TopBarProps {
   id: string;
@@ -42,7 +43,9 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
     const currentPathIdx = window.history.indexOf(window.currentPath);
     const previousPath = currentPathIdx ? window.history[currentPathIdx - 1] : '';
 
-    dispatch(updateWindow({ itemPath: previousPath, windowId: id, operation: 'move' }));
+    dispatch(
+      updateWindow({ itemPath: previousPath, windowId: id, operation: WindowOperation.move })
+    );
   };
 
   const handleForwardBtnClick = () => {
@@ -53,7 +56,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
     const nextPathId = isLast ? currentPathIdx : currentPathIdx + 1;
     const nextPath = window.history[nextPathId];
 
-    dispatch(updateWindow({ itemPath: nextPath, windowId: id, operation: 'move' }));
+    dispatch(updateWindow({ itemPath: nextPath, windowId: id, operation: WindowOperation.move }));
   };
 
   return (

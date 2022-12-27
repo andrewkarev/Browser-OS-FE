@@ -14,6 +14,9 @@ import {
 } from 'store/reducers/thunks';
 import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 import { setConfirmModalOperation, setIsConfirmFormOpened } from 'store/reducers/desktopSlice';
+import WindowOperation from 'common/windowOperation';
+import ContextMenuOptions from 'common/contextMenuOptions';
+import ContextMenuOptionsTitle from 'common/contextMenuOptionsTitle';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -59,31 +62,31 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
 
   const getHandler = (menuItem: IMenuItem) => {
     switch (menuItem.option) {
-      case 'open root folder':
+      case ContextMenuOptions.openRootFolder:
         return () => {
           dispatch(getItems(''));
           closeContextMenu();
         };
-      case 'rename PC icon':
+      case ContextMenuOptions.renamePCIcon:
         return () => {
-          dispatch(setConfirmModalOperation('rename PC icon'));
+          dispatch(setConfirmModalOperation(ContextMenuOptions.renamePCIcon));
           dispatch(setIsConfirmFormOpened(true));
           closeContextMenu();
         };
-      case 'open directory': {
+      case ContextMenuOptions.openDirectory: {
         if (!selectedItem || !currentWindowId) return;
         return () => {
           dispatch(
             updateWindow({
               itemPath: selectedItem?.path,
               windowId: currentWindowId,
-              operation: 'updating',
+              operation: WindowOperation.update,
             })
           );
           closeContextMenu();
         };
       }
-      case 'add file':
+      case ContextMenuOptions.addFile:
         if (!currentWindowId) return;
         return () => {
           dispatch(
@@ -94,14 +97,14 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           );
           closeContextMenu();
         };
-      case 'delete file': {
+      case ContextMenuOptions.deleteFile: {
         if (!selectedItem || !currentWindowId) return;
         return () => {
           dispatch(deleteFile({ itemPath: selectedItem.path, windowId: currentWindowId }));
           closeContextMenu();
         };
       }
-      case 'add folder':
+      case ContextMenuOptions.addFolder:
         if (!currentWindowId) return;
         return () => {
           dispatch(
@@ -112,7 +115,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           );
           closeContextMenu();
         };
-      case 'delete directory':
+      case ContextMenuOptions.deleteDirectory:
         if (!currentWindowId || !selectedItem) return;
         return () => {
           dispatch(
@@ -131,7 +134,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   };
 
   const menuItemsElements = menuItems?.map(({ title, option }, i) => {
-    if (title === 'separator') {
+    if (title === ContextMenuOptionsTitle.separator) {
       return <hr key={`${title}-${i}`} className={styles.separator} />;
     } else {
       return (

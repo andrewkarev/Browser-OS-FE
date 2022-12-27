@@ -1,6 +1,8 @@
+import ItemType from 'common/itemType';
+
 export interface IDirItem {
   name: string;
-  type: 'file' | 'directory';
+  type: ItemType;
   extension: string | null;
   path: string;
 }

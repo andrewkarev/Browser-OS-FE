@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import WindowOperation from 'common/windowOperation';
 import { IWindow } from 'types/IWindow';
 import { addFile, addFolder, deleteFile, getItems, removeFolder, updateWindow } from './thunks';
 
@@ -47,7 +48,7 @@ export const desktopSlice = createSlice({
     builder.addCase(updateWindow.fulfilled, (state, action) => {
       state.openedWindows.forEach((element) => {
         if (element.window.id === action.payload.windowId) {
-          if (action.payload.operation === 'updating') {
+          if (action.payload.operation === WindowOperation.update) {
             const basePathIdx = element.history.indexOf(element.currentPath) + 1;
             const baseHistory = element.history.slice(0, basePathIdx);
             element.history = baseHistory.concat(action.payload.itemPath);

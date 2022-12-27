@@ -4,6 +4,8 @@ import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setIsConfirmFormOpened, setMyPCIconTitle } from 'store/reducers/desktopSlice';
+import ContextMenuOptions from 'common/contextMenuOptions';
+import Placeholders from 'common/placeholders';
 
 const ConfirmForm = () => {
   const dispatch = useAppDispatch();
@@ -16,11 +18,12 @@ const ConfirmForm = () => {
   useEffect(() => {
     const isAllowedChars = /^[a-zA-Z0-9_.-]*$/.test(inputValue);
     setIsValueValid(isAllowedChars);
-    console.log(isAllowedChars);
   }, [inputValue]);
 
   useEffect(() => {
-    if (confirmModalOperation === 'rename PC icon') setInputPlaceholder('FolderName');
+    if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
+      setInputPlaceholder(Placeholders.folderName);
+    }
   }, [confirmModalOperation]);
 
   const closeConfirmForm = () => {
@@ -30,7 +33,9 @@ const ConfirmForm = () => {
   const handleSubmitBtnClick = (e: React.MouseEvent) => {
     e.preventDefault();
 
-    if (confirmModalOperation === 'rename PC icon') dispatch(setMyPCIconTitle(inputValue));
+    if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
+      dispatch(setMyPCIconTitle(inputValue));
+    }
 
     closeConfirmForm();
   };

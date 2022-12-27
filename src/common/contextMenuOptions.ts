@@ -1,0 +1,26 @@
+enum ContextMenuOptions {
+  setBackground = 'set background',
+  openRootFolder = 'open root folder',
+  renamePCIcon = 'rename PC icon',
+  addFile = 'add file',
+  addFolder = 'add folder',
+  openDirectory = 'open directory',
+  cutDirectory = 'cut directory',
+  copyDirectory = 'copy directory',
+  pasteDirectory = 'paste directory',
+  deleteDirectory = 'delete directory',
+  renameDirectory = 'rename directory',
+  openFile = 'open file',
+  cutFile = 'cut file',
+  copyFile = 'copy file',
+  pasteFile = 'paste file',
+  deleteFile = 'delete file',
+  renameFile = 'rename file',
+  minimize = 'minimize',
+  maximize = 'maximize',
+  close = 'close',
+  enterFullScreen = 'enter full screen',
+  separator = '',
+}
+
+export default ContextMenuOptions;
