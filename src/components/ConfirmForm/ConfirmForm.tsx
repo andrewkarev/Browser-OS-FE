@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setIsConfirmFormOpened, setMyPCIconTitle } from 'store/reducers/desktopSlice';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import Placeholders from 'common/placeholders';
-import { addFile, addFolder, renameDirectory, renameFile } from 'store/reducers/thunks';
+import { addFile, addFolder, renameItem } from 'store/reducers/thunks';
 import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 
 const ConfirmForm = () => {
@@ -40,12 +40,7 @@ const ConfirmForm = () => {
       setInputPlaceholder(Placeholders.folderName);
     }
 
-    if (confirmModalOperation === ContextMenuOptions.renameFile) {
-      setInputPlaceholder(Placeholders.renameFile);
-      selectedItem && setInputValue(selectedItem.name);
-    }
-
-    if (confirmModalOperation === ContextMenuOptions.renameDirectory) {
+    if (confirmModalOperation === ContextMenuOptions.rename) {
       setInputPlaceholder(Placeholders.renameDirectory);
       selectedItem && setInputValue(selectedItem.name);
     }
@@ -82,28 +77,10 @@ const ConfirmForm = () => {
       );
     }
 
-    if (
-      confirmModalOperation === ContextMenuOptions.renameFile &&
-      selectedItem &&
-      currentWindowId
-    ) {
+    if (confirmModalOperation === ContextMenuOptions.rename && selectedItem && currentWindowId) {
       dispatch(
-        renameFile({
-          filePath: selectedItem.path,
-          windowId: currentWindowId,
-          title: inputValue,
-        })
-      );
-    }
-
-    if (
-      confirmModalOperation === ContextMenuOptions.renameDirectory &&
-      selectedItem &&
-      currentWindowId
-    ) {
-      dispatch(
-        renameDirectory({
-          folderPath: selectedItem.path,
+        renameItem({
+          itemPath: selectedItem.path,
           windowId: currentWindowId,
           title: inputValue,
         })
@@ -116,10 +93,6 @@ const ConfirmForm = () => {
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     setInputValue(target.value.trim());
-  };
-
-  const handleResetBtnClick = () => {
-    setInputValue('');
   };
 
   return (
@@ -143,7 +116,7 @@ const ConfirmForm = () => {
             >
               <IoMdCheckmark className={styles.icon} />
             </button>
-            <button className={styles.button} type="button" onClick={handleResetBtnClick}>
+            <button className={styles.button} type="button" onClick={closeConfirmForm}>
               <IoMdClose className={styles.icon} />
             </button>
           </div>

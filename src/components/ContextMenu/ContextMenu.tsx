@@ -17,8 +17,11 @@ interface ContextMenuProps {
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, closeContextMenu }) => {
-  const contextMenu = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
+  const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
+  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
+
+  const contextMenu = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!contextMenu.current) return;
@@ -47,9 +50,6 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
     contextMenu.current.style.top = `${coordinateY}px`;
     contextMenu.current.style.left = `${coordinateX}px`;
   }, [coordinates]);
-
-  const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
-  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
 
   const getHandler = (menuItem: IMenuItem) => {
     switch (menuItem.option) {
@@ -107,15 +107,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           );
           closeContextMenu();
         };
-      case ContextMenuOptions.renameFile:
+      case ContextMenuOptions.rename:
         return () => {
-          dispatch(setConfirmModalOperation(ContextMenuOptions.renameFile));
-          dispatch(setIsConfirmFormOpened(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.renameDirectory:
-        return () => {
-          dispatch(setConfirmModalOperation(ContextMenuOptions.renameDirectory));
+          dispatch(setConfirmModalOperation(ContextMenuOptions.rename));
           dispatch(setIsConfirmFormOpened(true));
           closeContextMenu();
         };

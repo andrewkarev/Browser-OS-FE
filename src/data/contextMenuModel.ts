@@ -21,7 +21,7 @@ export const contextMenuModel = {
     { option: ContextMenuOptions.pasteDirectory, title: ContextMenuOptionsTitle.paste },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },
     { option: ContextMenuOptions.deleteDirectory, title: ContextMenuOptionsTitle.delete },
-    { option: ContextMenuOptions.renameDirectory, title: ContextMenuOptionsTitle.rename },
+    { option: ContextMenuOptions.rename, title: ContextMenuOptionsTitle.rename },
   ],
   file: [
     { option: ContextMenuOptions.openFile, title: ContextMenuOptionsTitle.open },
@@ -31,7 +31,7 @@ export const contextMenuModel = {
     { option: ContextMenuOptions.pasteFile, title: ContextMenuOptionsTitle.paste },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },
     { option: ContextMenuOptions.deleteFile, title: ContextMenuOptionsTitle.delete },
-    { option: ContextMenuOptions.renameFile, title: ContextMenuOptionsTitle.rename },
+    { option: ContextMenuOptions.rename, title: ContextMenuOptionsTitle.rename },
   ],
   topBar: [
     { option: ContextMenuOptions.minimize, title: ContextMenuOptionsTitle.minimize },

@@ -8,8 +8,7 @@ import {
   deleteFile,
   getItems,
   removeFolder,
-  renameDirectory,
-  renameFile,
+  renameItem,
   updateWindow,
 } from './thunks';
 
@@ -112,25 +111,15 @@ export const desktopSlice = createSlice({
     });
     builder.addCase(removeFolder.rejected, (state, action) => {});
 
-    builder.addCase(renameFile.pending, (state) => {});
-    builder.addCase(renameFile.fulfilled, (state, action) => {
+    builder.addCase(renameItem.pending, (state) => {});
+    builder.addCase(renameItem.fulfilled, (state, action) => {
       state.openedWindows.forEach((element) => {
         if (element.window.id === action.payload.windowId) {
           element.window.items = action.payload.windowItems.items;
         }
       });
     });
-    builder.addCase(renameFile.rejected, (state, action) => {});
-
-    builder.addCase(renameDirectory.pending, (state) => {});
-    builder.addCase(renameDirectory.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
-        }
-      });
-    });
-    builder.addCase(renameDirectory.rejected, (state, action) => {});
+    builder.addCase(renameItem.rejected, (state, action) => {});
   },
 });
 

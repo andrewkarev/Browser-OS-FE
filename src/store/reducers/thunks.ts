@@ -74,11 +74,17 @@ export const addFile = createAsyncThunk(
   }
 );
 
-export const deleteFile = createAsyncThunk(
-  'desktop/deleteFile',
-  async ({ itemPath, windowId }: { itemPath: string; windowId: string }, { rejectWithValue }) => {
+export const addFolder = createAsyncThunk(
+  'desktop/addFolder',
+  async (
+    { windowPath, windowId, title }: { windowPath: string; windowId: string; title: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await api.post<AxiosError, IDirectory>(`?path=${itemPath}&operation=delete`);
+      const response = await api.post<AxiosError, IDirectory>(
+        `?path=${windowPath}&operation=addFolder`,
+        { title }
+      );
 
       return {
         windowItems: response,
@@ -94,17 +100,11 @@ export const deleteFile = createAsyncThunk(
   }
 );
 
-export const addFolder = createAsyncThunk(
-  'desktop/addFolder',
-  async (
-    { windowPath, windowId, title }: { windowPath: string; windowId: string; title: string },
-    { rejectWithValue }
-  ) => {
+export const deleteFile = createAsyncThunk(
+  'desktop/deleteFile',
+  async ({ itemPath, windowId }: { itemPath: string; windowId: string }, { rejectWithValue }) => {
     try {
-      const response = await api.post<AxiosError, IDirectory>(
-        `?path=${windowPath}&operation=addFolder`,
-        { title }
-      );
+      const response = await api.post<AxiosError, IDirectory>(`?path=${itemPath}&operation=delete`);
 
       return {
         windowItems: response,
@@ -145,41 +145,15 @@ export const removeFolder = createAsyncThunk(
   }
 );
 
-export const renameFile = createAsyncThunk(
-  'desktop/renameFile',
+export const renameItem = createAsyncThunk(
+  'desktop/renameItem',
   async (
-    { filePath, windowId, title }: { filePath: string; windowId: string; title: string },
+    { itemPath, windowId, title }: { itemPath: string; windowId: string; title: string },
     { rejectWithValue }
   ) => {
     try {
       const response = await api.post<AxiosError, IDirectory>(
-        `?path=${filePath}&operation=renameFile`,
-        { title }
-      );
-
-      return {
-        windowItems: response,
-        windowId,
-      };
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.status);
-      }
-
-      throw error;
-    }
-  }
-);
-
-export const renameDirectory = createAsyncThunk(
-  'desktop/renameDirectory',
-  async (
-    { folderPath, windowId, title }: { folderPath: string; windowId: string; title: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await api.post<AxiosError, IDirectory>(
-        `?path=${folderPath}&operation=renameDirectory`,
+        `?path=${itemPath}&operation=rename`,
         { title }
       );
 
