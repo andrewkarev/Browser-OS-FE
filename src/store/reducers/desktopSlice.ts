@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { desktopIconTitle } from 'common/constants';
 import WindowOperation from 'common/windowOperation';
 import { IWindow } from 'types/IWindow';
 import {
@@ -23,7 +24,7 @@ const initialState: DesktopState = {
   openedWindows: [],
   isConfirmFormOpened: false,
   confirmModalOperation: '',
-  myPCIconTitle: 'MyPC',
+  myPCIconTitle: desktopIconTitle,
 };
 
 export const desktopSlice = createSlice({

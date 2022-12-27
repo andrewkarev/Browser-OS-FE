@@ -22,7 +22,7 @@ const ConfirmForm = () => {
   const [inputPlaceholder, setInputPlaceholder] = useState('');
 
   useEffect(() => {
-    const isAllowedChars = /^[a-zA-Z0-9_.-]*$/.test(inputValue);
+    const isAllowedChars = /^[ a-zA-Z0-9_.-]*$/.test(inputValue);
     setIsValueValid(isAllowedChars);
   }, [inputValue]);
 
@@ -115,7 +115,7 @@ const ConfirmForm = () => {
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
-    setInputValue(target.value);
+    setInputValue(target.value.trim());
   };
 
   const handleResetBtnClick = () => {
