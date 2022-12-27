@@ -18,6 +18,7 @@ interface DesktopState {
   confirmModalOperation: string;
   myPCIconTitle: string;
   isFullScreenMode: boolean;
+  isWindowMaximized: boolean;
 }
 
 const initialState: DesktopState = {
@@ -26,6 +27,7 @@ const initialState: DesktopState = {
   confirmModalOperation: '',
   myPCIconTitle: desktopIconTitle,
   isFullScreenMode: false,
+  isWindowMaximized: false,
 };
 
 export const desktopSlice = createSlice({
@@ -49,6 +51,9 @@ export const desktopSlice = createSlice({
     },
     setIsFullScreenMode(state, action: PayloadAction<boolean>) {
       state.isFullScreenMode = action.payload;
+    },
+    setIsWindowMaximized(state) {
+      state.isWindowMaximized = !state.isWindowMaximized;
     },
   },
   extraReducers: (builder) => {
@@ -134,5 +139,6 @@ export const {
   setConfirmModalOperation,
   setMyPCIconTitle,
   setIsFullScreenMode,
+  setIsWindowMaximized,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;

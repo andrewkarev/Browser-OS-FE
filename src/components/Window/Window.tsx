@@ -1,6 +1,7 @@
 import Item from 'components/Item/';
 import TopBar from 'components/TopBar/';
 import { contextMenuModel } from 'data/contextMenuModel';
+import { useAppSelector } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React from 'react';
 import { IDirectory } from 'types/IDirectory';
@@ -12,6 +13,7 @@ interface WindowProps {
 
 const Window: React.FC<WindowProps> = ({ windowData }) => {
   const { handleContextMenu } = useContextMenu();
+  const isWindowMaximized = useAppSelector((state) => state.desktop.isWindowMaximized);
 
   const items = windowData.items.map((item, i) => {
     return <Item item={item} windowData={windowData} key={`${item.name}-${i}`} />;
@@ -19,7 +21,7 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
 
   return (
     <div
-      className={styles.window}
+      className={isWindowMaximized ? styles.window : styles.windowMaximized}
       onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData.id)}
     >
       <TopBar id={windowData.id} folderTitle={windowData.folderTitle} />

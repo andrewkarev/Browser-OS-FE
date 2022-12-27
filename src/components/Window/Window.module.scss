@@ -1,15 +1,10 @@
 @import '../../styles/main.scss';
 
-.window {
+.window,
+.windowMaximized {
   position: absolute;
-  top: calc(100vh / 4);
-  left: calc(100vw / 4);
-  width: calc(100vw / 2);
-  height: calc(100vh / 2);
   @include flexItem();
   color: $grey-l;
-  border-radius: $border-radius-m;
-  box-shadow: $box-shadow-window;
   background-color: $light-primary;
   user-select: none;
 
@@ -19,4 +14,20 @@
     padding: 8px;
     overflow-y: auto;
   }
+}
+
+.window {
+  top: calc(100vh / 4);
+  left: calc(100vw / 4);
+  width: 720px;
+  height: 394px;
+  border-radius: $border-radius-m;
+  box-shadow: $box-shadow-window;
+}
+
+.windowMaximized {
+  top: 0;
+  left: 0;
+  bottom: 28px;
+  width: 100%;
 }

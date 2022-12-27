@@ -4,7 +4,7 @@ import { FaLessThan, FaGreaterThan } from 'react-icons/fa';
 import { VscDash, VscClose } from 'react-icons/vsc';
 import { TbDotsDiagonal2 } from 'react-icons/tb';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { setOpenedWindows } from 'store/reducers/desktopSlice';
+import { setIsWindowMaximized, setOpenedWindows } from 'store/reducers/desktopSlice';
 import { IWindow } from 'types/IWindow';
 import { updateWindow } from 'store/reducers/thunks';
 import { useContextMenu } from 'hooks/useContextMenu';
@@ -59,10 +59,15 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
     dispatch(updateWindow({ itemPath: nextPath, windowId: id, operation: WindowOperation.move }));
   };
 
+  const changeWindowSize = () => {
+    dispatch(setIsWindowMaximized());
+  };
+
   return (
     <div
       className={styles.topBar}
       onContextMenu={(e) => handleContextMenu(e, contextMenuModel.topBar, null)}
+      onDoubleClick={changeWindowSize}
     >
       <div
         className={styles.buttonsContainer}
@@ -77,7 +82,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
         <button className={styles.controlElement} type="button">
           <span className={`${styles.circle} ${styles.hide}`}>{isIconsVisible && <VscDash />}</span>
         </button>
-        <button className={styles.controlElement} type="button">
+        <button className={styles.controlElement} type="button" onClick={changeWindowSize}>
           <span className={`${styles.circle} ${styles.maximize}`}>
             {isIconsVisible && <TbDotsDiagonal2 />}
           </span>
