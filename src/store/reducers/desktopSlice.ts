@@ -1,7 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import WindowOperation from 'common/windowOperation';
 import { IWindow } from 'types/IWindow';
-import { addFile, addFolder, deleteFile, getItems, removeFolder, updateWindow } from './thunks';
+import {
+  addFile,
+  addFolder,
+  deleteFile,
+  getItems,
+  removeFolder,
+  renameDirectory,
+  renameFile,
+  updateWindow,
+} from './thunks';
 
 interface DesktopState {
   openedWindows: IWindow[];
@@ -101,6 +110,26 @@ export const desktopSlice = createSlice({
       });
     });
     builder.addCase(removeFolder.rejected, (state, action) => {});
+
+    builder.addCase(renameFile.pending, (state) => {});
+    builder.addCase(renameFile.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(renameFile.rejected, (state, action) => {});
+
+    builder.addCase(renameDirectory.pending, (state) => {});
+    builder.addCase(renameDirectory.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(renameDirectory.rejected, (state, action) => {});
   },
 });
 

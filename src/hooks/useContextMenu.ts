@@ -42,7 +42,7 @@ export const useContextMenu = () => {
 
   const closeContextMenu = () => {
     dispatch(setIsContextMenuOpened(false));
-    dispatch(setSelectedItem(null));
+    // dispatch(setSelectedItem(null));
   };
 
   return {

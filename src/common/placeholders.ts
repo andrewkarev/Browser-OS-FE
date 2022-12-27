@@ -1,6 +1,8 @@
 enum Placeholders {
   folderName = 'FolderName',
-  addFile = 'FileName.txt',
+  addFile = 'FileName.ext',
+  renameFile = 'NewFileName.ext',
+  renameDirectory = 'newFolderName',
 }
 
 export default Placeholders;

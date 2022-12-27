@@ -6,14 +6,16 @@ import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setIsConfirmFormOpened, setMyPCIconTitle } from 'store/reducers/desktopSlice';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import Placeholders from 'common/placeholders';
-import { addFile, addFolder } from 'store/reducers/thunks';
+import { addFile, addFolder, renameDirectory, renameFile } from 'store/reducers/thunks';
 import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 
 const ConfirmForm = () => {
   const dispatch = useAppDispatch();
   const confirmModalOperation = useAppSelector((state) => state.desktop.confirmModalOperation);
   const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
+  const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
+  const myPCIconTitle = useAppSelector((state) => state.desktop.myPCIconTitle);
 
   const [inputValue, setInputValue] = useState('');
   const [isValueValid, setIsValueValid] = useState(true);
@@ -27,6 +29,7 @@ const ConfirmForm = () => {
   useEffect(() => {
     if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
       setInputPlaceholder(Placeholders.folderName);
+      setInputValue(myPCIconTitle);
     }
 
     if (confirmModalOperation === ContextMenuOptions.addFile) {
@@ -36,7 +39,17 @@ const ConfirmForm = () => {
     if (confirmModalOperation === ContextMenuOptions.addFolder) {
       setInputPlaceholder(Placeholders.folderName);
     }
-  }, [confirmModalOperation]);
+
+    if (confirmModalOperation === ContextMenuOptions.renameFile) {
+      setInputPlaceholder(Placeholders.renameFile);
+      selectedItem && setInputValue(selectedItem.name);
+    }
+
+    if (confirmModalOperation === ContextMenuOptions.renameDirectory) {
+      setInputPlaceholder(Placeholders.renameDirectory);
+      selectedItem && setInputValue(selectedItem.name);
+    }
+  }, [confirmModalOperation, myPCIconTitle, selectedItem]);
 
   const closeConfirmForm = () => {
     dispatch(setIsConfirmFormOpened(false));
@@ -63,6 +76,34 @@ const ConfirmForm = () => {
       dispatch(
         addFolder({
           windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
+          windowId: currentWindowId,
+          title: inputValue,
+        })
+      );
+    }
+
+    if (
+      confirmModalOperation === ContextMenuOptions.renameFile &&
+      selectedItem &&
+      currentWindowId
+    ) {
+      dispatch(
+        renameFile({
+          filePath: selectedItem.path,
+          windowId: currentWindowId,
+          title: inputValue,
+        })
+      );
+    }
+
+    if (
+      confirmModalOperation === ContextMenuOptions.renameDirectory &&
+      selectedItem &&
+      currentWindowId
+    ) {
+      dispatch(
+        renameDirectory({
+          folderPath: selectedItem.path,
           windowId: currentWindowId,
           title: inputValue,
         })

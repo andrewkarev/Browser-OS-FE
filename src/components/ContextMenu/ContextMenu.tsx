@@ -107,6 +107,18 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           );
           closeContextMenu();
         };
+      case ContextMenuOptions.renameFile:
+        return () => {
+          dispatch(setConfirmModalOperation(ContextMenuOptions.renameFile));
+          dispatch(setIsConfirmFormOpened(true));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.renameDirectory:
+        return () => {
+          dispatch(setConfirmModalOperation(ContextMenuOptions.renameDirectory));
+          dispatch(setIsConfirmFormOpened(true));
+          closeContextMenu();
+        };
       default:
         return () => {
           closeContextMenu();
