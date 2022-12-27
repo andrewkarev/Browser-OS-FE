@@ -4,15 +4,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import styles from './ContextMenu.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
-import {
-  addFile,
-  addFolder,
-  deleteFile,
-  getItems,
-  removeFolder,
-  updateWindow,
-} from 'store/reducers/thunks';
-import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
+import { deleteFile, getItems, removeFolder, updateWindow } from 'store/reducers/thunks';
 import { setConfirmModalOperation, setIsConfirmFormOpened } from 'store/reducers/desktopSlice';
 import WindowOperation from 'common/windowOperation';
 import ContextMenuOptions from 'common/contextMenuOptions';
@@ -58,7 +50,6 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
 
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
   const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
-  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
 
   const getHandler = (menuItem: IMenuItem) => {
     switch (menuItem.option) {
@@ -87,14 +78,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
         };
       }
       case ContextMenuOptions.addFile:
-        if (!currentWindowId) return;
         return () => {
-          dispatch(
-            addFile({
-              windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
-              windowId: currentWindowId,
-            })
-          );
+          dispatch(setConfirmModalOperation(ContextMenuOptions.addFile));
+          dispatch(setIsConfirmFormOpened(true));
           closeContextMenu();
         };
       case ContextMenuOptions.deleteFile: {
@@ -105,14 +91,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
         };
       }
       case ContextMenuOptions.addFolder:
-        if (!currentWindowId) return;
         return () => {
-          dispatch(
-            addFolder({
-              windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
-              windowId: currentWindowId,
-            })
-          );
+          dispatch(setConfirmModalOperation(ContextMenuOptions.addFolder));
+          dispatch(setIsConfirmFormOpened(true));
           closeContextMenu();
         };
       case ContextMenuOptions.deleteDirectory:

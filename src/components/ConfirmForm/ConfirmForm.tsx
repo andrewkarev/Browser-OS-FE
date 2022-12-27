@@ -6,10 +6,14 @@ import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { setIsConfirmFormOpened, setMyPCIconTitle } from 'store/reducers/desktopSlice';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import Placeholders from 'common/placeholders';
+import { addFile, addFolder } from 'store/reducers/thunks';
+import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 
 const ConfirmForm = () => {
   const dispatch = useAppDispatch();
   const confirmModalOperation = useAppSelector((state) => state.desktop.confirmModalOperation);
+  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
+  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
 
   const [inputValue, setInputValue] = useState('');
   const [isValueValid, setIsValueValid] = useState(true);
@@ -24,6 +28,14 @@ const ConfirmForm = () => {
     if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
       setInputPlaceholder(Placeholders.folderName);
     }
+
+    if (confirmModalOperation === ContextMenuOptions.addFile) {
+      setInputPlaceholder(Placeholders.addFile);
+    }
+
+    if (confirmModalOperation === ContextMenuOptions.addFolder) {
+      setInputPlaceholder(Placeholders.folderName);
+    }
   }, [confirmModalOperation]);
 
   const closeConfirmForm = () => {
@@ -35,6 +47,26 @@ const ConfirmForm = () => {
 
     if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
       dispatch(setMyPCIconTitle(inputValue));
+    }
+
+    if (confirmModalOperation === ContextMenuOptions.addFile && currentWindowId) {
+      dispatch(
+        addFile({
+          windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
+          windowId: currentWindowId,
+          title: inputValue,
+        })
+      );
+    }
+
+    if (confirmModalOperation === ContextMenuOptions.addFolder && currentWindowId) {
+      dispatch(
+        addFolder({
+          windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
+          windowId: currentWindowId,
+          title: inputValue,
+        })
+      );
     }
 
     closeConfirmForm();

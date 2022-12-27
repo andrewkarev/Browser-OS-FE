@@ -51,12 +51,13 @@ export const updateWindow = createAsyncThunk(
 export const addFile = createAsyncThunk(
   'desktop/addFile',
   async (
-    { windowPath, windowId }: { windowPath: string; windowId: string },
+    { windowPath, windowId, title }: { windowPath: string; windowId: string; title: string },
     { rejectWithValue }
   ) => {
     try {
       const response = await api.post<AxiosError, IDirectory>(
-        `?path=${windowPath}&operation=addFile`
+        `?path=${windowPath}&operation=addFile`,
+        { title }
       );
 
       return {
@@ -96,12 +97,13 @@ export const deleteFile = createAsyncThunk(
 export const addFolder = createAsyncThunk(
   'desktop/addFolder',
   async (
-    { windowPath, windowId }: { windowPath: string; windowId: string },
+    { windowPath, windowId, title }: { windowPath: string; windowId: string; title: string },
     { rejectWithValue }
   ) => {
     try {
       const response = await api.post<AxiosError, IDirectory>(
-        `?path=${windowPath}&operation=addFolder`
+        `?path=${windowPath}&operation=addFolder`,
+        { title }
       );
 
       return {
