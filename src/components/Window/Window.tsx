@@ -21,7 +21,7 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
 
   return (
     <div
-      className={isWindowMaximized ? styles.window : styles.windowMaximized}
+      className={isWindowMaximized ? styles.windowMaximized : styles.window}
       onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData.id)}
     >
       <TopBar id={windowData.id} folderTitle={windowData.folderTitle} />

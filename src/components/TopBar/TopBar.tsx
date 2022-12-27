@@ -10,6 +10,7 @@ import { updateWindow } from 'store/reducers/thunks';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 import WindowOperation from 'common/windowOperation';
+import { setCurrentWindowId } from 'store/reducers/contextMenuSlice';
 
 interface TopBarProps {
   id: string;
@@ -19,6 +20,8 @@ interface TopBarProps {
 const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
   const dispatch = useAppDispatch();
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
+  const isWindowMaximized = useAppSelector((state) => state.desktop.isWindowMaximized);
+
   const [isIconsVisible, setIsIconsVisible] = useState(false);
   const [window, setWindow] = useState<IWindow>();
 
@@ -27,7 +30,8 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
   useEffect(() => {
     const currentWindow = openedWindows.find(({ window }) => window.id === id);
     setWindow(currentWindow);
-  }, [id, openedWindows]);
+    dispatch(setCurrentWindowId(id));
+  }, [dispatch, id, openedWindows]);
 
   const handleMouseOver = () => {
     setIsIconsVisible((prev) => !prev);
@@ -60,7 +64,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
   };
 
   const changeWindowSize = () => {
-    dispatch(setIsWindowMaximized());
+    dispatch(setIsWindowMaximized(!isWindowMaximized));
   };
 
   return (

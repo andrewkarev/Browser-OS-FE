@@ -9,6 +9,8 @@ import {
   setConfirmModalOperation,
   setIsConfirmFormOpened,
   setIsFullScreenMode,
+  setIsWindowMaximized,
+  setOpenedWindows,
 } from 'store/reducers/desktopSlice';
 import WindowOperation from 'common/windowOperation';
 import ContextMenuOptions from 'common/contextMenuOptions';
@@ -127,6 +129,17 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
         return () => {
           document.exitFullscreen();
           dispatch(setIsFullScreenMode(false));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.maximize:
+        return () => {
+          dispatch(setIsWindowMaximized(true));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.close:
+        return () => {
+          if (!currentWindowId) return;
+          dispatch(setOpenedWindows(currentWindowId));
           closeContextMenu();
         };
       default:

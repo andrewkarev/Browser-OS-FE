@@ -52,8 +52,8 @@ export const desktopSlice = createSlice({
     setIsFullScreenMode(state, action: PayloadAction<boolean>) {
       state.isFullScreenMode = action.payload;
     },
-    setIsWindowMaximized(state) {
-      state.isWindowMaximized = !state.isWindowMaximized;
+    setIsWindowMaximized(state, action: PayloadAction<boolean>) {
+      state.isWindowMaximized = action.payload;
     },
   },
   extraReducers: (builder) => {
