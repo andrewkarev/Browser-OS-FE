@@ -7,6 +7,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 
 const Taskbar = () => {
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
+  const isFullScreenMode = useAppSelector((state) => state.desktop.isFullScreenMode);
 
   const { handleContextMenu } = useContextMenu();
 
@@ -17,7 +18,13 @@ const Taskbar = () => {
   return (
     <div
       className={styles.taskbar}
-      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.taskBar, null)}
+      onContextMenu={(e) =>
+        handleContextMenu(
+          e,
+          isFullScreenMode ? contextMenuModel.taskBarFullScreen : contextMenuModel.taskBar,
+          null
+        )
+      }
     >
       <div className={styles.logo}>λ</div>
       <div className={styles.tabsContainer}>{tabs}</div>

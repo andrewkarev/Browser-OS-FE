@@ -19,6 +19,7 @@ enum ContextMenuOptions {
   maximize = 'maximize',
   close = 'close',
   enterFullScreen = 'enter full screen',
+  exitFullScreen = 'exit full screen',
   separator = '',
 }
 

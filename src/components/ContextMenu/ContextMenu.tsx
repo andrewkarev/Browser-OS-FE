@@ -5,7 +5,11 @@ import styles from './ContextMenu.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
 import { deleteFile, getItems, removeFolder, updateWindow } from 'store/reducers/thunks';
-import { setConfirmModalOperation, setIsConfirmFormOpened } from 'store/reducers/desktopSlice';
+import {
+  setConfirmModalOperation,
+  setIsConfirmFormOpened,
+  setIsFullScreenMode,
+} from 'store/reducers/desktopSlice';
 import WindowOperation from 'common/windowOperation';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import ContextMenuOptionsTitle from 'common/contextMenuOptionsTitle';
@@ -111,6 +115,18 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
         return () => {
           dispatch(setConfirmModalOperation(ContextMenuOptions.rename));
           dispatch(setIsConfirmFormOpened(true));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.enterFullScreen:
+        return () => {
+          document.body.requestFullscreen();
+          dispatch(setIsFullScreenMode(true));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.exitFullScreen:
+        return () => {
+          document.exitFullscreen();
+          dispatch(setIsFullScreenMode(false));
           closeContextMenu();
         };
       default:

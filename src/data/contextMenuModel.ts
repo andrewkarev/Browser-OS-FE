@@ -42,4 +42,7 @@ export const contextMenuModel = {
   taskBar: [
     { option: ContextMenuOptions.enterFullScreen, title: ContextMenuOptionsTitle.enterFullScreen },
   ],
+  taskBarFullScreen: [
+    { option: ContextMenuOptions.exitFullScreen, title: ContextMenuOptionsTitle.exitFullScreen },
+  ],
 };

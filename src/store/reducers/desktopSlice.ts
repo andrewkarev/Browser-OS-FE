@@ -17,6 +17,7 @@ interface DesktopState {
   isConfirmFormOpened: boolean;
   confirmModalOperation: string;
   myPCIconTitle: string;
+  isFullScreenMode: boolean;
 }
 
 const initialState: DesktopState = {
@@ -24,6 +25,7 @@ const initialState: DesktopState = {
   isConfirmFormOpened: false,
   confirmModalOperation: '',
   myPCIconTitle: desktopIconTitle,
+  isFullScreenMode: false,
 };
 
 export const desktopSlice = createSlice({
@@ -44,6 +46,9 @@ export const desktopSlice = createSlice({
     },
     setMyPCIconTitle(state, action: PayloadAction<string>) {
       state.myPCIconTitle = action.payload;
+    },
+    setIsFullScreenMode(state, action: PayloadAction<boolean>) {
+      state.isFullScreenMode = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -128,5 +133,6 @@ export const {
   setIsConfirmFormOpened,
   setConfirmModalOperation,
   setMyPCIconTitle,
+  setIsFullScreenMode,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;
