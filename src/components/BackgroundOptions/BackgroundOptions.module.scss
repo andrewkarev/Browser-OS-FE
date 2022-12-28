@@ -1,0 +1,17 @@
+@import '../../styles/main.scss';
+
+.menuitem {
+  @extend %menuitem;
+
+  &:hover {
+    @extend %menuitemHover;
+
+    .icon {
+      color: $light-primary;
+    }
+  }
+
+  .icon {
+    @include icon(15px);
+  }
+}
