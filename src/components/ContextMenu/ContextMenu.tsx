@@ -2,29 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { Coordinates } from 'types/Coordinates';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styles from './ContextMenu.module.scss';
-import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
-import {
-  copyItem,
-  cutItem,
-  deleteFile,
-  getItems,
-  removeFolder,
-  updateWindow,
-} from 'store/reducers/thunks';
-import {
-  setConfirmModalOperation,
-  setIsConfirmFormOpened,
-  setIsFullScreenMode,
-  setIsWindowMaximized,
-  setOpenedWindows,
-} from 'store/reducers/desktopSlice';
-import WindowOperation from 'common/windowOperation';
-import ContextMenuOptions from 'common/contextMenuOptions';
 import ContextMenuOptionsTitle from 'common/contextMenuOptionsTitle';
-import { setItemToTransfer, setTransferOperation } from 'store/reducers/contextMenuSlice';
-import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
-import TransferOperation from 'common/transferOperation';
+import { useContextMenuHandler } from 'hooks/useContextMenuHandler';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -33,12 +14,9 @@ interface ContextMenuProps {
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, closeContextMenu }) => {
-  const dispatch = useAppDispatch();
-  const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
-  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
   const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
-  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
-  const transferOperation = useAppSelector((state) => state.contextMenu.transferOperation);
+
+  const getHandler = useContextMenuHandler(closeContextMenu);
 
   const contextMenu = useRef<HTMLDivElement | null>(null);
 
@@ -69,139 +47,6 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
     contextMenu.current.style.top = `${coordinateY}px`;
     contextMenu.current.style.left = `${coordinateX}px`;
   }, [coordinates]);
-
-  const getHandler = (menuItem: IMenuItem) => {
-    switch (menuItem.option) {
-      case ContextMenuOptions.openRootFolder:
-        return () => {
-          dispatch(getItems(''));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.renamePCIcon:
-        return () => {
-          dispatch(setConfirmModalOperation(ContextMenuOptions.renamePCIcon));
-          dispatch(setIsConfirmFormOpened(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.openDirectory: {
-        if (!selectedItem || !currentWindowId) return;
-        return () => {
-          dispatch(
-            updateWindow({
-              itemPath: selectedItem?.path,
-              windowId: currentWindowId,
-              operation: WindowOperation.update,
-            })
-          );
-          closeContextMenu();
-        };
-      }
-      case ContextMenuOptions.addFile:
-        return () => {
-          dispatch(setConfirmModalOperation(ContextMenuOptions.addFile));
-          dispatch(setIsConfirmFormOpened(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.deleteFile: {
-        if (!selectedItem || !currentWindowId) return;
-        return () => {
-          dispatch(deleteFile({ itemPath: selectedItem.path, windowId: currentWindowId }));
-          closeContextMenu();
-        };
-      }
-      case ContextMenuOptions.addFolder:
-        return () => {
-          dispatch(setConfirmModalOperation(ContextMenuOptions.addFolder));
-          dispatch(setIsConfirmFormOpened(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.deleteDirectory:
-        if (!currentWindowId || !selectedItem) return;
-        return () => {
-          dispatch(
-            removeFolder({
-              folderPath: selectedItem?.path,
-              windowId: currentWindowId,
-            })
-          );
-          closeContextMenu();
-        };
-      case ContextMenuOptions.rename:
-        return () => {
-          dispatch(setConfirmModalOperation(ContextMenuOptions.rename));
-          dispatch(setIsConfirmFormOpened(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.enterFullScreen:
-        return () => {
-          document.body.requestFullscreen();
-          dispatch(setIsFullScreenMode(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.exitFullScreen:
-        return () => {
-          document.exitFullscreen();
-          dispatch(setIsFullScreenMode(false));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.maximize:
-        return () => {
-          dispatch(setIsWindowMaximized(true));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.close:
-        return () => {
-          if (!currentWindowId) return;
-          dispatch(setOpenedWindows(currentWindowId));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.copy:
-        return () => {
-          dispatch(setItemToTransfer(selectedItem));
-          dispatch(setTransferOperation(TransferOperation.copy));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.cut:
-        return () => {
-          dispatch(setItemToTransfer(selectedItem));
-          dispatch(setTransferOperation(TransferOperation.cut));
-          closeContextMenu();
-        };
-      case ContextMenuOptions.paste:
-        return () => {
-          if (!itemToTransfer || !currentWindowId) return;
-
-          if (transferOperation === TransferOperation.copy) {
-            dispatch(
-              copyItem({
-                sourcePath: itemToTransfer.path,
-                destPath: getCurrentWindowPath(currentWindowId, openedWindows),
-                windowId: currentWindowId,
-              })
-            );
-          }
-
-          if (transferOperation === TransferOperation.cut) {
-            dispatch(
-              cutItem({
-                sourcePath: itemToTransfer.path,
-                destPath: getCurrentWindowPath(currentWindowId, openedWindows),
-                windowId: currentWindowId,
-                itemType: itemToTransfer.type,
-              })
-            );
-          }
-
-          dispatch(setItemToTransfer(null));
-          dispatch(setTransferOperation(null));
-          closeContextMenu();
-        };
-      default:
-        return () => {
-          closeContextMenu();
-        };
-    }
-  };
 
   const menuItemsElements = menuItems?.map(({ title, option }, i) => {
     if (title === ContextMenuOptionsTitle.separator) {
