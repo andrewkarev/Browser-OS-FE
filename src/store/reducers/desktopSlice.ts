@@ -6,6 +6,7 @@ import {
   addFile,
   addFolder,
   copyItem,
+  cutItem,
   deleteFile,
   getItems,
   removeFolder,
@@ -141,6 +142,16 @@ export const desktopSlice = createSlice({
       });
     });
     builder.addCase(copyItem.rejected, (state, action) => {});
+
+    builder.addCase(cutItem.pending, (state) => {});
+    builder.addCase(cutItem.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(cutItem.rejected, (state, action) => {});
   },
 });
 

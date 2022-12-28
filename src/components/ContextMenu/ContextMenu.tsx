@@ -4,7 +4,14 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import styles from './ContextMenu.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
-import { copyItem, deleteFile, getItems, removeFolder, updateWindow } from 'store/reducers/thunks';
+import {
+  copyItem,
+  cutItem,
+  deleteFile,
+  getItems,
+  removeFolder,
+  updateWindow,
+} from 'store/reducers/thunks';
 import {
   setConfirmModalOperation,
   setIsConfirmFormOpened,
@@ -15,8 +22,9 @@ import {
 import WindowOperation from 'common/windowOperation';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import ContextMenuOptionsTitle from 'common/contextMenuOptionsTitle';
-import { setItemToCopy } from 'store/reducers/contextMenuSlice';
+import { setItemToTransfer, setTransferOperation } from 'store/reducers/contextMenuSlice';
 import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
+import TransferOperation from 'common/transferOperation';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -28,8 +36,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   const dispatch = useAppDispatch();
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
   const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
-  const itemToCopy = useAppSelector((state) => state.contextMenu.itemToCopy);
+  const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
+  const transferOperation = useAppSelector((state) => state.contextMenu.transferOperation);
 
   const contextMenu = useRef<HTMLDivElement | null>(null);
 
@@ -148,20 +157,43 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
         };
       case ContextMenuOptions.copy:
         return () => {
-          dispatch(setItemToCopy(selectedItem));
+          dispatch(setItemToTransfer(selectedItem));
+          dispatch(setTransferOperation(TransferOperation.copy));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.cut:
+        return () => {
+          dispatch(setItemToTransfer(selectedItem));
+          dispatch(setTransferOperation(TransferOperation.cut));
           closeContextMenu();
         };
       case ContextMenuOptions.paste:
         return () => {
-          if (!itemToCopy || !currentWindowId) return;
-          dispatch(
-            copyItem({
-              sourcePath: itemToCopy?.path,
-              destPath: getCurrentWindowPath(currentWindowId, openedWindows),
-              windowId: currentWindowId,
-            })
-          );
-          dispatch(setItemToCopy(null));
+          if (!itemToTransfer || !currentWindowId) return;
+
+          if (transferOperation === TransferOperation.copy) {
+            dispatch(
+              copyItem({
+                sourcePath: itemToTransfer.path,
+                destPath: getCurrentWindowPath(currentWindowId, openedWindows),
+                windowId: currentWindowId,
+              })
+            );
+          }
+
+          if (transferOperation === TransferOperation.cut) {
+            dispatch(
+              cutItem({
+                sourcePath: itemToTransfer.path,
+                destPath: getCurrentWindowPath(currentWindowId, openedWindows),
+                windowId: currentWindowId,
+                itemType: itemToTransfer.type,
+              })
+            );
+          }
+
+          dispatch(setItemToTransfer(null));
+          dispatch(setTransferOperation(null));
           closeContextMenu();
         };
       default:
@@ -179,12 +211,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
         <div
           key={`${title}-${i}`}
           className={
-            title === ContextMenuOptionsTitle.paste && !itemToCopy
+            title === ContextMenuOptionsTitle.paste && !itemToTransfer
               ? styles.menuitemDisabled
               : styles.menuitem
           }
           onClick={
-            title === ContextMenuOptionsTitle.paste && !itemToCopy
+            title === ContextMenuOptionsTitle.paste && !itemToTransfer
               ? undefined
               : getHandler({ title, option })
           }

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
+import ItemType from 'common/itemType';
 import WindowOperation from 'common/windowOperation';
 import { api } from 'services';
 import { IDirectory } from 'types/IDirectory';
@@ -184,6 +185,37 @@ export const copyItem = createAsyncThunk(
           destPath,
         }
       );
+
+      return {
+        windowItems: response,
+        windowId,
+      };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.status);
+      }
+
+      throw error;
+    }
+  }
+);
+
+export const cutItem = createAsyncThunk(
+  'desktop/cutItem',
+  async (
+    {
+      sourcePath,
+      destPath,
+      windowId,
+      itemType,
+    }: { sourcePath: string; destPath: string; windowId: string; itemType: ItemType },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.post<AxiosError, IDirectory>(`?path=${sourcePath}&operation=cut`, {
+        destPath,
+        itemType,
+      });
 
       return {
         windowItems: response,

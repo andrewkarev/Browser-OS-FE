@@ -18,7 +18,7 @@ export const contextMenuModel = {
   directory: [
     { option: ContextMenuOptions.openDirectory, title: ContextMenuOptionsTitle.open },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },
-    { option: ContextMenuOptions.cutDirectory, title: ContextMenuOptionsTitle.cut },
+    { option: ContextMenuOptions.cut, title: ContextMenuOptionsTitle.cut },
     { option: ContextMenuOptions.copy, title: ContextMenuOptionsTitle.copy },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },
     { option: ContextMenuOptions.deleteDirectory, title: ContextMenuOptionsTitle.delete },
@@ -27,7 +27,7 @@ export const contextMenuModel = {
   file: [
     { option: ContextMenuOptions.openFile, title: ContextMenuOptionsTitle.open },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },
-    { option: ContextMenuOptions.cutFile, title: ContextMenuOptionsTitle.cut },
+    { option: ContextMenuOptions.cut, title: ContextMenuOptionsTitle.cut },
     { option: ContextMenuOptions.copy, title: ContextMenuOptionsTitle.copy },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },
     { option: ContextMenuOptions.deleteFile, title: ContextMenuOptionsTitle.delete },

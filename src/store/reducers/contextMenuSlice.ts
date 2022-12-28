@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import TransferOperation from 'common/transferOperation';
 import { Coordinates } from 'types/Coordinates';
 import { IDirItem } from 'types/IDirItem';
 import { IMenuItem } from 'types/IMenuItem';
@@ -9,7 +10,8 @@ interface contextMenuState {
   menuItems: IMenuItem[];
   selectedItem: IDirItem | null;
   currentWindowId: string | null;
-  itemToCopy: IDirItem | null;
+  itemToTransfer: IDirItem | null;
+  transferOperation: TransferOperation | null;
 }
 
 const initialState: contextMenuState = {
@@ -18,7 +20,8 @@ const initialState: contextMenuState = {
   menuItems: [],
   selectedItem: null,
   currentWindowId: null,
-  itemToCopy: null,
+  itemToTransfer: null,
+  transferOperation: null,
 };
 
 export const contextMenuSlice = createSlice({
@@ -40,8 +43,11 @@ export const contextMenuSlice = createSlice({
     setCurrentWindowId(state, action: PayloadAction<string | null>) {
       state.currentWindowId = action.payload;
     },
-    setItemToCopy(state, action: PayloadAction<IDirItem | null>) {
-      state.itemToCopy = action.payload;
+    setItemToTransfer(state, action: PayloadAction<IDirItem | null>) {
+      state.itemToTransfer = action.payload;
+    },
+    setTransferOperation(state, action: PayloadAction<TransferOperation | null>) {
+      state.transferOperation = action.payload;
     },
   },
 });
@@ -52,6 +58,7 @@ export const {
   setMenuItems,
   setSelectedItem,
   setCurrentWindowId,
-  setItemToCopy,
+  setItemToTransfer,
+  setTransferOperation,
 } = contextMenuSlice.actions;
 export default contextMenuSlice.reducer;
