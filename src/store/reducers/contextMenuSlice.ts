@@ -9,6 +9,7 @@ interface contextMenuState {
   menuItems: IMenuItem[];
   selectedItem: IDirItem | null;
   currentWindowId: string | null;
+  itemToCopy: IDirItem | null;
 }
 
 const initialState: contextMenuState = {
@@ -17,6 +18,7 @@ const initialState: contextMenuState = {
   menuItems: [],
   selectedItem: null,
   currentWindowId: null,
+  itemToCopy: null,
 };
 
 export const contextMenuSlice = createSlice({
@@ -38,6 +40,9 @@ export const contextMenuSlice = createSlice({
     setCurrentWindowId(state, action: PayloadAction<string | null>) {
       state.currentWindowId = action.payload;
     },
+    setItemToCopy(state, action: PayloadAction<IDirItem | null>) {
+      state.itemToCopy = action.payload;
+    },
   },
 });
 
@@ -47,5 +52,6 @@ export const {
   setMenuItems,
   setSelectedItem,
   setCurrentWindowId,
+  setItemToCopy,
 } = contextMenuSlice.actions;
 export default contextMenuSlice.reducer;

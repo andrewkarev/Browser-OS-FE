@@ -5,6 +5,7 @@ import { IWindow } from 'types/IWindow';
 import {
   addFile,
   addFolder,
+  copyItem,
   deleteFile,
   getItems,
   removeFolder,
@@ -130,6 +131,16 @@ export const desktopSlice = createSlice({
       });
     });
     builder.addCase(renameItem.rejected, (state, action) => {});
+
+    builder.addCase(copyItem.pending, (state) => {});
+    builder.addCase(copyItem.fulfilled, (state, action) => {
+      state.openedWindows.forEach((element) => {
+        if (element.window.id === action.payload.windowId) {
+          element.window.items = action.payload.windowItems.items;
+        }
+      });
+    });
+    builder.addCase(copyItem.rejected, (state, action) => {});
   },
 });
 

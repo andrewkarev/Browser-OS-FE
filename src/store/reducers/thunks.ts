@@ -170,3 +170,31 @@ export const renameItem = createAsyncThunk(
     }
   }
 );
+
+export const copyItem = createAsyncThunk(
+  'desktop/copyItem',
+  async (
+    { sourcePath, destPath, windowId }: { sourcePath: string; destPath: string; windowId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.post<AxiosError, IDirectory>(
+        `?path=${sourcePath}&operation=copy`,
+        {
+          destPath,
+        }
+      );
+
+      return {
+        windowItems: response,
+        windowId,
+      };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.status);
+      }
+
+      throw error;
+    }
+  }
+);

@@ -4,7 +4,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import styles from './ContextMenu.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
-import { deleteFile, getItems, removeFolder, updateWindow } from 'store/reducers/thunks';
+import { copyItem, deleteFile, getItems, removeFolder, updateWindow } from 'store/reducers/thunks';
 import {
   setConfirmModalOperation,
   setIsConfirmFormOpened,
@@ -15,6 +15,8 @@ import {
 import WindowOperation from 'common/windowOperation';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import ContextMenuOptionsTitle from 'common/contextMenuOptionsTitle';
+import { setItemToCopy } from 'store/reducers/contextMenuSlice';
+import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -26,6 +28,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   const dispatch = useAppDispatch();
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
   const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
+  const itemToCopy = useAppSelector((state) => state.contextMenu.itemToCopy);
+  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
 
   const contextMenu = useRef<HTMLDivElement | null>(null);
 
@@ -142,6 +146,24 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           dispatch(setOpenedWindows(currentWindowId));
           closeContextMenu();
         };
+      case ContextMenuOptions.copy:
+        return () => {
+          dispatch(setItemToCopy(selectedItem));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.paste:
+        return () => {
+          if (!itemToCopy || !currentWindowId) return;
+          dispatch(
+            copyItem({
+              sourcePath: itemToCopy?.path,
+              destPath: getCurrentWindowPath(currentWindowId, openedWindows),
+              windowId: currentWindowId,
+            })
+          );
+          dispatch(setItemToCopy(null));
+          closeContextMenu();
+        };
       default:
         return () => {
           closeContextMenu();
@@ -156,8 +178,16 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
       return (
         <div
           key={`${title}-${i}`}
-          className={styles.menuitem}
-          onClick={getHandler({ title, option })}
+          className={
+            title === ContextMenuOptionsTitle.paste && !itemToCopy
+              ? styles.menuitemDisabled
+              : styles.menuitem
+          }
+          onClick={
+            title === ContextMenuOptionsTitle.paste && !itemToCopy
+              ? undefined
+              : getHandler({ title, option })
+          }
         >
           {title}
         </div>
