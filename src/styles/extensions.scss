@@ -18,7 +18,27 @@
   left: -1px;
   bottom: -1px;
   right: -1px;
-  border-radius: $border-radius-m;
+  border-radius: $border-radius-s;
   border: 1px solid rgba(0, 0, 0, 0.125);
   z-index: -1;
+}
+
+%menuitem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 17px;
+  margin: 0 3px;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-radius: 2.5px;
+  color: $grey-l;
+  text-transform: capitalize;
+}
+
+%menuitemHover {
+  background: -webkit-linear-gradient(top, #648bf5, #2866f2);
+  background: linear-gradient(to bottom, #648bf5 0%, #2866f2 100%);
+  border-top-color: #5a82eb;
+  border-bottom-color: #1758e7;
+  color: $light-primary;
 }
