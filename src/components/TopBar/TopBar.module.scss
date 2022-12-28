@@ -43,9 +43,8 @@
       border-radius: $border-radius-s;
 
       .icon {
-        width: 12px;
+        @include icon(14px);
         margin: 0 auto;
-        color: $dark-primary;
       }
 
       &:hover {

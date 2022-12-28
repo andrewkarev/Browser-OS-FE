@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from './TopBar.module.scss';
-import { FaLessThan, FaGreaterThan } from 'react-icons/fa';
 import { VscDash, VscClose } from 'react-icons/vsc';
 import { TbDotsDiagonal2 } from 'react-icons/tb';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
@@ -11,6 +10,7 @@ import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 import WindowOperation from 'common/windowOperation';
 import { setCurrentWindowId } from 'store/reducers/contextMenuSlice';
+import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 
 interface TopBarProps {
   id: string;
@@ -99,7 +99,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
           onClick={handleBackwardBtnClick}
           type="button"
         >
-          <FaLessThan className={styles.icon} />
+          <IoChevronBackSharp className={styles.icon} />
         </button>
         <button
           className={styles.forward}
@@ -107,7 +107,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
           onClick={handleForwardBtnClick}
           type="button"
         >
-          <FaGreaterThan className={styles.icon} />
+          <IoChevronForwardSharp className={styles.icon} />
         </button>
       </div>
       <div className={styles.itemTitle}>{folderTitle}</div>
