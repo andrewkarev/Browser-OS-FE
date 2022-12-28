@@ -21,6 +21,7 @@ interface DesktopState {
   myPCIconTitle: string;
   isFullScreenMode: boolean;
   isWindowMaximized: boolean;
+  wallpaperId: number;
 }
 
 const initialState: DesktopState = {
@@ -30,6 +31,7 @@ const initialState: DesktopState = {
   myPCIconTitle: desktopIconTitle,
   isFullScreenMode: false,
   isWindowMaximized: false,
+  wallpaperId: 2,
 };
 
 export const desktopSlice = createSlice({
@@ -56,6 +58,9 @@ export const desktopSlice = createSlice({
     },
     setIsWindowMaximized(state, action: PayloadAction<boolean>) {
       state.isWindowMaximized = action.payload;
+    },
+    setWallpaperId(state, action: PayloadAction<number>) {
+      state.wallpaperId = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -162,5 +167,6 @@ export const {
   setMyPCIconTitle,
   setIsFullScreenMode,
   setIsWindowMaximized,
+  setWallpaperId,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;
