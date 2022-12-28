@@ -6,6 +6,9 @@ import { useAppSelector } from 'hooks/redux';
 import { IMenuItem } from 'types/IMenuItem';
 import ContextMenuOptionsTitle from 'common/contextMenuOptionsTitle';
 import { useContextMenuHandler } from 'hooks/useContextMenuHandler';
+import { getContextMenuOptionClassName } from 'utils/getContextMenuOptionClassName';
+import { IoChevronForwardSharp } from 'react-icons/io5';
+import BackgroundOptions from 'components/BackgroundOptions';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -50,17 +53,26 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
 
   const menuItemsElements = menuItems?.map(({ title, option }, i) => {
     if (title === ContextMenuOptionsTitle.separator) {
-      return <hr key={`${title}-${i}`} className={styles.separator} />;
+      return <div key={`${title}-${i}`} className={styles.separator} />;
     } else {
       const isDisabled = title === ContextMenuOptionsTitle.paste && !itemToTransfer;
+      const isBackground = title === ContextMenuOptionsTitle.background;
 
       return (
         <div
           key={`${title}-${i}`}
-          className={isDisabled ? styles.menuitemDisabled : styles.menuitem}
-          onClick={isDisabled ? undefined : getHandler({ title, option })}
+          className={styles[getContextMenuOptionClassName(isDisabled, isBackground)]}
+          onClick={isDisabled || isBackground ? undefined : getHandler({ title, option })}
         >
-          {title}
+          <p>{title}</p>
+          {isBackground && (
+            <>
+              <IoChevronForwardSharp className={styles.icon} />
+              <div className={styles.backgroundOptionsContainer}>
+                <BackgroundOptions closeContextMenu={closeContextMenu} />
+              </div>
+            </>
+          )}
         </div>
       );
     }

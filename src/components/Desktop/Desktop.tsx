@@ -8,6 +8,7 @@ import ContextMenu from 'components/ContextMenu';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 import ConfirmForm from 'components/ConfirmForm';
+import { backgroundImages } from 'data/backgroundImages';
 
 const Desktop = () => {
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
@@ -15,6 +16,7 @@ const Desktop = () => {
   const isContextMenuOpened = useAppSelector((state) => state.contextMenu.isContextMenuOpened);
   const menuItems = useAppSelector((state) => state.contextMenu.menuItems);
   const isConfirmFormOpened = useAppSelector((state) => state.desktop.isConfirmFormOpened);
+  const wallpaperId = useAppSelector((state) => state.desktop.wallpaperId);
 
   const { handleContextMenu, closeContextMenu } = useContextMenu();
 
@@ -23,8 +25,13 @@ const Desktop = () => {
   return (
     <>
       <div
-        className={`${styles.desktop} ${styles.wallpaper_3}`}
+        className={styles.desktop}
         onContextMenu={(e) => handleContextMenu(e, contextMenuModel.desktop, null)}
+        style={{
+          backgroundImage: `url(${
+            backgroundImages.find((image) => image.id === wallpaperId)?.src
+          })`,
+        }}
       >
         <MyPCIcon />
       </div>
