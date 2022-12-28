@@ -7,7 +7,7 @@
   min-width: 200px;
 
   &::before {
-    @extend %modal-before;
+    @include modal-before($border-radius-s);
   }
 
   .separator {
@@ -19,25 +19,42 @@
   }
 
   .menuitem,
-  .menuitemDisabled {
-    padding: 0 17px;
-    margin: 0 3px;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    border-radius: 2.5px;
-    color: $grey-l;
-    text-transform: capitalize;
+  .menuitemDisabled,
+  .menuitemBackground {
+    @extend %menuitem;
+
+    .icon {
+      @include icon(15px);
+    }
   }
 
   .menuitemDisabled {
     color: $grey-m;
   }
 
-  .menuitem:hover {
-    background: -webkit-linear-gradient(top, #648bf5, #2866f2);
-    background: linear-gradient(to bottom, #648bf5 0%, #2866f2 100%);
-    border-top-color: #5a82eb;
-    border-bottom-color: #1758e7;
-    color: $light-primary;
+  .menuitemBackground {
+    position: relative;
+  }
+
+  .backgroundOptionsContainer {
+    @extend %modal;
+    top: 0;
+    left: 194px;
+    display: none;
+    border-radius: $border-radius-s;
+    min-width: 200px;
+  }
+
+  .menuitem:hover,
+  .menuitemBackground:hover {
+    @extend %menuitemHover;
+
+    .icon {
+      color: $light-primary;
+    }
+  }
+
+  .menuitemBackground:hover .backgroundOptionsContainer {
+    display: block;
   }
 }

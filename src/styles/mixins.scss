@@ -16,3 +16,16 @@
   width: $width;
   color: $dark-primary;
 }
+
+@mixin modal-before($borderRadius) {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  bottom: -1px;
+  right: -1px;
+  border-radius: $borderRadius;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  z-index: -1;
+}

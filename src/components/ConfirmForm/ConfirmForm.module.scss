@@ -8,7 +8,7 @@
 }
 
 .container::before {
-  @extend %modal-before;
+  @include modal-before($border-radius-m);
 }
 
 .form {
@@ -41,9 +41,7 @@
       border-radius: $border-radius-s;
 
       .icon {
-        width: 18px;
-        color: $dark-primary;
-        font-weight: 700;
+        @include icon(18px);
       }
 
       &:hover {
