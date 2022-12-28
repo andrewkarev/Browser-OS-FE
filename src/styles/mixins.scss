@@ -11,3 +11,8 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: $linesCount;
 }
+
+@mixin icon($width) {
+  width: $width;
+  color: $dark-primary;
+}
