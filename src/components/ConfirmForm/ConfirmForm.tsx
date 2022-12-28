@@ -53,6 +53,8 @@ const ConfirmForm = () => {
   const handleSubmitBtnClick = (e: React.MouseEvent) => {
     e.preventDefault();
 
+    const valueToSend = inputValue.trim();
+
     if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
       dispatch(setMyPCIconTitle(inputValue));
     }
@@ -62,7 +64,7 @@ const ConfirmForm = () => {
         addFile({
           windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
           windowId: currentWindowId,
-          title: inputValue,
+          title: valueToSend,
         })
       );
     }
@@ -72,7 +74,7 @@ const ConfirmForm = () => {
         addFolder({
           windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
           windowId: currentWindowId,
-          title: inputValue,
+          title: valueToSend,
         })
       );
     }
@@ -82,7 +84,7 @@ const ConfirmForm = () => {
         renameItem({
           itemPath: selectedItem.path,
           windowId: currentWindowId,
-          title: inputValue,
+          title: valueToSend,
         })
       );
     }
@@ -92,7 +94,7 @@ const ConfirmForm = () => {
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
-    setInputValue(target.value.trim());
+    setInputValue(target.value);
   };
 
   return (
