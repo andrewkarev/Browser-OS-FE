@@ -52,19 +52,13 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
     if (title === ContextMenuOptionsTitle.separator) {
       return <hr key={`${title}-${i}`} className={styles.separator} />;
     } else {
+      const isDisabled = title === ContextMenuOptionsTitle.paste && !itemToTransfer;
+
       return (
         <div
           key={`${title}-${i}`}
-          className={
-            title === ContextMenuOptionsTitle.paste && !itemToTransfer
-              ? styles.menuitemDisabled
-              : styles.menuitem
-          }
-          onClick={
-            title === ContextMenuOptionsTitle.paste && !itemToTransfer
-              ? undefined
-              : getHandler({ title, option })
-          }
+          className={isDisabled ? styles.menuitemDisabled : styles.menuitem}
+          onClick={isDisabled ? undefined : getHandler({ title, option })}
         >
           {title}
         </div>
