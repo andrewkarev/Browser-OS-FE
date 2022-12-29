@@ -5,10 +5,10 @@
   top: calc(50% - 30.5px);
   left: calc(50% - 117px);
   border-radius: $border-radius-m;
-}
 
-.container::before {
-  @include modal-before($border-radius-m);
+  &::before {
+    @include modal-before($border-radius-m);
+  }
 }
 
 .form {
