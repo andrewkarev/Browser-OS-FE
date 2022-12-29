@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from './redux';
 export const useConfirmFormSubmit = (inputValue: string, closeConfirmForm: () => void) => {
   const dispatch = useAppDispatch();
   const confirmModalOperation = useAppSelector((state) => state.desktop.confirmModalOperation);
-  const currentWindow = useAppSelector((state) => state.desktop.currentWindow);
+  const currentWindow = useAppSelector((state) => state.window.currentWindow);
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
 
   return (e: React.MouseEvent) => {

@@ -4,7 +4,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import { useAppDispatch } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React, { useEffect } from 'react';
-import { setCurrentWindow } from 'store/reducers/desktopSlice';
+import { setCurrentWindow } from 'store/reducers/windowSlice';
 import { IWindow } from 'types/IWindow';
 import styles from './Window.module.scss';
 

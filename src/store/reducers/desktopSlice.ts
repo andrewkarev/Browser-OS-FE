@@ -23,7 +23,6 @@ interface DesktopState {
   wallpaperId: number;
   isWarningModalDisplayed: boolean;
   selectedFileName: string | null;
-  currentWindow: IWindow | null;
 }
 
 const initialState: DesktopState = {
@@ -35,7 +34,6 @@ const initialState: DesktopState = {
   wallpaperId: 2,
   isWarningModalDisplayed: false,
   selectedFileName: null,
-  currentWindow: null,
 };
 
 export const desktopSlice = createSlice({
@@ -73,9 +71,6 @@ export const desktopSlice = createSlice({
     },
     setSelectedFileName(state, action: PayloadAction<string | null>) {
       state.selectedFileName = action.payload;
-    },
-    setCurrentWindow(state, action: PayloadAction<IWindow | null>) {
-      state.currentWindow = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -190,6 +185,5 @@ export const {
   setIsWarningModalDisplayed,
   setSelectedFileName,
   updateOpenedWindow,
-  setCurrentWindow,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;

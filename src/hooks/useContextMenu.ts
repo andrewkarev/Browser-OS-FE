@@ -4,7 +4,7 @@ import {
   setMenuItems,
   setSelectedItem,
 } from 'store/reducers/contextMenuSlice';
-import { setCurrentWindow } from 'store/reducers/desktopSlice';
+import { setCurrentWindow } from 'store/reducers/windowSlice';
 import { IDirItem } from 'types/IDirItem';
 import { IMenuItem } from 'types/IMenuItem';
 import { IWindow } from 'types/IWindow';

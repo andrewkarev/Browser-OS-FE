@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from './redux';
 export const useContextMenuHandler = (closeContextMenu: () => void) => {
   const dispatch = useAppDispatch();
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
-  const currentWindow = useAppSelector((state) => state.desktop.currentWindow);
+  const currentWindow = useAppSelector((state) => state.window.currentWindow);
   const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
   const transferOperation = useAppSelector((state) => state.contextMenu.transferOperation);
 
