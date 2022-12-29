@@ -10,6 +10,9 @@ import DIRECTORY from '../../assets/icons/folder.png';
 import styles from './Item.module.scss';
 import ItemType from 'common/itemType';
 import WindowOperation from 'common/windowOperation';
+import { getFileType } from 'utils/getFileType';
+import FileType from 'common/fileType';
+import { setIsWarningModalDisplayed, setSelectedFileName } from 'store/reducers/desktopSlice';
 
 interface ItemProps {
   item: IDirItem;
@@ -31,7 +34,25 @@ const Item: React.FC<ItemProps> = ({ item, windowData }) => {
         })
       );
     } else {
-      console.log(dirItem.name);
+      const fileType = getFileType(dirItem.extension ?? '');
+
+      dispatch(setSelectedFileName(dirItem.name));
+
+      switch (fileType) {
+        case null:
+          dispatch(setIsWarningModalDisplayed(true));
+          break;
+        case FileType.text:
+          break;
+        case FileType.image:
+          break;
+        case FileType.audio:
+          break;
+        case FileType.video:
+          break;
+        default:
+          break;
+      }
     }
   };
 
