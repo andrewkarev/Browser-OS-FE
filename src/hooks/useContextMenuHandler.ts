@@ -7,6 +7,7 @@ import {
   setIsConfirmFormOpened,
   setIsFullScreenMode,
   setOpenedWindows,
+  updateOpenedWindow,
 } from 'store/reducers/desktopSlice';
 import {
   copyItem,
@@ -17,15 +18,13 @@ import {
   updateWindow,
 } from 'store/reducers/thunks';
 import { IMenuItem } from 'types/IMenuItem';
-import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 import { useAppDispatch, useAppSelector } from './redux';
 
 export const useContextMenuHandler = (closeContextMenu: () => void) => {
   const dispatch = useAppDispatch();
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
-  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
+  const currentWindow = useAppSelector((state) => state.desktop.currentWindow);
   const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
-  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
   const transferOperation = useAppSelector((state) => state.contextMenu.transferOperation);
 
   return (menuItem: IMenuItem) => {
@@ -42,12 +41,12 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.openDirectory: {
-        if (!selectedItem || !currentWindowId) return;
+        if (!selectedItem || !currentWindow) return;
         return () => {
           dispatch(
             updateWindow({
-              itemPath: selectedItem?.path,
-              windowId: currentWindowId,
+              itemPath: selectedItem.path,
+              windowId: currentWindow.id,
               operation: WindowOperation.update,
             })
           );
@@ -61,9 +60,9 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.deleteFile: {
-        if (!selectedItem || !currentWindowId) return;
+        if (!selectedItem || !currentWindow) return;
         return () => {
-          dispatch(deleteFile({ itemPath: selectedItem.path, windowId: currentWindowId }));
+          dispatch(deleteFile({ itemPath: selectedItem.path, windowId: currentWindow.id }));
           closeContextMenu();
         };
       }
@@ -74,12 +73,12 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.deleteDirectory:
-        if (!currentWindowId || !selectedItem) return;
+        if (!currentWindow || !selectedItem) return;
         return () => {
           dispatch(
             removeFolder({
               folderPath: selectedItem?.path,
-              windowId: currentWindowId,
+              windowId: currentWindow.id,
             })
           );
           closeContextMenu();
@@ -104,14 +103,14 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.paste:
         return () => {
-          if (!itemToTransfer || !currentWindowId) return;
+          if (!itemToTransfer || !currentWindow) return;
 
           if (transferOperation === TransferOperation.copy) {
             dispatch(
               copyItem({
                 sourcePath: itemToTransfer.path,
-                destPath: getCurrentWindowPath(currentWindowId, openedWindows),
-                windowId: currentWindowId,
+                destPath: currentWindow.currentPath,
+                windowId: currentWindow.id,
               })
             );
           }
@@ -120,8 +119,8 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
             dispatch(
               cutItem({
                 sourcePath: itemToTransfer.path,
-                destPath: getCurrentWindowPath(currentWindowId, openedWindows),
-                windowId: currentWindowId,
+                destPath: currentWindow.currentPath,
+                windowId: currentWindow.id,
                 itemType: itemToTransfer.type,
               })
             );
@@ -145,13 +144,18 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.maximize:
         return () => {
-          // dispatch(setIsWindowMaximized(true));
+          if (!currentWindow) return;
+
+          const updatedWindow = { ...currentWindow };
+          updatedWindow.isWindowMaximized = !currentWindow.isWindowMaximized;
+
+          dispatch(updateOpenedWindow(updatedWindow));
           closeContextMenu();
         };
       case ContextMenuOptions.close:
         return () => {
-          if (!currentWindowId) return;
-          dispatch(setOpenedWindows(currentWindowId));
+          if (!currentWindow) return;
+          dispatch(setOpenedWindows(currentWindow.id));
           closeContextMenu();
         };
       default:

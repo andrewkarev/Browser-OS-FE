@@ -66,7 +66,7 @@ const Item: React.FC<ItemProps> = ({ item, windowData }) => {
             e,
             item.extension === null ? contextMenuModel.directory : contextMenuModel.file,
             item,
-            windowData.id
+            windowData
           )
         }
       >

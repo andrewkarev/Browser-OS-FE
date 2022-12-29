@@ -9,7 +9,6 @@ interface contextMenuState {
   coordinates: Coordinates;
   menuItems: IMenuItem[];
   selectedItem: IDirItem | null;
-  currentWindowId: string | null;
   itemToTransfer: IDirItem | null;
   transferOperation: TransferOperation | null;
 }
@@ -19,7 +18,6 @@ const initialState: contextMenuState = {
   coordinates: { x: 0, y: 0 },
   menuItems: [],
   selectedItem: null,
-  currentWindowId: null,
   itemToTransfer: null,
   transferOperation: null,
 };
@@ -40,9 +38,6 @@ export const contextMenuSlice = createSlice({
     setSelectedItem(state, action: PayloadAction<IDirItem | null>) {
       state.selectedItem = action.payload;
     },
-    setCurrentWindowId(state, action: PayloadAction<string | null>) {
-      state.currentWindowId = action.payload;
-    },
     setItemToTransfer(state, action: PayloadAction<IDirItem | null>) {
       state.itemToTransfer = action.payload;
     },
@@ -57,7 +52,6 @@ export const {
   setIsContextMenuOpened,
   setMenuItems,
   setSelectedItem,
-  setCurrentWindowId,
   setItemToTransfer,
   setTransferOperation,
 } = contextMenuSlice.actions;

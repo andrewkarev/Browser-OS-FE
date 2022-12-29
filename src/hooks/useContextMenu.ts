@@ -1,12 +1,13 @@
 import {
   setCoordinates,
-  setCurrentWindowId,
   setIsContextMenuOpened,
   setMenuItems,
   setSelectedItem,
 } from 'store/reducers/contextMenuSlice';
+import { setCurrentWindow } from 'store/reducers/desktopSlice';
 import { IDirItem } from 'types/IDirItem';
 import { IMenuItem } from 'types/IMenuItem';
+import { IWindow } from 'types/IWindow';
 import { useAppDispatch } from './redux';
 
 export const useContextMenu = () => {
@@ -16,7 +17,7 @@ export const useContextMenu = () => {
     e: React.MouseEvent,
     menuItems: IMenuItem[],
     selectedItem: IDirItem | null,
-    windowId?: string
+    currentWindow?: IWindow
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -25,8 +26,8 @@ export const useContextMenu = () => {
       dispatch(setSelectedItem(selectedItem));
     }
 
-    if (windowId) {
-      dispatch(setCurrentWindowId(windowId));
+    if (currentWindow) {
+      dispatch(setCurrentWindow(currentWindow));
     }
 
     dispatch(

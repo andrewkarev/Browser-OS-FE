@@ -4,7 +4,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import { useAppDispatch } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React, { useEffect } from 'react';
-import { setCurrentWindowId } from 'store/reducers/contextMenuSlice';
+import { setCurrentWindow } from 'store/reducers/desktopSlice';
 import { IWindow } from 'types/IWindow';
 import styles from './Window.module.scss';
 
@@ -18,8 +18,8 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
   const { handleContextMenu } = useContextMenu();
 
   useEffect(() => {
-    dispatch(setCurrentWindowId(windowData.id));
-  }, [dispatch, windowData.id]);
+    dispatch(setCurrentWindow(windowData));
+  }, [dispatch, windowData]);
 
   const items = windowData.items.map((item, i) => {
     return <Item item={item} windowData={windowData} key={`${item.name}-${i}`} />;
@@ -28,7 +28,7 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
   return (
     <div
       className={windowData.isWindowMaximized ? styles.windowMaximized : styles.window}
-      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData.id)}
+      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData)}
     >
       <TopBar window={windowData} />
       <div className={styles.itemsContainer}>{items}</div>

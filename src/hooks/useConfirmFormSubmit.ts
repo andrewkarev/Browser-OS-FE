@@ -1,14 +1,12 @@
 import ContextMenuOptions from 'common/contextMenuOptions';
 import { setMyPCIconTitle } from 'store/reducers/desktopSlice';
 import { addFile, addFolder, renameItem } from 'store/reducers/thunks';
-import { getCurrentWindowPath } from 'utils/getCurrentWindowPath';
 import { useAppDispatch, useAppSelector } from './redux';
 
 export const useConfirmFormSubmit = (inputValue: string, closeConfirmForm: () => void) => {
   const dispatch = useAppDispatch();
   const confirmModalOperation = useAppSelector((state) => state.desktop.confirmModalOperation);
-  const currentWindowId = useAppSelector((state) => state.contextMenu.currentWindowId);
-  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
+  const currentWindow = useAppSelector((state) => state.desktop.currentWindow);
   const selectedItem = useAppSelector((state) => state.contextMenu.selectedItem);
 
   return (e: React.MouseEvent) => {
@@ -20,31 +18,31 @@ export const useConfirmFormSubmit = (inputValue: string, closeConfirmForm: () =>
       dispatch(setMyPCIconTitle(inputValue));
     }
 
-    if (confirmModalOperation === ContextMenuOptions.addFile && currentWindowId) {
+    if (confirmModalOperation === ContextMenuOptions.addFile && currentWindow) {
       dispatch(
         addFile({
-          windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
-          windowId: currentWindowId,
+          windowPath: currentWindow.currentPath,
+          windowId: currentWindow.id,
           title: valueToSend,
         })
       );
     }
 
-    if (confirmModalOperation === ContextMenuOptions.addFolder && currentWindowId) {
+    if (confirmModalOperation === ContextMenuOptions.addFolder && currentWindow) {
       dispatch(
         addFolder({
-          windowPath: getCurrentWindowPath(currentWindowId, openedWindows),
-          windowId: currentWindowId,
+          windowPath: currentWindow.currentPath,
+          windowId: currentWindow.id,
           title: valueToSend,
         })
       );
     }
 
-    if (confirmModalOperation === ContextMenuOptions.rename && selectedItem && currentWindowId) {
+    if (confirmModalOperation === ContextMenuOptions.rename && selectedItem && currentWindow) {
       dispatch(
         renameItem({
           itemPath: selectedItem.path,
-          windowId: currentWindowId,
+          windowId: currentWindow.id,
           title: valueToSend,
         })
       );
