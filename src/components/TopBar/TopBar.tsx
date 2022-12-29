@@ -28,7 +28,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
   const { handleContextMenu } = useContextMenu();
 
   useEffect(() => {
-    const currentWindow = openedWindows.find(({ window }) => window.id === id);
+    const currentWindow = openedWindows.find((window) => window.id === id);
     setWindow(currentWindow);
     dispatch(setCurrentWindowId(id));
   }, [dispatch, id, openedWindows]);

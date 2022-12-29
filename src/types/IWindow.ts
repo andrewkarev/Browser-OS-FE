@@ -1,7 +1,6 @@
 import { IDirectory } from './IDirectory';
 
-export interface IWindow {
-  window: IDirectory;
+export interface IWindow extends IDirectory {
   history: string[];
   currentPath: string;
 }

@@ -43,9 +43,7 @@ export const desktopSlice = createSlice({
   initialState,
   reducers: {
     setOpenedWindows(state, action: PayloadAction<string>) {
-      const updatedWindows = state.openedWindows.filter(
-        (window) => window.window.id !== action.payload
-      );
+      const updatedWindows = state.openedWindows.filter((window) => window.id !== action.payload);
       state.openedWindows = updatedWindows;
     },
     setIsConfirmFormOpened(state, action: PayloadAction<boolean>) {
@@ -76,23 +74,23 @@ export const desktopSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getItems.pending, (state) => {});
     builder.addCase(getItems.fulfilled, (state, action) => {
-      state.openedWindows.push({ window: action.payload, history: [], currentPath: '' });
+      state.openedWindows.push({ ...action.payload, history: [], currentPath: '' });
     });
     builder.addCase(getItems.rejected, (state, action) => {});
 
     builder.addCase(updateWindow.pending, (state) => {});
     builder.addCase(updateWindow.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
           if (action.payload.operation === WindowOperation.update) {
-            const basePathIdx = element.history.indexOf(element.currentPath) + 1;
-            const baseHistory = element.history.slice(0, basePathIdx);
-            element.history = baseHistory.concat(action.payload.itemPath);
+            const basePathIdx = window.history.indexOf(window.currentPath) + 1;
+            const baseHistory = window.history.slice(0, basePathIdx);
+            window.history = baseHistory.concat(action.payload.itemPath);
           }
 
-          element.window.items = action.payload.windowItems.items;
-          element.window.folderTitle = action.payload.windowItems.folderTitle;
-          element.currentPath = action.payload.itemPath;
+          window.items = action.payload.windowItems.items;
+          window.folderTitle = action.payload.windowItems.folderTitle;
+          window.currentPath = action.payload.itemPath;
         }
       });
     });
@@ -100,9 +98,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(addFile.pending, (state) => {});
     builder.addCase(addFile.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });
@@ -110,9 +108,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(deleteFile.pending, (state) => {});
     builder.addCase(deleteFile.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });
@@ -120,9 +118,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(addFolder.pending, (state) => {});
     builder.addCase(addFolder.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });
@@ -130,9 +128,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(removeFolder.pending, (state) => {});
     builder.addCase(removeFolder.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });
@@ -140,9 +138,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(renameItem.pending, (state) => {});
     builder.addCase(renameItem.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });
@@ -150,9 +148,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(copyItem.pending, (state) => {});
     builder.addCase(copyItem.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });
@@ -160,9 +158,9 @@ export const desktopSlice = createSlice({
 
     builder.addCase(cutItem.pending, (state) => {});
     builder.addCase(cutItem.fulfilled, (state, action) => {
-      state.openedWindows.forEach((element) => {
-        if (element.window.id === action.payload.windowId) {
-          element.window.items = action.payload.windowItems.items;
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.windowId) {
+          window.items = action.payload.windowItems.items;
         }
       });
     });

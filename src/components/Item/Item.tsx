@@ -4,7 +4,6 @@ import { useContextMenu } from 'hooks/useContextMenu';
 import React from 'react';
 import { updateWindow } from 'store/reducers/thunks';
 import { IDirItem } from 'types/IDirItem';
-import { IDirectory } from 'types/IDirectory';
 import { getItemIcon } from 'utils/getItemsIcon';
 import DIRECTORY from '../../assets/icons/folder.png';
 import styles from './Item.module.scss';
@@ -13,10 +12,11 @@ import WindowOperation from 'common/windowOperation';
 import { getFileType } from 'utils/getFileType';
 import FileType from 'common/fileType';
 import { setIsWarningModalDisplayed, setSelectedFileName } from 'store/reducers/desktopSlice';
+import { IWindow } from 'types/IWindow';
 
 interface ItemProps {
   item: IDirItem;
-  windowData: IDirectory;
+  windowData: IWindow;
 }
 
 const Item: React.FC<ItemProps> = ({ item, windowData }) => {

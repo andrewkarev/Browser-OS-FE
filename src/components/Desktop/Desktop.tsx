@@ -22,7 +22,7 @@ const Desktop = () => {
 
   const { handleContextMenu, closeContextMenu } = useContextMenu();
 
-  const windows = openedWindows.map(({ window }) => <Window windowData={window} key={window.id} />);
+  const windows = openedWindows.map((window) => <Window windowData={window} key={window.id} />);
 
   return (
     <>

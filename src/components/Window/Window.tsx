@@ -4,11 +4,11 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import { useAppSelector } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React from 'react';
-import { IDirectory } from 'types/IDirectory';
+import { IWindow } from 'types/IWindow';
 import styles from './Window.module.scss';
 
 interface WindowProps {
-  windowData: IDirectory;
+  windowData: IWindow;
 }
 
 const Window: React.FC<WindowProps> = ({ windowData }) => {

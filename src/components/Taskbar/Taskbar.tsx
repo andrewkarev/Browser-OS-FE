@@ -11,7 +11,7 @@ const Taskbar = () => {
 
   const { handleContextMenu } = useContextMenu();
 
-  const tabs = openedWindows.map(({ window }) => {
+  const tabs = openedWindows.map((window) => {
     return <div key={window.id}>{window.folderTitle}</div>;
   });
 
