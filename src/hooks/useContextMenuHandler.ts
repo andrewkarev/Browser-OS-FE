@@ -6,7 +6,6 @@ import {
   setConfirmModalOperation,
   setIsConfirmFormOpened,
   setIsFullScreenMode,
-  setIsWindowMaximized,
   setOpenedWindows,
 } from 'store/reducers/desktopSlice';
 import {
@@ -146,7 +145,7 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.maximize:
         return () => {
-          dispatch(setIsWindowMaximized(true));
+          // dispatch(setIsWindowMaximized(true));
           closeContextMenu();
         };
       case ContextMenuOptions.close:

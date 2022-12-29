@@ -20,7 +20,6 @@ interface DesktopState {
   confirmModalOperation: string;
   myPCIconTitle: string;
   isFullScreenMode: boolean;
-  isWindowMaximized: boolean;
   wallpaperId: number;
   isWarningModalDisplayed: boolean;
   selectedFileName: string | null;
@@ -32,7 +31,6 @@ const initialState: DesktopState = {
   confirmModalOperation: '',
   myPCIconTitle: desktopIconTitle,
   isFullScreenMode: false,
-  isWindowMaximized: false,
   wallpaperId: 2,
   isWarningModalDisplayed: false,
   selectedFileName: null,
@@ -42,6 +40,13 @@ export const desktopSlice = createSlice({
   name: 'desktop',
   initialState,
   reducers: {
+    updateOpenedWindow(state, action: PayloadAction<IWindow>) {
+      state.openedWindows.forEach((window) => {
+        if (window.id === action.payload.id) {
+          window.isWindowMaximized = action.payload.isWindowMaximized;
+        }
+      });
+    },
     setOpenedWindows(state, action: PayloadAction<string>) {
       const updatedWindows = state.openedWindows.filter((window) => window.id !== action.payload);
       state.openedWindows = updatedWindows;
@@ -58,9 +63,6 @@ export const desktopSlice = createSlice({
     setIsFullScreenMode(state, action: PayloadAction<boolean>) {
       state.isFullScreenMode = action.payload;
     },
-    setIsWindowMaximized(state, action: PayloadAction<boolean>) {
-      state.isWindowMaximized = action.payload;
-    },
     setWallpaperId(state, action: PayloadAction<number>) {
       state.wallpaperId = action.payload;
     },
@@ -74,7 +76,12 @@ export const desktopSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getItems.pending, (state) => {});
     builder.addCase(getItems.fulfilled, (state, action) => {
-      state.openedWindows.push({ ...action.payload, history: [], currentPath: '' });
+      state.openedWindows.push({
+        ...action.payload,
+        history: [],
+        currentPath: '',
+        isWindowMaximized: false,
+      });
     });
     builder.addCase(getItems.rejected, (state, action) => {});
 
@@ -174,9 +181,9 @@ export const {
   setConfirmModalOperation,
   setMyPCIconTitle,
   setIsFullScreenMode,
-  setIsWindowMaximized,
   setWallpaperId,
   setIsWarningModalDisplayed,
   setSelectedFileName,
+  updateOpenedWindow,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;

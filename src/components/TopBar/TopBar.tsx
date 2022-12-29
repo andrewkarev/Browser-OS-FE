@@ -3,7 +3,7 @@ import styles from './TopBar.module.scss';
 import { VscDash, VscClose } from 'react-icons/vsc';
 import { TbDotsDiagonal2 } from 'react-icons/tb';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { setIsWindowMaximized, setOpenedWindows } from 'store/reducers/desktopSlice';
+import { setOpenedWindows, updateOpenedWindow } from 'store/reducers/desktopSlice';
 import { IWindow } from 'types/IWindow';
 import { updateWindow } from 'store/reducers/thunks';
 import { useContextMenu } from 'hooks/useContextMenu';
@@ -13,32 +13,27 @@ import { setCurrentWindowId } from 'store/reducers/contextMenuSlice';
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 
 interface TopBarProps {
-  id: string;
-  folderTitle: string;
+  window: IWindow;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
+const TopBar: React.FC<TopBarProps> = ({ window }) => {
   const dispatch = useAppDispatch();
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
-  const isWindowMaximized = useAppSelector((state) => state.desktop.isWindowMaximized);
 
   const [isIconsVisible, setIsIconsVisible] = useState(false);
-  const [window, setWindow] = useState<IWindow>();
 
   const { handleContextMenu } = useContextMenu();
 
   useEffect(() => {
-    const currentWindow = openedWindows.find((window) => window.id === id);
-    setWindow(currentWindow);
-    dispatch(setCurrentWindowId(id));
-  }, [dispatch, id, openedWindows]);
+    dispatch(setCurrentWindowId(window.id));
+  }, [dispatch, window.id, openedWindows]);
 
   const handleMouseOver = () => {
     setIsIconsVisible((prev) => !prev);
   };
 
   const closeWindow = () => {
-    dispatch(setOpenedWindows(id));
+    dispatch(setOpenedWindows(window.id));
   };
 
   const handleBackwardBtnClick = () => {
@@ -48,7 +43,11 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
     const previousPath = currentPathIdx ? window.history[currentPathIdx - 1] : '';
 
     dispatch(
-      updateWindow({ itemPath: previousPath, windowId: id, operation: WindowOperation.move })
+      updateWindow({
+        itemPath: previousPath,
+        windowId: window.id,
+        operation: WindowOperation.move,
+      })
     );
   };
 
@@ -60,11 +59,16 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
     const nextPathId = isLast ? currentPathIdx : currentPathIdx + 1;
     const nextPath = window.history[nextPathId];
 
-    dispatch(updateWindow({ itemPath: nextPath, windowId: id, operation: WindowOperation.move }));
+    dispatch(
+      updateWindow({ itemPath: nextPath, windowId: window.id, operation: WindowOperation.move })
+    );
   };
 
   const changeWindowSize = () => {
-    dispatch(setIsWindowMaximized(!isWindowMaximized));
+    const updatedWindow = { ...window };
+    updatedWindow.isWindowMaximized = !window.isWindowMaximized;
+
+    dispatch(updateOpenedWindow(updatedWindow));
   };
 
   const handleDBClick = (e: React.MouseEvent) => {
@@ -117,7 +121,7 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
         </button>
       </div>
       <div className={styles.itemTitle} onDoubleClick={(e) => handleDBClick(e)}>
-        {folderTitle}
+        {window.folderTitle}
       </div>
     </div>
   );
