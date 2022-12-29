@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './TopBar.module.scss';
 import { VscDash, VscClose } from 'react-icons/vsc';
 import { TbDotsDiagonal2 } from 'react-icons/tb';
-import { useAppDispatch, useAppSelector } from 'hooks/redux';
+import { useAppDispatch } from 'hooks/redux';
 import { setOpenedWindows, updateOpenedWindow } from 'store/reducers/desktopSlice';
 import { IWindow } from 'types/IWindow';
 import { updateWindow } from 'store/reducers/thunks';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 import WindowOperation from 'common/windowOperation';
-import { setCurrentWindowId } from 'store/reducers/contextMenuSlice';
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 
 interface TopBarProps {
@@ -18,15 +17,10 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = ({ window }) => {
   const dispatch = useAppDispatch();
-  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
 
   const [isIconsVisible, setIsIconsVisible] = useState(false);
 
   const { handleContextMenu } = useContextMenu();
-
-  useEffect(() => {
-    dispatch(setCurrentWindowId(window.id));
-  }, [dispatch, window.id, openedWindows]);
 
   const handleMouseOver = () => {
     setIsIconsVisible((prev) => !prev);
