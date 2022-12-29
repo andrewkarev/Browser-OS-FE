@@ -9,6 +9,7 @@ import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 import ConfirmForm from 'components/ConfirmForm';
 import { backgroundImages } from 'data/backgroundImages';
+import WarningModal from 'components/WarningModal';
 
 const Desktop = () => {
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
@@ -17,6 +18,7 @@ const Desktop = () => {
   const menuItems = useAppSelector((state) => state.contextMenu.menuItems);
   const isConfirmFormOpened = useAppSelector((state) => state.desktop.isConfirmFormOpened);
   const wallpaperId = useAppSelector((state) => state.desktop.wallpaperId);
+  const isWarningModalDisplayed = useAppSelector((state) => state.desktop.isWarningModalDisplayed);
 
   const { handleContextMenu, closeContextMenu } = useContextMenu();
 
@@ -44,6 +46,7 @@ const Desktop = () => {
         />
       )}
       {isConfirmFormOpened && <ConfirmForm />}
+      {isWarningModalDisplayed && <WarningModal />}
       <Taskbar />
     </>
   );

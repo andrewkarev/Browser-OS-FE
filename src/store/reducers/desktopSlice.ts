@@ -22,6 +22,8 @@ interface DesktopState {
   isFullScreenMode: boolean;
   isWindowMaximized: boolean;
   wallpaperId: number;
+  isWarningModalDisplayed: boolean;
+  selectedFileName: string | null;
 }
 
 const initialState: DesktopState = {
@@ -32,6 +34,8 @@ const initialState: DesktopState = {
   isFullScreenMode: false,
   isWindowMaximized: false,
   wallpaperId: 2,
+  isWarningModalDisplayed: false,
+  selectedFileName: null,
 };
 
 export const desktopSlice = createSlice({
@@ -61,6 +65,12 @@ export const desktopSlice = createSlice({
     },
     setWallpaperId(state, action: PayloadAction<number>) {
       state.wallpaperId = action.payload;
+    },
+    setIsWarningModalDisplayed(state, action: PayloadAction<boolean>) {
+      state.isWarningModalDisplayed = action.payload;
+    },
+    setSelectedFileName(state, action: PayloadAction<string | null>) {
+      state.selectedFileName = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -168,5 +178,7 @@ export const {
   setIsFullScreenMode,
   setIsWindowMaximized,
   setWallpaperId,
+  setIsWarningModalDisplayed,
+  setSelectedFileName,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;

@@ -1,0 +1,41 @@
+@import '../../styles/main.scss';
+
+.container {
+  @extend %modal;
+  top: calc(50% - 84px);
+  left: calc(50% - 150px);
+  @include flexItem(column, 15px);
+  align-items: center;
+  width: 350px;
+  padding: 15px;
+  background-color: $grey-s;
+  border-radius: $border-radius-m;
+
+  &::before {
+    @include modal-before($border-radius-m);
+  }
+
+  .imgWrapper {
+    width: 45px;
+  }
+
+  .text {
+    color: $grey-l;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .button {
+    width: 150px;
+    height: 30px;
+    color: $light-primary;
+    border-radius: $border-radius-s;
+    background: -webkit-linear-gradient(top, #648bf5, #2866f2);
+    background: linear-gradient(to bottom, #648bf5 0%, #2866f2 100%);
+
+    &:hover {
+      background: -webkit-linear-gradient(top, #7092ef, #3971f3);
+      background: linear-gradient(to bottom, #7092ef 0%, #3971f3 100%);
+    }
+  }
+}
