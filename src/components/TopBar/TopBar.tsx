@@ -67,11 +67,17 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
     dispatch(setIsWindowMaximized(!isWindowMaximized));
   };
 
+  const handleDBClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      changeWindowSize();
+    }
+  };
+
   return (
     <div
       className={styles.topBar}
       onContextMenu={(e) => handleContextMenu(e, contextMenuModel.topBar, null)}
-      onDoubleClick={changeWindowSize}
+      onDoubleClick={(e) => handleDBClick(e)}
     >
       <div
         className={styles.buttonsContainer}
@@ -110,7 +116,9 @@ const TopBar: React.FC<TopBarProps> = ({ id, folderTitle }) => {
           <IoChevronForwardSharp className={styles.icon} />
         </button>
       </div>
-      <div className={styles.itemTitle}>{folderTitle}</div>
+      <div className={styles.itemTitle} onDoubleClick={(e) => handleDBClick(e)}>
+        {folderTitle}
+      </div>
     </div>
   );
 };
