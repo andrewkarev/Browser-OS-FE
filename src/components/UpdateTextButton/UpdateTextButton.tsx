@@ -3,10 +3,10 @@ import styles from './UpdateTextButton.module.scss';
 import { IoMdCheckmark } from 'react-icons/io';
 import { useAppDispatch } from 'hooks/redux';
 import { updateTextFile } from 'store/reducers/thunks';
-import { IMediaPlayer } from 'types/IMediaPlayer';
+import { IMediaFile } from 'types/IMediaFile';
 
 interface UpdateTextButtonProps {
-  fileData: IMediaPlayer;
+  fileData: IMediaFile;
   textValue: string;
 }
 

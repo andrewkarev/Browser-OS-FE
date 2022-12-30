@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './MediaPlayer.module.scss';
 import { useAppDispatch } from 'hooks/redux';
-import { IMediaPlayer } from 'types/IMediaPlayer';
+import { IMediaFile } from 'types/IMediaFile';
 import TopBar from 'components/TopBar';
 import { setOpenedPlayers, updateOpenedPlayers } from 'store/reducers/mediaSlice';
 import FileType from 'common/fileType';
@@ -9,7 +9,7 @@ import TextRedactor from 'components/TextRedactor';
 import UpdateTextButton from 'components/UpdateTextButton';
 
 interface MediaPlayerProps {
-  fileData: IMediaPlayer;
+  fileData: IMediaFile;
 }
 
 const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {

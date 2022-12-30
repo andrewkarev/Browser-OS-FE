@@ -1,6 +1,6 @@
 import FileType from 'common/fileType';
 
-export interface IMediaPlayer {
+export interface IMediaFile {
   id: string;
   fileType: FileType;
   filePath: string;

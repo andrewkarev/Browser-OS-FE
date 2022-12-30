@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMediaPlayer } from 'types/IMediaPlayer';
+import { IMediaFile } from 'types/IMediaFile';
 import { getTextFile, updateTextFile } from './thunks';
 
 interface MediaState {
-  openedPlayers: IMediaPlayer[];
+  openedPlayers: IMediaFile[];
 }
 
 const initialState: MediaState = {
@@ -18,7 +18,7 @@ export const mediaSlice = createSlice({
       const updatedPlayers = state.openedPlayers.filter((player) => player.id !== action.payload);
       state.openedPlayers = updatedPlayers;
     },
-    updateOpenedPlayers(state, action: PayloadAction<IMediaPlayer>) {
+    updateOpenedPlayers(state, action: PayloadAction<IMediaFile>) {
       state.openedPlayers.forEach((player) => {
         if (player.id === action.payload.id) {
           player.isPlayerMaximized = action.payload.isPlayerMaximized;

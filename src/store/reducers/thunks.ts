@@ -5,7 +5,7 @@ import ItemType from 'common/itemType';
 import WindowOperation from 'common/windowOperation';
 import { api } from 'services';
 import { IDirectory } from 'types/IDirectory';
-import { IMediaPlayer } from 'types/IMediaPlayer';
+import { IMediaFile } from 'types/IMediaFile';
 
 export const getItems = createAsyncThunk(
   'desktop/getItems',
@@ -258,9 +258,9 @@ export const getTextFile = createAsyncThunk(
 
 export const updateTextFile = createAsyncThunk(
   'media/updateTextFile',
-  async (mediaFile: IMediaPlayer, { rejectWithValue }) => {
+  async (mediaFile: IMediaFile, { rejectWithValue }) => {
     try {
-      return await api.post<AxiosError, IMediaPlayer>(`/text`, { ...mediaFile });
+      return await api.post<AxiosError, IMediaFile>(`/text`, { ...mediaFile });
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.status);
