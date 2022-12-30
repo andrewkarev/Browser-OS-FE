@@ -1,0 +1,32 @@
+@import '../../styles/main.scss';
+
+.player,
+.playerMaximized {
+  position: absolute;
+  @include flexItem();
+  color: $grey-l;
+  background-color: $light-primary;
+  user-select: none;
+
+  .content {
+    flex-grow: 1;
+  }
+}
+
+.player {
+  top: calc(100vh / 4);
+  left: calc(100vw / 4);
+  width: 720px;
+  height: 394px;
+  padding-bottom: 10px;
+  border-radius: $border-radius-m;
+  box-shadow: $box-shadow-window;
+  overflow: hidden;
+}
+
+.playerMaximized {
+  top: 0;
+  left: 0;
+  bottom: 28px;
+  width: 100%;
+}
