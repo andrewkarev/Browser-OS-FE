@@ -2,7 +2,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import { useAppDispatch } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React from 'react';
-import { updateWindow } from 'store/reducers/thunks';
+import { getTextFile, updateWindow } from 'store/reducers/thunks';
 import { IDirItem } from 'types/IDirItem';
 import { getItemIcon } from 'utils/getItemsIcon';
 import DIRECTORY from '../../assets/icons/folder.png';
@@ -43,6 +43,13 @@ const Item: React.FC<ItemProps> = ({ item, windowData }) => {
           dispatch(setIsWarningModalDisplayed(true));
           break;
         case FileType.text:
+          dispatch(
+            getTextFile({
+              filePath: dirItem.path,
+              fileType,
+            })
+          );
+          console.log(dirItem);
           break;
         case FileType.image:
           break;
