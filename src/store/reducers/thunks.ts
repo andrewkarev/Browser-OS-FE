@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
+import FileType from 'common/fileType';
 import ItemType from 'common/itemType';
 import WindowOperation from 'common/windowOperation';
 import { api } from 'services';
@@ -220,6 +221,28 @@ export const cutItem = createAsyncThunk(
       return {
         windowItems: response,
         windowId,
+      };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.status);
+      }
+
+      throw error;
+    }
+  }
+);
+
+export const getTextFile = createAsyncThunk(
+  'media/getTextFile',
+  async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
+    try {
+      const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
+        `/text?path=${filePath}`
+      );
+
+      return {
+        ...response,
+        fileType,
       };
     } catch (error) {
       if (error instanceof AxiosError) {
