@@ -10,6 +10,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import ConfirmForm from 'components/ConfirmForm';
 import { backgroundImages } from 'data/backgroundImages';
 import WarningModal from 'components/WarningModal';
+import MediaPlayer from 'components/MediaPlayer';
 
 const Desktop = () => {
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
@@ -19,10 +20,12 @@ const Desktop = () => {
   const isConfirmFormOpened = useAppSelector((state) => state.desktop.isConfirmFormOpened);
   const wallpaperId = useAppSelector((state) => state.desktop.wallpaperId);
   const isWarningModalDisplayed = useAppSelector((state) => state.desktop.isWarningModalDisplayed);
+  const openedPlayers = useAppSelector((state) => state.media.openedPlayers);
 
   const { handleContextMenu, closeContextMenu } = useContextMenu();
 
   const windows = openedWindows.map((window) => <Window windowData={window} key={window.id} />);
+  const players = openedPlayers.map((player) => <MediaPlayer fileData={player} key={player.id} />);
 
   return (
     <>
@@ -38,6 +41,7 @@ const Desktop = () => {
         <MyPCIcon />
       </div>
       {windows}
+      {players}
       {isContextMenuOpened && (
         <ContextMenu
           coordinates={coordinates}
