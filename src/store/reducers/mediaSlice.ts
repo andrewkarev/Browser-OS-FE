@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IMediaPlayer } from 'types/IMediaPlayer';
-import { getTextFile } from './thunks';
+import { getTextFile, updateTextFile } from './thunks';
 
 interface MediaState {
   openedPlayers: IMediaPlayer[];
@@ -35,6 +35,16 @@ export const mediaSlice = createSlice({
       });
     });
     // builder.addCase(getMediaFile.rejected, (state, action) => {});
+
+    // builder.addCase(updateTextFile.pending, (state) => {});
+    builder.addCase(updateTextFile.fulfilled, (state, action) => {
+      state.openedPlayers.forEach((player) => {
+        if (player.id === action.payload.id) {
+          player.data = action.payload.data;
+        }
+      });
+    });
+    // builder.addCase(updateTextFile.rejected, (state, action) => {});
   },
 });
 

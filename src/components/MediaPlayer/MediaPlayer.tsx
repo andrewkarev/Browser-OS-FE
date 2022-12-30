@@ -15,7 +15,6 @@ interface MediaPlayerProps {
 const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   const dispatch = useAppDispatch();
 
-  const [isUpdateTextBtnDisabled, setIsUpdateTextBtnDisabled] = useState(true);
   const [textValue, setTextValue] = useState('');
 
   useEffect(() => {
@@ -23,12 +22,6 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
       setTextValue(fileData.data);
     }
   }, [fileData.data, fileData.fileType]);
-
-  useEffect(() => {
-    fileData.data === textValue
-      ? setIsUpdateTextBtnDisabled(true)
-      : setIsUpdateTextBtnDisabled(false);
-  }, [fileData.data, textValue]);
 
   const closeWindow = () => {
     dispatch(setOpenedPlayers(fileData.id));
@@ -49,7 +42,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
         changeWindowSize={changeWindowSize}
       >
         {fileData.fileType === FileType.text && (
-          <UpdateTextButton isUpdateTextBtnDisabled={isUpdateTextBtnDisabled} />
+          <UpdateTextButton fileData={fileData} textValue={textValue} />
         )}
       </TopBar>
       <div className={styles.content}>

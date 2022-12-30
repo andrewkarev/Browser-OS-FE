@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './UpdateTextButton.module.scss';
 import { IoMdCheckmark } from 'react-icons/io';
+import { useAppDispatch } from 'hooks/redux';
+import { updateTextFile } from 'store/reducers/thunks';
+import { IMediaPlayer } from 'types/IMediaPlayer';
 
 interface UpdateTextButtonProps {
-  isUpdateTextBtnDisabled: boolean;
+  fileData: IMediaPlayer;
+  textValue: string;
 }
 
-const UpdateTextButton: React.FC<UpdateTextButtonProps> = ({ isUpdateTextBtnDisabled }) => {
-  const handleClick = () => {};
+const UpdateTextButton: React.FC<UpdateTextButtonProps> = ({ fileData, textValue }) => {
+  const dispatch = useAppDispatch();
+
+  const [isUpdateTextBtnDisabled, setIsUpdateTextBtnDisabled] = useState(true);
+
+  useEffect(() => {
+    fileData.data === textValue
+      ? setIsUpdateTextBtnDisabled(true)
+      : setIsUpdateTextBtnDisabled(false);
+  }, [fileData.data, textValue]);
+
+  const handleClick = () => {
+    const valueToSend = { ...fileData, data: textValue };
+
+    dispatch(updateTextFile(valueToSend));
+  };
 
   return (
     <button
