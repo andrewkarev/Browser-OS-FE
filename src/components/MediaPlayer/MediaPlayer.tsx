@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './MediaPlayer.module.scss';
 import { useAppDispatch } from 'hooks/redux';
 import { IMediaPlayer } from 'types/IMediaPlayer';
@@ -14,6 +14,21 @@ interface MediaPlayerProps {
 
 const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   const dispatch = useAppDispatch();
+
+  const [isUpdateTextBtnDisabled, setIsUpdateTextBtnDisabled] = useState(true);
+  const [textValue, setTextValue] = useState('');
+
+  useEffect(() => {
+    if (fileData.fileType === FileType.text) {
+      setTextValue(fileData.data);
+    }
+  }, [fileData.data, fileData.fileType]);
+
+  useEffect(() => {
+    fileData.data === textValue
+      ? setIsUpdateTextBtnDisabled(true)
+      : setIsUpdateTextBtnDisabled(false);
+  }, [fileData.data, textValue]);
 
   const closeWindow = () => {
     dispatch(setOpenedPlayers(fileData.id));
@@ -33,10 +48,14 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
         closeWindow={closeWindow}
         changeWindowSize={changeWindowSize}
       >
-        {fileData.fileType === FileType.text && <UpdateTextButton />}
+        {fileData.fileType === FileType.text && (
+          <UpdateTextButton isUpdateTextBtnDisabled={isUpdateTextBtnDisabled} />
+        )}
       </TopBar>
       <div className={styles.content}>
-        {fileData.fileType === FileType.text && <TextRedactor content={fileData.data} />}
+        {fileData.fileType === FileType.text && (
+          <TextRedactor setTextValue={setTextValue} textValue={textValue} />
+        )}
       </div>
     </div>
   );

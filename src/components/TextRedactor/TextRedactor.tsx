@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './TextRedactor.module.scss';
 
 interface TextRedactorProps {
-  content: string;
+  setTextValue: React.Dispatch<React.SetStateAction<string>>;
+  textValue: string;
 }
 
-const TextRedactor: React.FC<TextRedactorProps> = ({ content }) => {
-  const [value, setValue] = useState(() => content);
-
+const TextRedactor: React.FC<TextRedactorProps> = ({ setTextValue, textValue }) => {
   const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const target = e.target as HTMLTextAreaElement;
-    setValue(target.value);
+    setTextValue(target.value);
   };
 
   return (
     <textarea
       className={styles.textarea}
-      value={value}
+      value={textValue}
       onChange={(e) => handleInput(e)}
       autoFocus
     ></textarea>
