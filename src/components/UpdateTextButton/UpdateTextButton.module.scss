@@ -1,0 +1,22 @@
+@import '../../styles/main.scss';
+
+.button {
+  @extend %button;
+
+  .icon {
+    @include icon(14px);
+    margin: 0 auto;
+  }
+
+  &:hover {
+    background-color: $grey-s;
+  }
+
+  &:disabled {
+    background-color: transparent;
+
+    .icon {
+      color: $grey-m;
+    }
+  }
+}
