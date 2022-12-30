@@ -33,34 +33,6 @@
     }
   }
 
-  .controlsContainer {
-    .backward,
-    .forward {
-      width: 20px;
-      height: 20px;
-      color: $grey-l;
-      text-align: center;
-      border-radius: $border-radius-s;
-
-      .icon {
-        @include icon(14px);
-        margin: 0 auto;
-      }
-
-      &:hover {
-        background-color: $grey-s;
-      }
-
-      &:disabled {
-        background-color: transparent;
-
-        .icon {
-          color: $grey-m;
-        }
-      }
-    }
-  }
-
   .itemTitle {
     margin: 0 auto;
     font-weight: 700;
