@@ -29,7 +29,7 @@ const TopBar: React.FC<TopBarProps> = ({ title, closeWindow, changeWindowSize, c
 
   return (
     <div
-      className={styles.topBar}
+      className={`${styles.topBar} drag`}
       onContextMenu={(e) => handleContextMenu(e, contextMenuModel.topBar, null)}
       onDoubleClick={(e) => handleDBClick(e)}
     >
