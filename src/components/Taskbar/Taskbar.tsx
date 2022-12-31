@@ -4,6 +4,7 @@ import CurrentDate from '../CurrentDate';
 import { useAppSelector } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
+import TaskBarItem from 'components/TaskBarItem';
 
 const Taskbar = () => {
   const taskBarItems = useAppSelector((state) => state.desktop.taskBarItems);
@@ -12,7 +13,7 @@ const Taskbar = () => {
   const { handleContextMenu } = useContextMenu();
 
   const tabs = taskBarItems.map((item) => {
-    return <div key={item.id}>{item.title}</div>;
+    return <TaskBarItem item={item} key={item.id} />;
   });
 
   return (

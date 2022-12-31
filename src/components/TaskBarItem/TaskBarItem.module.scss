@@ -1,0 +1,11 @@
+@import '../../styles/main.scss';
+
+.taskBarItem {
+  padding: 6px;
+  user-select: none;
+
+  &.active {
+    border-radius: $border-radius-s;
+    background-color: rgb(255, 255, 255, 0.17);
+  }
+}

@@ -17,6 +17,6 @@
 }
 
 .tabsContainer {
-  @include flexItem(row, 12px);
+  @include flexItem(row, 2px);
   flex-grow: 1;
 }
