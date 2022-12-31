@@ -20,7 +20,7 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
   const dispatch = useAppDispatch();
   const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
-  const { draggableTopLimit, nodeRef, handleDrag } = useDrag();
+  const { draggableTopLimit, draggableBottomLimit, nodeRef, handleDrag } = useDrag();
 
   const { handleContextMenu } = useContextMenu();
 
@@ -51,7 +51,7 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
   return (
     <Draggable
       axis={windowData.isWindowMaximized ? 'none' : 'both'}
-      bounds={{ top: draggableTopLimit }}
+      bounds={{ top: draggableTopLimit, bottom: draggableBottomLimit }}
       nodeRef={nodeRef}
       handle=".drag"
       onDrag={handleDrag}

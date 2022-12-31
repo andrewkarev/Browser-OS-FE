@@ -21,7 +21,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
 
   const [textValue, setTextValue] = useState('');
 
-  const { draggableTopLimit, nodeRef, handleDrag } = useDrag();
+  const { draggableTopLimit, draggableBottomLimit, nodeRef, handleDrag } = useDrag();
 
   useEffect(() => {
     dispatch(setActiveWindow(fileData));
@@ -47,7 +47,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   return (
     <Draggable
       axis={fileData.isPlayerMaximized ? 'none' : 'both'}
-      bounds={{ top: draggableTopLimit }}
+      bounds={{ top: draggableTopLimit, bottom: draggableBottomLimit }}
       nodeRef={nodeRef}
       handle=".drag"
       onDrag={handleDrag}
