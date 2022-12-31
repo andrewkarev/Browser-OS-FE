@@ -51,8 +51,7 @@ export const desktopSlice = createSlice({
       });
     },
     setOpenedWindows(state, action: PayloadAction<string>) {
-      const updatedWindows = state.openedWindows.filter((window) => window.id !== action.payload);
-      state.openedWindows = updatedWindows;
+      state.openedWindows = state.openedWindows.filter((window) => window.id !== action.payload);
     },
     setIsConfirmFormOpened(state, action: PayloadAction<boolean>) {
       state.isConfirmFormOpened = action.payload;
