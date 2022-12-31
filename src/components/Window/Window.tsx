@@ -4,12 +4,13 @@ import TopBar from 'components/TopBar/';
 import { contextMenuModel } from 'data/contextMenuModel';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { setActiveWindow, setOpenedWindows, updateOpenedWindow } from 'store/reducers/desktopSlice';
 import { setCurrentWindow } from 'store/reducers/windowSlice';
 import { IWindow } from 'types/IWindow';
 import styles from './Window.module.scss';
 import Draggable from 'react-draggable';
+import { useDrag } from 'hooks/useDrag';
 
 interface WindowProps {
   windowData: IWindow;
@@ -19,11 +20,9 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
   const dispatch = useAppDispatch();
   const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
-  const [draggableTopLimit, setDraggableTopLimit] = useState(0);
+  const { draggableTopLimit, nodeRef, handleDrag } = useDrag();
 
   const { handleContextMenu } = useContextMenu();
-
-  const windowRef = useRef<HTMLDivElement | null>(null);
 
   const handleWindowClick = useCallback(() => {
     dispatch(setCurrentWindow(windowData));
@@ -45,12 +44,6 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
     dispatch(updateOpenedWindow(updatedWindow));
   };
 
-  const handleDrag = () => {
-    if (windowRef.current) {
-      setDraggableTopLimit(-windowRef.current.offsetTop);
-    }
-  };
-
   const items = windowData.items.map((item, i) => {
     return <Item item={item} windowData={windowData} key={`${item.name}-${i}`} />;
   });
@@ -59,14 +52,14 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
     <Draggable
       axis={windowData.isWindowMaximized ? 'none' : 'both'}
       bounds={{ top: draggableTopLimit }}
-      nodeRef={windowRef}
+      nodeRef={nodeRef}
       handle=".drag"
       onDrag={handleDrag}
     >
       <div
         className={windowData.isWindowMaximized ? styles.windowMaximized : styles.window}
         onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData)}
-        ref={windowRef}
+        ref={nodeRef}
         onClick={handleWindowClick}
         style={activeWindow && activeWindow.id === windowData.id ? { zIndex: '3' } : undefined}
       >

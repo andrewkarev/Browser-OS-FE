@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './MediaPlayer.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMediaFile } from 'types/IMediaFile';
@@ -9,6 +9,7 @@ import TextRedactor from 'components/TextRedactor';
 import UpdateTextButton from 'components/UpdateTextButton';
 import Draggable from 'react-draggable';
 import { setActiveWindow } from 'store/reducers/desktopSlice';
+import { useDrag } from 'hooks/useDrag';
 
 interface MediaPlayerProps {
   fileData: IMediaFile;
@@ -19,9 +20,8 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
   const [textValue, setTextValue] = useState('');
-  const [draggableTopLimit, setDraggableTopLimit] = useState(0);
 
-  const mediaPlayerRef = useRef<HTMLDivElement | null>(null);
+  const { draggableTopLimit, nodeRef, handleDrag } = useDrag();
 
   useEffect(() => {
     dispatch(setActiveWindow(fileData));
@@ -44,23 +44,17 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
     dispatch(updateOpenedPlayers(updatedPlayer));
   };
 
-  const handleDrag = () => {
-    if (mediaPlayerRef.current) {
-      setDraggableTopLimit(-mediaPlayerRef.current.offsetTop);
-    }
-  };
-
   return (
     <Draggable
       axis={fileData.isPlayerMaximized ? 'none' : 'both'}
       bounds={{ top: draggableTopLimit }}
-      nodeRef={mediaPlayerRef}
+      nodeRef={nodeRef}
       handle=".drag"
       onDrag={handleDrag}
     >
       <div
         className={fileData.isPlayerMaximized ? styles.playerMaximized : styles.player}
-        ref={mediaPlayerRef}
+        ref={nodeRef}
         onClick={() => dispatch(setActiveWindow(fileData))}
         style={activeWindow && activeWindow.id === fileData.id ? { zIndex: '3' } : undefined}
       >
