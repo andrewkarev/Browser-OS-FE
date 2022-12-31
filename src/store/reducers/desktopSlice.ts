@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { desktopIconTitle } from 'common/constants';
 import WindowOperation from 'common/windowOperation';
+import { IMediaFile } from 'types/IMediaFile';
 import { IWindow } from 'types/IWindow';
 import {
   addFile,
@@ -23,6 +24,7 @@ interface DesktopState {
   wallpaperId: number;
   isWarningModalDisplayed: boolean;
   selectedFileName: string | null;
+  activeWindow: IWindow | IMediaFile | null;
 }
 
 const initialState: DesktopState = {
@@ -34,6 +36,7 @@ const initialState: DesktopState = {
   wallpaperId: 2,
   isWarningModalDisplayed: false,
   selectedFileName: null,
+  activeWindow: null,
 };
 
 export const desktopSlice = createSlice({
@@ -71,6 +74,9 @@ export const desktopSlice = createSlice({
     },
     setSelectedFileName(state, action: PayloadAction<string | null>) {
       state.selectedFileName = action.payload;
+    },
+    setActiveWindow(state, action: PayloadAction<IWindow | IMediaFile | null>) {
+      state.activeWindow = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -185,5 +191,6 @@ export const {
   setIsWarningModalDisplayed,
   setSelectedFileName,
   updateOpenedWindow,
+  setActiveWindow,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;

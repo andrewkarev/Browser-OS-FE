@@ -2,10 +2,10 @@ import FolderNavigation from 'components/FolderNavigation';
 import Item from 'components/Item/';
 import TopBar from 'components/TopBar/';
 import { contextMenuModel } from 'data/contextMenuModel';
-import { useAppDispatch } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
-import React, { useEffect, useRef, useState } from 'react';
-import { setOpenedWindows, updateOpenedWindow } from 'store/reducers/desktopSlice';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { setActiveWindow, setOpenedWindows, updateOpenedWindow } from 'store/reducers/desktopSlice';
 import { setCurrentWindow } from 'store/reducers/windowSlice';
 import { IWindow } from 'types/IWindow';
 import styles from './Window.module.scss';
@@ -17,6 +17,7 @@ interface WindowProps {
 
 const Window: React.FC<WindowProps> = ({ windowData }) => {
   const dispatch = useAppDispatch();
+  const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
   const [draggableTopLimit, setDraggableTopLimit] = useState(0);
 
@@ -24,9 +25,14 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
 
   const windowRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  const handleWindowClick = useCallback(() => {
     dispatch(setCurrentWindow(windowData));
+    dispatch(setActiveWindow(windowData));
   }, [dispatch, windowData]);
+
+  useEffect(() => {
+    handleWindowClick();
+  }, [handleWindowClick]);
 
   const closeWindow = () => {
     dispatch(setOpenedWindows(windowData.id));
@@ -61,6 +67,8 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
         className={windowData.isWindowMaximized ? styles.windowMaximized : styles.window}
         onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData)}
         ref={windowRef}
+        onClick={handleWindowClick}
+        style={activeWindow && activeWindow.id === windowData.id ? { zIndex: '3' } : undefined}
       >
         <TopBar
           title={windowData.folderTitle}

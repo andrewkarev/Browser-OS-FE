@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './MediaPlayer.module.scss';
-import { useAppDispatch } from 'hooks/redux';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMediaFile } from 'types/IMediaFile';
 import TopBar from 'components/TopBar';
 import { setOpenedPlayers, updateOpenedPlayers } from 'store/reducers/mediaSlice';
@@ -8,6 +8,7 @@ import FileType from 'common/fileType';
 import TextRedactor from 'components/TextRedactor';
 import UpdateTextButton from 'components/UpdateTextButton';
 import Draggable from 'react-draggable';
+import { setActiveWindow } from 'store/reducers/desktopSlice';
 
 interface MediaPlayerProps {
   fileData: IMediaFile;
@@ -15,11 +16,16 @@ interface MediaPlayerProps {
 
 const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   const dispatch = useAppDispatch();
+  const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
   const [textValue, setTextValue] = useState('');
   const [draggableTopLimit, setDraggableTopLimit] = useState(0);
 
-  const windowRef = useRef<HTMLDivElement | null>(null);
+  const mediaPlayerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    dispatch(setActiveWindow(fileData));
+  }, [dispatch, fileData]);
 
   useEffect(() => {
     if (fileData.fileType === FileType.text) {
@@ -39,8 +45,8 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   };
 
   const handleDrag = () => {
-    if (windowRef.current) {
-      setDraggableTopLimit(-windowRef.current.offsetTop);
+    if (mediaPlayerRef.current) {
+      setDraggableTopLimit(-mediaPlayerRef.current.offsetTop);
     }
   };
 
@@ -48,13 +54,15 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
     <Draggable
       axis={fileData.isPlayerMaximized ? 'none' : 'both'}
       bounds={{ top: draggableTopLimit }}
-      nodeRef={windowRef}
+      nodeRef={mediaPlayerRef}
       handle=".drag"
       onDrag={handleDrag}
     >
       <div
         className={fileData.isPlayerMaximized ? styles.playerMaximized : styles.player}
-        ref={windowRef}
+        ref={mediaPlayerRef}
+        onClick={() => dispatch(setActiveWindow(fileData))}
+        style={activeWindow && activeWindow.id === fileData.id ? { zIndex: '3' } : undefined}
       >
         <TopBar
           title={fileData.fileTitle}
