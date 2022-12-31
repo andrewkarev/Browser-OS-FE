@@ -6,13 +6,13 @@ import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 
 const Taskbar = () => {
-  const openedWindows = useAppSelector((state) => state.desktop.openedWindows);
+  const taskBarItems = useAppSelector((state) => state.desktop.taskBarItems);
   const isFullScreenMode = useAppSelector((state) => state.desktop.isFullScreenMode);
 
   const { handleContextMenu } = useContextMenu();
 
-  const tabs = openedWindows.map((window) => {
-    return <div key={window.id}>{window.folderTitle}</div>;
+  const tabs = taskBarItems.map((item) => {
+    return <div key={item.id}>{item.title}</div>;
   });
 
   return (

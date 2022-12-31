@@ -20,7 +20,7 @@ const Desktop = () => {
   const isConfirmFormOpened = useAppSelector((state) => state.desktop.isConfirmFormOpened);
   const wallpaperId = useAppSelector((state) => state.desktop.wallpaperId);
   const isWarningModalDisplayed = useAppSelector((state) => state.desktop.isWarningModalDisplayed);
-  const openedPlayers = useAppSelector((state) => state.media.openedPlayers);
+  const openedPlayers = useAppSelector((state) => state.desktop.openedPlayers);
 
   const { handleContextMenu, closeContextMenu } = useContextMenu();
 

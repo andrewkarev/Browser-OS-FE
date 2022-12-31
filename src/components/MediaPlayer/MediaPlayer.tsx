@@ -3,7 +3,7 @@ import styles from './MediaPlayer.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMediaFile } from 'types/IMediaFile';
 import TopBar from 'components/TopBar';
-import { setOpenedPlayers, updateOpenedPlayers } from 'store/reducers/mediaSlice';
+import { setOpenedPlayers, updateOpenedPlayers } from 'store/reducers//desktopSlice';
 import FileType from 'common/fileType';
 import TextRedactor from 'components/TextRedactor';
 import UpdateTextButton from 'components/UpdateTextButton';

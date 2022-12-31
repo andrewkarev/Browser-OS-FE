@@ -234,7 +234,7 @@ export const cutItem = createAsyncThunk(
 );
 
 export const getTextFile = createAsyncThunk(
-  'media/getTextFile',
+  'desktop/getTextFile',
   async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
     try {
       const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
@@ -257,7 +257,7 @@ export const getTextFile = createAsyncThunk(
 );
 
 export const updateTextFile = createAsyncThunk(
-  'media/updateTextFile',
+  'desktop/updateTextFile',
   async (mediaFile: IMediaFile, { rejectWithValue }) => {
     try {
       return await api.post<AxiosError, IMediaFile>(`/text`, { ...mediaFile });
