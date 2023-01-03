@@ -26,26 +26,22 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   useEffect(() => {
     if (!contextMenu.current) return;
 
-    // const taskBarHeight = 28;
+    const taskBarHeight = 28;
 
-    // let coordinateX = coordinates?.x;
-    // let coordinateY = coordinates?.y;
+    let coordinateX = coordinates?.x;
+    let coordinateY = coordinates?.y;
 
-    // const desktopWidth = innerWidth;
-    // const desktopHeight = innerHeight - taskBarHeight;
-    // const contextMenuCoordinates = contextMenu.current?.getBoundingClientRect();
+    const desktopWidth = innerWidth;
+    const desktopHeight = innerHeight - taskBarHeight;
+    const contextMenuCoordinates = contextMenu.current?.getBoundingClientRect();
 
-    // console.log(contextMenuCoordinates);
-    // if (contextMenuCoordinates.bottom > desktopHeight) {
-    //   coordinateY = contextMenuCoordinates.top - contextMenuCoordinates.height;
-    // }
+    if (contextMenuCoordinates.height + coordinateY > desktopHeight) {
+      coordinateY = coordinateY - contextMenuCoordinates.height;
+    }
 
-    // if (contextMenuCoordinates.right > desktopWidth) {
-    //   coordinateX = contextMenuCoordinates.left - contextMenuCoordinates.width;
-    // }
-
-    const coordinateX = coordinates?.x;
-    const coordinateY = coordinates?.y;
+    if (contextMenuCoordinates.width + coordinateX > desktopWidth) {
+      coordinateX = coordinateX - contextMenuCoordinates.width;
+    }
 
     contextMenu.current.style.top = `${coordinateY}px`;
     contextMenu.current.style.left = `${coordinateX}px`;
