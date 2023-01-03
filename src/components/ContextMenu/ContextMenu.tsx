@@ -9,6 +9,7 @@ import { useContextMenuHandler } from 'hooks/useContextMenuHandler';
 import { getContextMenuOptionClassName } from 'utils/getContextMenuOptionClassName';
 import { IoChevronForwardSharp } from 'react-icons/io5';
 import BackgroundOptions from 'components/BackgroundOptions';
+import { TASK_BAR_HEIGHT } from 'common/constants';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -26,13 +27,11 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   useEffect(() => {
     if (!contextMenu.current) return;
 
-    const taskBarHeight = 28;
-
     let coordinateX = coordinates?.x;
     let coordinateY = coordinates?.y;
 
     const desktopWidth = innerWidth;
-    const desktopHeight = innerHeight - taskBarHeight;
+    const desktopHeight = innerHeight - TASK_BAR_HEIGHT;
     const contextMenuCoordinates = contextMenu.current?.getBoundingClientRect();
 
     if (contextMenuCoordinates.height + coordinateY > desktopHeight) {

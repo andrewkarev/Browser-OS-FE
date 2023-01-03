@@ -1,3 +1,4 @@
+import { TASK_BAR_HEIGHT, TOP_BAR_HEIGHT } from 'common/constants';
 import { useRef, useState } from 'react';
 
 export const useDrag = () => {
@@ -7,7 +8,7 @@ export const useDrag = () => {
   const nodeRef = useRef<HTMLDivElement | null>(null);
 
   const handleDrag = () => {
-    const bottomOffset = 57;
+    const bottomOffset = TASK_BAR_HEIGHT + TOP_BAR_HEIGHT;
 
     if (nodeRef.current) {
       setDraggableTopLimit(-nodeRef.current.offsetTop);
