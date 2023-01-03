@@ -12,7 +12,6 @@ export const useDrag = () => {
     if (nodeRef.current) {
       setDraggableTopLimit(-nodeRef.current.offsetTop);
       setDraggableBottomLimit(innerHeight - nodeRef.current.offsetTop - bottomOffset);
-      console.log(nodeRef.current.offsetHeight);
     }
   };
 
