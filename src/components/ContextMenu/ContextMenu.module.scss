@@ -38,8 +38,6 @@
 
   .backgroundOptionsContainer {
     @extend %modal;
-    top: 0;
-    left: 194px;
     display: none;
     border-radius: $border-radius-s;
     min-width: 200px;

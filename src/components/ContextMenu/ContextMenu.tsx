@@ -9,7 +9,7 @@ import { useContextMenuHandler } from 'hooks/useContextMenuHandler';
 import { getContextMenuOptionClassName } from 'utils/getContextMenuOptionClassName';
 import { IoChevronForwardSharp } from 'react-icons/io5';
 import BackgroundOptions from 'components/BackgroundOptions';
-import { TASK_BAR_HEIGHT } from 'common/constants';
+import { BACKGROUND_OPTIONS_SIZE, TASK_BAR_HEIGHT } from 'common/constants';
 
 interface ContextMenuProps {
   coordinates: Coordinates;
@@ -23,6 +23,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
   const getHandler = useContextMenuHandler(closeContextMenu);
 
   const contextMenu = useRef<HTMLDivElement | null>(null);
+  const backgroundOptions = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!contextMenu.current) return;
@@ -32,14 +33,28 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
 
     const desktopWidth = innerWidth;
     const desktopHeight = innerHeight - TASK_BAR_HEIGHT;
-    const contextMenuCoordinates = contextMenu.current?.getBoundingClientRect();
+    const contextMenuCoordinates = contextMenu.current.getBoundingClientRect();
+    const verticalSize = contextMenuCoordinates.height + coordinateY;
+    const horizontalSize = contextMenuCoordinates.width + coordinateX;
 
-    if (contextMenuCoordinates.height + coordinateY > desktopHeight) {
+    if (verticalSize > desktopHeight) {
       coordinateY = coordinateY - contextMenuCoordinates.height;
     }
 
-    if (contextMenuCoordinates.width + coordinateX > desktopWidth) {
+    if (horizontalSize > desktopWidth) {
       coordinateX = coordinateX - contextMenuCoordinates.width;
+    }
+
+    if (backgroundOptions.current) {
+      backgroundOptions.current.style.top =
+        verticalSize + BACKGROUND_OPTIONS_SIZE.height > desktopHeight
+          ? `${BACKGROUND_OPTIONS_SIZE.topOffsetInverted}px`
+          : `${BACKGROUND_OPTIONS_SIZE.topOffset}px`;
+
+      backgroundOptions.current.style.left =
+        horizontalSize + BACKGROUND_OPTIONS_SIZE.width > desktopWidth
+          ? `${BACKGROUND_OPTIONS_SIZE.leftOffsetInverted}px`
+          : `${BACKGROUND_OPTIONS_SIZE.leftOffset}px`;
     }
 
     contextMenu.current.style.top = `${coordinateY}px`;
@@ -63,7 +78,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
           {isBackground && (
             <>
               <IoChevronForwardSharp className={styles.icon} />
-              <div className={styles.backgroundOptionsContainer}>
+              <div className={styles.backgroundOptionsContainer} ref={backgroundOptions}>
                 <BackgroundOptions closeContextMenu={closeContextMenu} />
               </div>
             </>

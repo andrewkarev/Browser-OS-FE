@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { desktopIconTitle } from 'common/constants';
+import { DESKTOP_ICON_TITLE } from 'common/constants';
 import WindowOperation from 'common/windowOperation';
 import { IMediaFile } from 'types/IMediaFile';
 import ITaskBarItem from 'types/ITaskBarItem';
@@ -38,7 +38,7 @@ const initialState: DesktopState = {
   taskBarItems: [],
   isConfirmFormOpened: false,
   confirmModalOperation: '',
-  myPCIconTitle: desktopIconTitle,
+  myPCIconTitle: DESKTOP_ICON_TITLE,
   isFullScreenMode: false,
   wallpaperId: 2,
   isWarningModalDisplayed: false,
