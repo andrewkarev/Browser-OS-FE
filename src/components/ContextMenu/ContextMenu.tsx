@@ -19,6 +19,7 @@ interface ContextMenuProps {
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, closeContextMenu }) => {
   const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
+  const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
   const getHandler = useContextMenuHandler(closeContextMenu);
 
@@ -65,8 +66,23 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ coordinates, menuItems, close
     if (title === ContextMenuOptionsTitle.separator) {
       return <div key={`${title}-${i}`} className={styles.separator} />;
     } else {
-      const isDisabled = title === ContextMenuOptionsTitle.paste && !itemToTransfer;
+      const isPasteOptionDisabled = title === ContextMenuOptionsTitle.paste && !itemToTransfer;
       const isBackground = title === ContextMenuOptionsTitle.background;
+      const isRestoreOptionDisabled =
+        title === ContextMenuOptionsTitle.restore &&
+        !activeWindow?.isMaximized &&
+        !activeWindow?.isMinimized;
+      const isMaximizeOptionDisabled =
+        title === ContextMenuOptionsTitle.maximize &&
+        !!(activeWindow?.isMinimized || activeWindow?.isMaximized);
+      const isMinimizeOptionDisabled =
+        title === ContextMenuOptionsTitle.minimize && !!activeWindow?.isMinimized;
+
+      const isDisabled =
+        isPasteOptionDisabled ||
+        isRestoreOptionDisabled ||
+        isMaximizeOptionDisabled ||
+        isMinimizeOptionDisabled;
 
       return (
         <div
