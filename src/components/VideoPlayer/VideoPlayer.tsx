@@ -11,6 +11,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ fileData }) => {
   return (
     <video className={styles.videoPlayer} controls autoPlay>
       <source src={`${BASE_URL}/player?videoPath=${fileData.filePath}`} type="video/mp4" />
+      Your browser does not support HTML5 video.
     </video>
   );
 };

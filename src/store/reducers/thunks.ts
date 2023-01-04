@@ -293,3 +293,26 @@ export const getVideoFile = createAsyncThunk(
     }
   }
 );
+
+export const getAudioFile = createAsyncThunk(
+  'desktop/getAudioFile',
+  async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
+    try {
+      const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
+        `/audio?path=${filePath}`
+      );
+
+      return {
+        ...response,
+        fileType,
+        filePath,
+      };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.status);
+      }
+
+      throw error;
+    }
+  }
+);

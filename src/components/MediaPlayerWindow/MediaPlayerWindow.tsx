@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './MediaPlayer.module.scss';
+import styles from './MediaPlayerWindow.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import { IMediaFile } from 'types/IMediaFile';
 import TopBar from 'components/TopBar';
@@ -13,6 +13,7 @@ import { useDrag } from 'hooks/useDrag';
 import { getWindowClassName } from 'utils/getWindowClassName';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import VideoPlayer from 'components/VideoPlayer';
+import AudioPlayer from 'components/AudioPlayer';
 
 interface MediaPlayerProps {
   fileData: IMediaFile;
@@ -72,12 +73,16 @@ const MediaPlayerWindow: React.FC<MediaPlayerProps> = ({ fileData }) => {
             <UpdateTextButton fileData={fileData} textValue={textValue} />
           )}
         </TopBar>
-        <div className={styles.content}>
+        <>
           {fileData.fileType === FileType.text && (
             <TextRedactor setTextValue={setTextValue} textValue={textValue} />
           )}
           {fileData.fileType === FileType.video && <VideoPlayer fileData={fileData} />}
-        </div>
+          {fileData.fileType === FileType.audio && <AudioPlayer fileData={fileData} />}
+          {/* {fileData.fileType === FileType.image && (
+              <img src={`${BASE_URL}/imageView?imagePath=${fileData.filePath}`} />
+            )} */}
+        </>
       </div>
     </Draggable>
   );
