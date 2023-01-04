@@ -18,7 +18,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ fileData }) => {
 
       <div className={styles.audioPlayerWrapper}>
         <audio className={styles.audioPlayer} controls autoPlay>
-          <source src={`${BASE_URL}/audioPlayer?audioPath=${fileData.filePath}`} type="audio/mp3" />
+          <source src={`${BASE_URL}/audio?audioPath=${fileData.filePath}`} type="audio/mp3" />
+          Your browser does not support HTML5 audio.
         </audio>
       </div>
     </div>

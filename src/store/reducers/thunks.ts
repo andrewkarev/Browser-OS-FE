@@ -276,7 +276,7 @@ export const getVideoFile = createAsyncThunk(
   async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
     try {
       const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
-        `/video?path=${filePath}`
+        `/videoData?path=${filePath}`
       );
 
       return {
@@ -299,7 +299,7 @@ export const getAudioFile = createAsyncThunk(
   async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
     try {
       const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
-        `/audio?path=${filePath}`
+        `/audioData?path=${filePath}`
       );
 
       return {
