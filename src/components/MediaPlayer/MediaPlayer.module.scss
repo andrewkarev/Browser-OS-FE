@@ -1,7 +1,7 @@
 @import '../../styles/main.scss';
 
-.player,
-.playerMaximized {
+.window,
+.windowMaximized {
   position: absolute;
   @include flexItem();
   color: $grey-l;
@@ -13,7 +13,7 @@
   }
 }
 
-.player {
+.window {
   top: calc(100vh / 4);
   left: calc(100vw / 4);
   width: 720px;
@@ -24,9 +24,13 @@
   overflow: hidden;
 }
 
-.playerMaximized {
+.windowMaximized {
   top: 0;
   left: 0;
   bottom: 28px;
   width: 100%;
+}
+
+.windowMinimized {
+  display: none;
 }

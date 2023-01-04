@@ -10,6 +10,8 @@ import UpdateTextButton from 'components/UpdateTextButton';
 import Draggable from 'react-draggable';
 import { setActiveWindow } from 'store/reducers/desktopSlice';
 import { useDrag } from 'hooks/useDrag';
+import { getWindowClassName } from 'utils/getWindowClassName';
+import ContextMenuOptions from 'common/contextMenuOptions';
 
 interface MediaPlayerProps {
   fileData: IMediaFile;
@@ -37,31 +39,33 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
     dispatch(setOpenedPlayers(fileData.id));
   };
 
-  const changeWindowSize = () => {
-    const updatedPlayer = { ...fileData };
-    updatedPlayer.isPlayerMaximized = !fileData.isPlayerMaximized;
+  const maximizeWindow = () => {
+    dispatch(updateOpenedPlayers({ id: fileData.id, operation: ContextMenuOptions.maximize }));
+  };
 
-    dispatch(updateOpenedPlayers(updatedPlayer));
+  const minimizeWindow = () => {
+    dispatch(updateOpenedPlayers({ id: fileData.id, operation: ContextMenuOptions.minimize }));
   };
 
   return (
     <Draggable
-      axis={fileData.isPlayerMaximized ? 'none' : 'both'}
+      axis={fileData.isMaximized ? 'none' : 'both'}
       bounds={{ top: draggableTopLimit, bottom: draggableBottomLimit }}
       nodeRef={nodeRef}
       handle=".drag"
       onDrag={handleDrag}
     >
       <div
-        className={fileData.isPlayerMaximized ? styles.playerMaximized : styles.player}
+        className={styles[getWindowClassName(fileData.isMaximized, fileData.isMinimized)]}
         ref={nodeRef}
         onClick={() => dispatch(setActiveWindow(fileData))}
         style={activeWindow && activeWindow.id === fileData.id ? { zIndex: '3' } : undefined}
       >
         <TopBar
-          title={fileData.fileTitle}
+          item={fileData}
           closeWindow={closeWindow}
-          changeWindowSize={changeWindowSize}
+          maximizeWindow={maximizeWindow}
+          minimizeWindow={minimizeWindow}
         >
           {fileData.fileType === FileType.text && (
             <UpdateTextButton fileData={fileData} textValue={textValue} />

@@ -11,6 +11,8 @@ import { IWindow } from 'types/IWindow';
 import styles from './Window.module.scss';
 import Draggable from 'react-draggable';
 import { useDrag } from 'hooks/useDrag';
+import { getWindowClassName } from 'utils/getWindowClassName';
+import ContextMenuOptions from 'common/contextMenuOptions';
 
 interface WindowProps {
   windowData: IWindow;
@@ -37,11 +39,12 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
     dispatch(setOpenedWindows(windowData.id));
   };
 
-  const changeWindowSize = () => {
-    const updatedWindow = { ...windowData };
-    updatedWindow.isWindowMaximized = !windowData.isWindowMaximized;
+  const maximizeWindow = () => {
+    dispatch(updateOpenedWindow({ id: windowData.id, operation: ContextMenuOptions.maximize }));
+  };
 
-    dispatch(updateOpenedWindow(updatedWindow));
+  const minimizeWindow = () => {
+    dispatch(updateOpenedWindow({ id: windowData.id, operation: ContextMenuOptions.minimize }));
   };
 
   const items = windowData.items.map((item, i) => {
@@ -50,23 +53,24 @@ const Window: React.FC<WindowProps> = ({ windowData }) => {
 
   return (
     <Draggable
-      axis={windowData.isWindowMaximized ? 'none' : 'both'}
+      axis={windowData.isMaximized ? 'none' : 'both'}
       bounds={{ top: draggableTopLimit, bottom: draggableBottomLimit }}
       nodeRef={nodeRef}
       handle=".drag"
       onDrag={handleDrag}
     >
       <div
-        className={windowData.isWindowMaximized ? styles.windowMaximized : styles.window}
+        className={styles[getWindowClassName(windowData.isMaximized, windowData.isMinimized)]}
         onContextMenu={(e) => handleContextMenu(e, contextMenuModel.window, null, windowData)}
         ref={nodeRef}
         onClick={handleWindowClick}
         style={activeWindow && activeWindow.id === windowData.id ? { zIndex: '3' } : undefined}
       >
         <TopBar
-          title={windowData.folderTitle}
+          item={windowData}
           closeWindow={closeWindow}
-          changeWindowSize={changeWindowSize}
+          maximizeWindow={maximizeWindow}
+          minimizeWindow={minimizeWindow}
         >
           <FolderNavigation window={windowData} />
         </TopBar>
