@@ -4,15 +4,29 @@ import { VscDash, VscClose } from 'react-icons/vsc';
 import { TbDotsDiagonal2 } from 'react-icons/tb';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
+import { IWindow } from 'types/IWindow';
+import { IMediaFile } from 'types/IMediaFile';
+import { useAppDispatch } from 'hooks/redux';
+import { setActiveWindow } from 'store/reducers/desktopSlice';
+import { getTopBarTitle } from 'utils/getTopBarTitle';
 
 interface TopBarProps {
-  title: string;
+  item: IWindow | IMediaFile;
   closeWindow: () => void;
-  changeWindowSize: () => void;
+  maximizeWindow: () => void;
+  minimizeWindow: () => void;
   children?: React.ReactNode;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ title, closeWindow, changeWindowSize, children }) => {
+const TopBar: React.FC<TopBarProps> = ({
+  item,
+  closeWindow,
+  maximizeWindow,
+  minimizeWindow,
+  children,
+}) => {
+  const dispatch = useAppDispatch();
+
   const [isIconsVisible, setIsIconsVisible] = useState(false);
 
   const { handleContextMenu } = useContextMenu();
@@ -23,14 +37,19 @@ const TopBar: React.FC<TopBarProps> = ({ title, closeWindow, changeWindowSize, c
 
   const handleDBClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      changeWindowSize();
+      maximizeWindow();
     }
+  };
+
+  const handleContextMenuClick = (e: React.MouseEvent) => {
+    dispatch(setActiveWindow(item));
+    handleContextMenu(e, contextMenuModel.topBar, null);
   };
 
   return (
     <div
       className={`${styles.topBar} drag`}
-      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.topBar, null)}
+      onContextMenu={(e) => handleContextMenuClick(e)}
       onDoubleClick={(e) => handleDBClick(e)}
     >
       <div
@@ -43,10 +62,10 @@ const TopBar: React.FC<TopBarProps> = ({ title, closeWindow, changeWindowSize, c
             {isIconsVisible && <VscClose />}
           </span>
         </button>
-        <button className={styles.controlElement} type="button">
+        <button className={styles.controlElement} type="button" onClick={minimizeWindow}>
           <span className={`${styles.circle} ${styles.hide}`}>{isIconsVisible && <VscDash />}</span>
         </button>
-        <button className={styles.controlElement} type="button" onClick={changeWindowSize}>
+        <button className={styles.controlElement} type="button" onClick={maximizeWindow}>
           <span className={`${styles.circle} ${styles.maximize}`}>
             {isIconsVisible && <TbDotsDiagonal2 />}
           </span>
@@ -54,7 +73,7 @@ const TopBar: React.FC<TopBarProps> = ({ title, closeWindow, changeWindowSize, c
       </div>
       {children}
       <div className={styles.itemTitle} onDoubleClick={(e) => handleDBClick(e)}>
-        {title}
+        {getTopBarTitle(item)}
       </div>
     </div>
   );

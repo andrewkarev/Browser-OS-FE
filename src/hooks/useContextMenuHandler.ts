@@ -6,7 +6,9 @@ import {
   setConfirmModalOperation,
   setIsConfirmFormOpened,
   setIsFullScreenMode,
+  setOpenedPlayers,
   setOpenedWindows,
+  updateOpenedPlayers,
   updateOpenedWindow,
 } from 'store/reducers/desktopSlice';
 import {
@@ -26,6 +28,7 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
   const currentWindow = useAppSelector((state) => state.window.currentWindow);
   const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
   const transferOperation = useAppSelector((state) => state.contextMenu.transferOperation);
+  const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
   return (menuItem: IMenuItem) => {
     switch (menuItem.option) {
@@ -144,18 +147,54 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.maximize:
         return () => {
-          if (!currentWindow) return;
+          if (!activeWindow) return;
 
-          const updatedWindow = { ...currentWindow };
-          updatedWindow.isWindowMaximized = !currentWindow.isWindowMaximized;
+          'history' in activeWindow
+            ? dispatch(
+                updateOpenedWindow({ id: activeWindow.id, operation: ContextMenuOptions.maximize })
+              )
+            : dispatch(
+                updateOpenedPlayers({ id: activeWindow.id, operation: ContextMenuOptions.maximize })
+              );
 
-          dispatch(updateOpenedWindow(updatedWindow));
+          closeContextMenu();
+        };
+      case ContextMenuOptions.minimize:
+        return () => {
+          if (!activeWindow) return;
+
+          'history' in activeWindow
+            ? dispatch(
+                updateOpenedWindow({ id: activeWindow.id, operation: ContextMenuOptions.minimize })
+              )
+            : dispatch(
+                updateOpenedPlayers({ id: activeWindow.id, operation: ContextMenuOptions.minimize })
+              );
+
+          closeContextMenu();
+        };
+      case ContextMenuOptions.restore:
+        return () => {
+          if (!activeWindow) return;
+
+          'history' in activeWindow
+            ? dispatch(
+                updateOpenedWindow({ id: activeWindow.id, operation: ContextMenuOptions.restore })
+              )
+            : dispatch(
+                updateOpenedPlayers({ id: activeWindow.id, operation: ContextMenuOptions.restore })
+              );
+
           closeContextMenu();
         };
       case ContextMenuOptions.close:
         return () => {
-          if (!currentWindow) return;
-          dispatch(setOpenedWindows(currentWindow.id));
+          if (!activeWindow) return;
+
+          'history' in activeWindow
+            ? dispatch(setOpenedWindows(activeWindow.id))
+            : dispatch(setOpenedPlayers(activeWindow.id));
+
           closeContextMenu();
         };
       default:
