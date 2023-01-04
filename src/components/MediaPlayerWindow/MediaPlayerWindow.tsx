@@ -12,6 +12,7 @@ import { setActiveWindow } from 'store/reducers/desktopSlice';
 import { useDrag } from 'hooks/useDrag';
 import { getWindowClassName } from 'utils/getWindowClassName';
 import ContextMenuOptions from 'common/contextMenuOptions';
+import VideoPlayer from 'components/VideoPlayer';
 
 interface MediaPlayerProps {
   fileData: IMediaFile;
@@ -75,6 +76,7 @@ const MediaPlayerWindow: React.FC<MediaPlayerProps> = ({ fileData }) => {
           {fileData.fileType === FileType.text && (
             <TextRedactor setTextValue={setTextValue} textValue={textValue} />
           )}
+          {fileData.fileType === FileType.video && <VideoPlayer fileData={fileData} />}
         </div>
       </div>
     </Draggable>

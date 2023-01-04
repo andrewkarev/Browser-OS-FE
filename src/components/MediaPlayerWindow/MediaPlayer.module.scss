@@ -17,7 +17,7 @@
   top: calc(100vh / 4);
   left: calc(100vw / 4);
   width: 720px;
-  height: 394px;
+  min-height: 394px;
   padding-bottom: 10px;
   border-radius: $border-radius-m;
   box-shadow: $box-shadow-window;

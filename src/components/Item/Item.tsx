@@ -2,7 +2,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import { useAppDispatch } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React from 'react';
-import { getTextFile, updateWindow } from 'store/reducers/thunks';
+import { getTextFile, getVideoFile, updateWindow } from 'store/reducers/thunks';
 import { IDirItem } from 'types/IDirItem';
 import { getItemIcon } from 'utils/getItemsIcon';
 import DIRECTORY from '../../assets/icons/folder.png';
@@ -49,13 +49,18 @@ const Item: React.FC<ItemProps> = ({ item, windowData }) => {
               fileType,
             })
           );
-          console.log(dirItem);
           break;
         case FileType.image:
           break;
         case FileType.audio:
           break;
         case FileType.video:
+          dispatch(
+            getVideoFile({
+              filePath: dirItem.path,
+              fileType,
+            })
+          );
           break;
         default:
           break;

@@ -14,6 +14,7 @@ import {
   deleteFile,
   getItems,
   getTextFile,
+  getVideoFile,
   removeFolder,
   renameItem,
   updateTextFile,
@@ -289,6 +290,23 @@ export const desktopSlice = createSlice({
       });
     });
     // builder.addCase(updateTextFile.rejected, (state, action) => {});
+
+    // builder.addCase(getVideoFile.pending, (state) => {});
+    builder.addCase(getVideoFile.fulfilled, (state, action) => {
+      state.openedPlayers.push({
+        ...action.payload,
+        isMaximized: false,
+        isMinimized: false,
+      });
+
+      state.taskBarItems.push({
+        id: action.payload.id,
+        title: action.payload.fileTitle,
+        isMaximized: false,
+        isMinimized: false,
+      });
+    });
+    // builder.addCase(getVideoFile.rejected, (state, action) => {});
   },
 });
 

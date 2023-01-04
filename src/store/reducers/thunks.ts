@@ -270,3 +270,26 @@ export const updateTextFile = createAsyncThunk(
     }
   }
 );
+
+export const getVideoFile = createAsyncThunk(
+  'desktop/getVideoFile',
+  async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
+    try {
+      const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
+        `/video?path=${filePath}`
+      );
+
+      return {
+        ...response,
+        fileType,
+        filePath,
+      };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.status);
+      }
+
+      throw error;
+    }
+  }
+);
