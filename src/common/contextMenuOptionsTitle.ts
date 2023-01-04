@@ -8,6 +8,7 @@ enum ContextMenuOptionsTitle {
   copy = 'copy',
   paste = 'paste',
   delete = 'delete',
+  restore = 'restore',
   minimize = 'minimize',
   maximize = 'maximize',
   close = 'close',

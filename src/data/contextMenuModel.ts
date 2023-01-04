@@ -34,6 +34,7 @@ export const contextMenuModel = {
     { option: ContextMenuOptions.rename, title: ContextMenuOptionsTitle.rename },
   ],
   topBar: [
+    { option: ContextMenuOptions.restore, title: ContextMenuOptionsTitle.restore },
     { option: ContextMenuOptions.minimize, title: ContextMenuOptionsTitle.minimize },
     { option: ContextMenuOptions.maximize, title: ContextMenuOptionsTitle.maximize },
     { option: ContextMenuOptions.separator, title: ContextMenuOptionsTitle.separator },

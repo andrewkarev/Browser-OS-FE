@@ -12,6 +12,7 @@ enum ContextMenuOptions {
   deleteFile = 'delete file',
   paste = 'paste',
   rename = 'rename',
+  restore = 'restore',
   minimize = 'minimize',
   maximize = 'maximize',
   close = 'close',
