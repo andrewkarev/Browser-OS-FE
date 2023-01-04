@@ -10,7 +10,7 @@ import { contextMenuModel } from 'data/contextMenuModel';
 import ConfirmForm from 'components/ConfirmForm';
 import { backgroundImages } from 'data/backgroundImages';
 import WarningModal from 'components/WarningModal';
-import MediaPlayer from 'components/MediaPlayer';
+import MediaPlayer from 'components/MediaPlayerWindow';
 
 const Desktop = () => {
   const openedWindows = useAppSelector((state) => state.desktop.openedWindows);

@@ -17,7 +17,7 @@ interface MediaPlayerProps {
   fileData: IMediaFile;
 }
 
-const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
+const MediaPlayerWindow: React.FC<MediaPlayerProps> = ({ fileData }) => {
   const dispatch = useAppDispatch();
   const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
 
@@ -81,4 +81,4 @@ const MediaPlayer: React.FC<MediaPlayerProps> = ({ fileData }) => {
   );
 };
 
-export default MediaPlayer;
+export default MediaPlayerWindow;
