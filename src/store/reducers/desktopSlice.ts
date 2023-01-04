@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DESKTOP_ICON_TITLE } from 'common/constants';
+import ContextMenuOptions from 'common/contextMenuOptions';
 import WindowOperation from 'common/windowOperation';
 import { IMediaFile } from 'types/IMediaFile';
 import ITaskBarItem from 'types/ITaskBarItem';
 import { IWindow } from 'types/IWindow';
+import WindowSizeOperations from 'types/WindowSizeOperations';
 import {
   addFile,
   addFolder,
@@ -50,16 +52,34 @@ export const desktopSlice = createSlice({
   name: 'desktop',
   initialState,
   reducers: {
-    updateOpenedWindow(state, action: PayloadAction<IWindow>) {
+    updateOpenedWindow(
+      state,
+      action: PayloadAction<{ id: string; operation: WindowSizeOperations }>
+    ) {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.id) {
-          window.isWindowMaximized = action.payload.isWindowMaximized;
+          if (action.payload.operation === ContextMenuOptions.maximize) {
+            window.isMaximized = !window.isMaximized;
+          }
+
+          if (action.payload.operation === ContextMenuOptions.minimize) {
+            window.isMinimized = !window.isMinimized;
+          }
+
+          if (action.payload.operation === ContextMenuOptions.restore) {
+            if (window.isMaximized && !window.isMinimized) {
+              window.isMaximized = false;
+            } else {
+              window.isMinimized = false;
+            }
+          }
         }
       });
 
       state.taskBarItems.forEach((item) => {
         if (item.id === action.payload.id) {
-          item.isMaximized = action.payload.isWindowMaximized;
+          item.isMaximized = !item.isMaximized;
+          item.isMinimized = !item.isMinimized;
         }
       });
     },
@@ -95,16 +115,36 @@ export const desktopSlice = createSlice({
       state.openedPlayers = state.openedPlayers.filter((player) => player.id !== action.payload);
       state.taskBarItems = state.taskBarItems.filter((player) => player.id !== action.payload);
     },
-    updateOpenedPlayers(state, action: PayloadAction<IMediaFile>) {
+    updateOpenedPlayers(
+      state,
+      action: PayloadAction<{ id: string; operation: WindowSizeOperations }>
+    ) {
       state.openedPlayers.forEach((player) => {
         if (player.id === action.payload.id) {
-          player.isPlayerMaximized = action.payload.isPlayerMaximized;
+          if (player.id === action.payload.id) {
+            if (action.payload.operation === ContextMenuOptions.maximize) {
+              player.isMaximized = !player.isMaximized;
+            }
+
+            if (action.payload.operation === ContextMenuOptions.minimize) {
+              player.isMinimized = !player.isMinimized;
+            }
+
+            if (action.payload.operation === ContextMenuOptions.restore) {
+              if (player.isMaximized && !player.isMinimized) {
+                player.isMaximized = false;
+              } else {
+                player.isMinimized = false;
+              }
+            }
+          }
         }
       });
 
       state.taskBarItems.forEach((item) => {
         if (item.id === action.payload.id) {
-          item.isMaximized = action.payload.isPlayerMaximized;
+          item.isMaximized = !item.isMaximized;
+          item.isMinimized = !item.isMinimized;
         }
       });
     },
@@ -116,13 +156,15 @@ export const desktopSlice = createSlice({
         ...action.payload,
         history: [],
         currentPath: '',
-        isWindowMaximized: false,
+        isMaximized: false,
+        isMinimized: false,
       });
 
       state.taskBarItems.push({
         id: action.payload.id,
         title: action.payload.folderTitle,
         isMaximized: false,
+        isMinimized: false,
       });
     });
     builder.addCase(getItems.rejected, (state, action) => {});
@@ -225,13 +267,15 @@ export const desktopSlice = createSlice({
     builder.addCase(getTextFile.fulfilled, (state, action) => {
       state.openedPlayers.push({
         ...action.payload,
-        isPlayerMaximized: false,
+        isMaximized: false,
+        isMinimized: false,
       });
 
       state.taskBarItems.push({
         id: action.payload.id,
         title: action.payload.fileTitle,
         isMaximized: false,
+        isMinimized: false,
       });
     });
     // builder.addCase(getMediaFile.rejected, (state, action) => {});
