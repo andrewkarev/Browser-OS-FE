@@ -5,6 +5,7 @@ export interface IMediaFile {
   fileType: FileType;
   filePath: string;
   fileTitle: string;
-  isPlayerMaximized: boolean;
+  isMaximized: boolean;
+  isMinimized: boolean;
   data: string;
 }
