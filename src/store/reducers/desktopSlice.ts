@@ -13,6 +13,7 @@ import {
   cutItem,
   deleteFile,
   getAudioFile,
+  getImage,
   getItems,
   getTextFile,
   getVideoFile,
@@ -325,6 +326,23 @@ export const desktopSlice = createSlice({
       });
     });
     // builder.addCase(getAudioFile.rejected, (state, action) => {});
+
+    // builder.addCase(getImage.pending, (state) => {});
+    builder.addCase(getImage.fulfilled, (state, action) => {
+      state.openedPlayers.push({
+        ...action.payload,
+        isMaximized: false,
+        isMinimized: false,
+      });
+
+      state.taskBarItems.push({
+        id: action.payload.id,
+        title: action.payload.fileTitle,
+        isMaximized: false,
+        isMinimized: false,
+      });
+    });
+    // builder.addCase(getImage.rejected, (state, action) => {});
   },
 });
 

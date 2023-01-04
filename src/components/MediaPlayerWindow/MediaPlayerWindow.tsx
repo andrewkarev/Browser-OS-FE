@@ -14,6 +14,7 @@ import { getWindowClassName } from 'utils/getWindowClassName';
 import ContextMenuOptions from 'common/contextMenuOptions';
 import VideoPlayer from 'components/VideoPlayer';
 import AudioPlayer from 'components/AudioPlayer';
+import ImageViewer from 'components/ImageViewer';
 
 interface MediaPlayerProps {
   fileData: IMediaFile;
@@ -74,14 +75,12 @@ const MediaPlayerWindow: React.FC<MediaPlayerProps> = ({ fileData }) => {
           )}
         </TopBar>
         <>
+          {fileData.fileType === FileType.video && <VideoPlayer fileData={fileData} />}
+          {fileData.fileType === FileType.audio && <AudioPlayer fileData={fileData} />}
+          {fileData.fileType === FileType.image && <ImageViewer fileData={fileData} />}
           {fileData.fileType === FileType.text && (
             <TextRedactor setTextValue={setTextValue} textValue={textValue} />
           )}
-          {fileData.fileType === FileType.video && <VideoPlayer fileData={fileData} />}
-          {fileData.fileType === FileType.audio && <AudioPlayer fileData={fileData} />}
-          {/* {fileData.fileType === FileType.image && (
-              <img src={`${BASE_URL}/imageView?imagePath=${fileData.filePath}`} />
-            )} */}
         </>
       </div>
     </Draggable>
