@@ -16,12 +16,16 @@ const ConfirmForm = () => {
 
   const [inputValue, setInputValue] = useState('');
   const [isValueValid, setIsValueValid] = useState(true);
+  const [isUniqueName, setIsUniqueName] = useState(true);
   const [inputPlaceholder, setInputPlaceholder] = useState('');
 
   useEffect(() => {
     const isAllowedChars = /^[ a-zA-Z0-9_.-]*$/.test(inputValue);
+    const isInputValueUnique = inputValue !== selectedItem?.name;
+
+    setIsUniqueName(isInputValueUnique);
     setIsValueValid(isAllowedChars);
-  }, [inputValue]);
+  }, [inputValue, selectedItem?.name]);
 
   useEffect(() => {
     if (confirmModalOperation === ContextMenuOptions.renamePCIcon) {
@@ -71,7 +75,7 @@ const ConfirmForm = () => {
               className={styles.button}
               type="submit"
               onClick={(e) => handleSubmitBtnClick(e)}
-              disabled={!inputValue || !isValueValid}
+              disabled={!inputValue || !isValueValid || !isUniqueName}
             >
               <IoMdCheckmark className={styles.icon} />
             </button>
