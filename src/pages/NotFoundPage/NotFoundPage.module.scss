@@ -1,0 +1,62 @@
+@import '../../styles/main.scss';
+
+// inspired by https://codepen.io/igloude/pen/qNNWKr
+.wrapper {
+  @include flexItem();
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  background: $blue;
+  color: $grey-xs;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 640px;
+
+  .title {
+    margin-bottom: 50px;
+    text-align: center;
+    font-family: $font-family-additional;
+    font-size: 40px;
+
+    & .titleText {
+      padding: 0 10px;
+      color: $blue;
+      background: $grey-xs;
+    }
+  }
+
+  .subtitle,
+  .text {
+    font-family: $font-family-additional;
+    font-size: 24px;
+  }
+
+  .subtitle {
+    margin-bottom: 20px;
+  }
+
+  .nav {
+    margin-top: 35px;
+    text-align: center;
+
+    .link {
+      padding: 0 9px 2px 8px;
+      outline: none;
+      border: none;
+      font-family: $font-family-additional;
+      font-size: 24px;
+      color: $grey-xs;
+      text-decoration: none;
+      background-color: transparent;
+
+      &:hover,
+      &:focus {
+        background-color: $grey-xs;
+        color: $blue;
+      }
+    }
+  }
+}
