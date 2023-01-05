@@ -1,6 +1,5 @@
 import ContextMenuOptions from 'common/contextMenuOptions';
 import TransferOperation from 'common/transferOperation';
-import WindowOperation from 'common/windowOperation';
 import { setItemToTransfer, setTransferOperation } from 'store/reducers/contextMenuSlice';
 import {
   setConfirmModalOperation,
@@ -11,16 +10,10 @@ import {
   updateOpenedPlayers,
   updateOpenedWindow,
 } from 'store/reducers/desktopSlice';
-import {
-  copyItem,
-  cutItem,
-  deleteFile,
-  getItems,
-  removeFolder,
-  updateWindow,
-} from 'store/reducers/thunks';
+import { copyItem, cutItem, deleteFile, getItems, removeFolder } from 'store/reducers/thunks';
 import { IMenuItem } from 'types/IMenuItem';
 import { useAppDispatch, useAppSelector } from './redux';
+import { useOpenOperation } from './useOpenOperation';
 
 export const useContextMenuHandler = (closeContextMenu: () => void) => {
   const dispatch = useAppDispatch();
@@ -29,6 +22,8 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
   const itemToTransfer = useAppSelector((state) => state.contextMenu.itemToTransfer);
   const transferOperation = useAppSelector((state) => state.contextMenu.transferOperation);
   const activeWindow = useAppSelector((state) => state.desktop.activeWindow);
+
+  const { handleOpenOperation } = useOpenOperation();
 
   return (menuItem: IMenuItem) => {
     switch (menuItem.option) {
@@ -45,14 +40,9 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.openDirectory: {
         if (!selectedItem || !currentWindow) return;
+
         return () => {
-          dispatch(
-            updateWindow({
-              itemPath: selectedItem.path,
-              windowId: currentWindow.id,
-              operation: WindowOperation.update,
-            })
-          );
+          handleOpenOperation(selectedItem, currentWindow.id);
           closeContextMenu();
         };
       }
@@ -64,6 +54,7 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.deleteFile: {
         if (!selectedItem || !currentWindow) return;
+
         return () => {
           dispatch(deleteFile({ itemPath: selectedItem.path, windowId: currentWindow.id }));
           closeContextMenu();
@@ -77,6 +68,7 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
         };
       case ContextMenuOptions.deleteDirectory:
         if (!currentWindow || !selectedItem) return;
+
         return () => {
           dispatch(
             removeFolder({
@@ -105,9 +97,9 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.paste:
-        return () => {
-          if (!itemToTransfer || !currentWindow) return;
+        if (!itemToTransfer || !currentWindow) return;
 
+        return () => {
           if (transferOperation === TransferOperation.copy) {
             dispatch(
               copyItem({
@@ -146,9 +138,9 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.maximize:
-        return () => {
-          if (!activeWindow) return;
+        if (!activeWindow) return;
 
+        return () => {
           'history' in activeWindow
             ? dispatch(
                 updateOpenedWindow({ id: activeWindow.id, operation: ContextMenuOptions.maximize })
@@ -160,9 +152,9 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.minimize:
-        return () => {
-          if (!activeWindow) return;
+        if (!activeWindow) return;
 
+        return () => {
           'history' in activeWindow
             ? dispatch(
                 updateOpenedWindow({ id: activeWindow.id, operation: ContextMenuOptions.minimize })
@@ -174,9 +166,9 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.restore:
-        return () => {
-          if (!activeWindow) return;
+        if (!activeWindow) return;
 
+        return () => {
           'history' in activeWindow
             ? dispatch(
                 updateOpenedWindow({ id: activeWindow.id, operation: ContextMenuOptions.restore })
@@ -188,13 +180,20 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           closeContextMenu();
         };
       case ContextMenuOptions.close:
-        return () => {
-          if (!activeWindow) return;
+        if (!activeWindow) return;
 
+        return () => {
           'history' in activeWindow
             ? dispatch(setOpenedWindows(activeWindow.id))
             : dispatch(setOpenedPlayers(activeWindow.id));
 
+          closeContextMenu();
+        };
+      case ContextMenuOptions.openFile:
+        if (!currentWindow || !selectedItem) return;
+
+        return () => {
+          handleOpenOperation(selectedItem, currentWindow.id);
           closeContextMenu();
         };
       default:
