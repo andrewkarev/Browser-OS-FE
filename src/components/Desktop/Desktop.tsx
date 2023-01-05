@@ -1,6 +1,5 @@
 import React from 'react';
 import MyPCIcon from 'components/MyPCIcon';
-import Taskbar from 'components/Taskbar';
 import Window from 'components/Window';
 import styles from './Desktop.module.scss';
 import { useAppSelector } from 'hooks/redux';
@@ -28,18 +27,14 @@ const Desktop = () => {
   const players = openedPlayers.map((player) => <MediaPlayer fileData={player} key={player.id} />);
 
   return (
-    <>
-      <div
-        className={styles.desktop}
-        onContextMenu={(e) => handleContextMenu(e, contextMenuModel.desktop, null)}
-        style={{
-          backgroundImage: `url(${
-            backgroundImages.find((image) => image.id === wallpaperId)?.src
-          })`,
-        }}
-      >
-        <MyPCIcon />
-      </div>
+    <div
+      className={styles.desktop}
+      onContextMenu={(e) => handleContextMenu(e, contextMenuModel.desktop, null)}
+      style={{
+        backgroundImage: `url(${backgroundImages.find((image) => image.id === wallpaperId)?.src})`,
+      }}
+    >
+      <MyPCIcon />
       {windows}
       {players}
       {isContextMenuOpened && (
@@ -51,8 +46,7 @@ const Desktop = () => {
       )}
       {isConfirmFormOpened && <ConfirmForm />}
       {isWarningModalDisplayed && <WarningModal />}
-      <Taskbar />
-    </>
+    </div>
   );
 };
 
