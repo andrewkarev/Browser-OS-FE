@@ -12,11 +12,9 @@ import {
   copyItem,
   cutItem,
   deleteFile,
-  getAudioFile,
-  getImage,
   getItems,
+  getMediaFile,
   getTextFile,
-  getVideoFile,
   removeFolder,
   renameItem,
   updateTextFile,
@@ -266,7 +264,7 @@ export const desktopSlice = createSlice({
     });
     builder.addCase(cutItem.rejected, (state, action) => {});
 
-    // builder.addCase(getMediaFile.pending, (state) => {});
+    // builder.addCase(getTextFile.pending, (state) => {});
     builder.addCase(getTextFile.fulfilled, (state, action) => {
       state.openedPlayers.push({
         ...action.payload,
@@ -281,7 +279,7 @@ export const desktopSlice = createSlice({
         isMinimized: false,
       });
     });
-    // builder.addCase(getMediaFile.rejected, (state, action) => {});
+    // builder.addCase(getTextFile.rejected, (state, action) => {});
 
     // builder.addCase(updateTextFile.pending, (state) => {});
     builder.addCase(updateTextFile.fulfilled, (state, action) => {
@@ -293,8 +291,8 @@ export const desktopSlice = createSlice({
     });
     // builder.addCase(updateTextFile.rejected, (state, action) => {});
 
-    // builder.addCase(getVideoFile.pending, (state) => {});
-    builder.addCase(getVideoFile.fulfilled, (state, action) => {
+    // builder.addCase(getMediaFile.pending, (state) => {});
+    builder.addCase(getMediaFile.fulfilled, (state, action) => {
       state.openedPlayers.push({
         ...action.payload,
         isMaximized: false,
@@ -308,41 +306,7 @@ export const desktopSlice = createSlice({
         isMinimized: false,
       });
     });
-    // builder.addCase(getAudioFile.rejected, (state, action) => {});
-
-    // builder.addCase(getVideoFile.pending, (state) => {});
-    builder.addCase(getAudioFile.fulfilled, (state, action) => {
-      state.openedPlayers.push({
-        ...action.payload,
-        isMaximized: false,
-        isMinimized: false,
-      });
-
-      state.taskBarItems.push({
-        id: action.payload.id,
-        title: action.payload.fileTitle,
-        isMaximized: false,
-        isMinimized: false,
-      });
-    });
-    // builder.addCase(getAudioFile.rejected, (state, action) => {});
-
-    // builder.addCase(getImage.pending, (state) => {});
-    builder.addCase(getImage.fulfilled, (state, action) => {
-      state.openedPlayers.push({
-        ...action.payload,
-        isMaximized: false,
-        isMinimized: false,
-      });
-
-      state.taskBarItems.push({
-        id: action.payload.id,
-        title: action.payload.fileTitle,
-        isMaximized: false,
-        isMinimized: false,
-      });
-    });
-    // builder.addCase(getImage.rejected, (state, action) => {});
+    // builder.addCase(getMediaFile.rejected, (state, action) => {});
   },
 });
 

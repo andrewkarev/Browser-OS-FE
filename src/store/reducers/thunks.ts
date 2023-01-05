@@ -271,58 +271,12 @@ export const updateTextFile = createAsyncThunk(
   }
 );
 
-export const getVideoFile = createAsyncThunk(
-  'desktop/getVideoFile',
+export const getMediaFile = createAsyncThunk(
+  'desktop/getMediaFile',
   async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
     try {
       const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
-        `/videoData?path=${filePath}`
-      );
-
-      return {
-        ...response,
-        fileType,
-        filePath,
-      };
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.status);
-      }
-
-      throw error;
-    }
-  }
-);
-
-export const getAudioFile = createAsyncThunk(
-  'desktop/getAudioFile',
-  async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
-    try {
-      const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
-        `/audioData?path=${filePath}`
-      );
-
-      return {
-        ...response,
-        fileType,
-        filePath,
-      };
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.status);
-      }
-
-      throw error;
-    }
-  }
-);
-
-export const getImage = createAsyncThunk(
-  'desktop/getImage',
-  async ({ filePath, fileType }: { filePath: string; fileType: FileType }, { rejectWithValue }) => {
-    try {
-      const response = await api.get<AxiosError, { fileTitle: string; data: string; id: string }>(
-        `/imageData?path=${filePath}`
+        `/getMediaFile?path=${filePath}`
       );
 
       return {
