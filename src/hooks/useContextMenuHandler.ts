@@ -38,7 +38,7 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
           dispatch(setIsConfirmFormOpened(true));
           closeContextMenu();
         };
-      case ContextMenuOptions.openDirectory: {
+      case ContextMenuOptions.open: {
         if (!selectedItem || !currentWindow) return;
 
         return () => {
@@ -187,13 +187,6 @@ export const useContextMenuHandler = (closeContextMenu: () => void) => {
             ? dispatch(setOpenedWindows(activeWindow.id))
             : dispatch(setOpenedPlayers(activeWindow.id));
 
-          closeContextMenu();
-        };
-      case ContextMenuOptions.openFile:
-        if (!currentWindow || !selectedItem) return;
-
-        return () => {
-          handleOpenOperation(selectedItem, currentWindow.id);
           closeContextMenu();
         };
       default:
