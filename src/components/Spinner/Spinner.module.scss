@@ -1,0 +1,11 @@
+.spinner {
+  position: absolute;
+  display: none;
+  width: 30px;
+  height: 30px;
+  z-index: 7;
+
+  &.active {
+    display: block;
+  }
+}
