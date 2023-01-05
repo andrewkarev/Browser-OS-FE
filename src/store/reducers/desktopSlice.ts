@@ -6,6 +6,7 @@ import { IMediaFile } from 'types/IMediaFile';
 import ITaskBarItem from 'types/ITaskBarItem';
 import { IWindow } from 'types/IWindow';
 import WindowSizeOperations from 'types/WindowSizeOperations';
+import ItemType from 'common/itemType';
 import {
   addFile,
   addFolder,
@@ -263,6 +264,10 @@ export const desktopSlice = createSlice({
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
+
+          const basePathIdx = window.history.indexOf(window.currentPath) + 1;
+          const baseHistory = window.history.slice(0, basePathIdx);
+          window.history = baseHistory;
         }
       });
 
@@ -311,6 +316,12 @@ export const desktopSlice = createSlice({
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
+
+          if (action.payload.itemType === ItemType.directory) {
+            const basePathIdx = window.history.indexOf(window.currentPath) + 1;
+            const baseHistory = window.history.slice(0, basePathIdx);
+            window.history = baseHistory;
+          }
         }
       });
 

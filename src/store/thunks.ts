@@ -222,6 +222,7 @@ export const cutItem = createAsyncThunk(
       return {
         windowItems: response,
         windowId,
+        itemType,
       };
     } catch (error) {
       if (error instanceof AxiosError) {
