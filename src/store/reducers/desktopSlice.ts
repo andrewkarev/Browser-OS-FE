@@ -33,6 +33,7 @@ interface DesktopState {
   isWarningModalDisplayed: boolean;
   selectedFileName: string | null;
   activeWindow: IWindow | IMediaFile | null;
+  isPending: boolean;
 }
 
 const initialState: DesktopState = {
@@ -47,6 +48,7 @@ const initialState: DesktopState = {
   isWarningModalDisplayed: false,
   selectedFileName: null,
   activeWindow: null,
+  isPending: false,
 };
 
 export const desktopSlice = createSlice({
@@ -151,7 +153,9 @@ export const desktopSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getItems.pending, (state) => {});
+    builder.addCase(getItems.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(getItems.fulfilled, (state, action) => {
       state.openedWindows.push({
         ...action.payload,
@@ -167,10 +171,16 @@ export const desktopSlice = createSlice({
         isMaximized: false,
         isMinimized: false,
       });
-    });
-    builder.addCase(getItems.rejected, (state, action) => {});
 
-    builder.addCase(updateWindow.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(getItems.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(updateWindow.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(updateWindow.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
@@ -191,80 +201,128 @@ export const desktopSlice = createSlice({
           item.title = action.payload.windowItems.folderTitle;
         }
       });
-    });
-    builder.addCase(updateWindow.rejected, (state, action) => {});
 
-    builder.addCase(addFile.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(updateWindow.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(addFile.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(addFile.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(addFile.rejected, (state, action) => {});
 
-    builder.addCase(deleteFile.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(addFile.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(deleteFile.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(deleteFile.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(deleteFile.rejected, (state, action) => {});
 
-    builder.addCase(addFolder.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(deleteFile.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(addFolder.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(addFolder.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(addFolder.rejected, (state, action) => {});
 
-    builder.addCase(removeFolder.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(addFolder.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(removeFolder.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(removeFolder.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(removeFolder.rejected, (state, action) => {});
 
-    builder.addCase(renameItem.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(removeFolder.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(renameItem.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(renameItem.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(renameItem.rejected, (state, action) => {});
 
-    builder.addCase(copyItem.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(renameItem.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(copyItem.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(copyItem.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(copyItem.rejected, (state, action) => {});
 
-    builder.addCase(cutItem.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(copyItem.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(cutItem.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(cutItem.fulfilled, (state, action) => {
       state.openedWindows.forEach((window) => {
         if (window.id === action.payload.windowId) {
           window.items = action.payload.windowItems.items;
         }
       });
-    });
-    builder.addCase(cutItem.rejected, (state, action) => {});
 
-    // builder.addCase(getTextFile.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(cutItem.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(getTextFile.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(getTextFile.fulfilled, (state, action) => {
       state.openedPlayers.push({
         ...action.payload,
@@ -278,20 +336,32 @@ export const desktopSlice = createSlice({
         isMaximized: false,
         isMinimized: false,
       });
-    });
-    // builder.addCase(getTextFile.rejected, (state, action) => {});
 
-    // builder.addCase(updateTextFile.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(getTextFile.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(updateTextFile.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(updateTextFile.fulfilled, (state, action) => {
       state.openedPlayers.forEach((player) => {
         if (player.id === action.payload.id) {
           player.data = action.payload.data;
         }
       });
-    });
-    // builder.addCase(updateTextFile.rejected, (state, action) => {});
 
-    // builder.addCase(getMediaFile.pending, (state) => {});
+      state.isPending = false;
+    });
+    builder.addCase(updateTextFile.rejected, (state, action) => {
+      state.isPending = false;
+    });
+
+    builder.addCase(getMediaFile.pending, (state) => {
+      state.isPending = true;
+    });
     builder.addCase(getMediaFile.fulfilled, (state, action) => {
       state.openedPlayers.push({
         ...action.payload,
@@ -305,8 +375,12 @@ export const desktopSlice = createSlice({
         isMaximized: false,
         isMinimized: false,
       });
+
+      state.isPending = false;
     });
-    // builder.addCase(getMediaFile.rejected, (state, action) => {});
+    builder.addCase(getMediaFile.rejected, (state, action) => {
+      state.isPending = false;
+    });
   },
 });
 
