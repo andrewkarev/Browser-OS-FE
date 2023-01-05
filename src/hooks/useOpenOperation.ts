@@ -2,7 +2,7 @@ import FileType from 'common/fileType';
 import ItemType from 'common/itemType';
 import WindowOperation from 'common/windowOperation';
 import { setIsWarningModalDisplayed, setSelectedFileName } from 'store/reducers/desktopSlice';
-import { getMediaFile, getTextFile, updateWindow } from 'store/reducers/thunks';
+import { getMediaFile, getTextFile, updateWindow } from 'store/thunks';
 import { IDirItem } from 'types/IDirItem';
 import { getFileType } from 'utils/getFileType';
 import { useAppDispatch } from './redux';

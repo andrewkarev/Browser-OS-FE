@@ -10,7 +10,7 @@ import {
   updateOpenedPlayers,
   updateOpenedWindow,
 } from 'store/reducers/desktopSlice';
-import { copyItem, cutItem, deleteFile, getItems, removeFolder } from 'store/reducers/thunks';
+import { copyItem, cutItem, deleteFile, getItems, removeFolder } from 'store/thunks';
 import { IMenuItem } from 'types/IMenuItem';
 import { useAppDispatch, useAppSelector } from './redux';
 import { useOpenOperation } from './useOpenOperation';

@@ -1,6 +1,6 @@
 import ContextMenuOptions from 'common/contextMenuOptions';
 import { setMyPCIconTitle } from 'store/reducers/desktopSlice';
-import { addFile, addFolder, renameItem } from 'store/reducers/thunks';
+import { addFile, addFolder, renameItem } from 'store/thunks';
 import { useAppDispatch, useAppSelector } from './redux';
 
 export const useConfirmFormSubmit = (inputValue: string, closeConfirmForm: () => void) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './MyPCIcon.module.scss';
 import MY_PC_ICON from '../../assets/icons/my-pc.png';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import { getItems } from 'store/reducers/thunks';
+import { getItems } from 'store/thunks';
 import { useContextMenu } from 'hooks/useContextMenu';
 import { contextMenuModel } from 'data/contextMenuModel';
 

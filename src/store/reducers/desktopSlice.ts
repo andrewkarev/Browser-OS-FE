@@ -19,7 +19,7 @@ import {
   renameItem,
   updateTextFile,
   updateWindow,
-} from './thunks';
+} from '../thunks';
 
 interface DesktopState {
   openedWindows: IWindow[];

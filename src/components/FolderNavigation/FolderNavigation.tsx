@@ -3,7 +3,7 @@ import styles from './FolderNavigation.module.scss';
 import WindowOperation from 'common/windowOperation';
 import { useAppDispatch } from 'hooks/redux';
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
-import { updateWindow } from 'store/reducers/thunks';
+import { updateWindow } from 'store/thunks';
 import { IWindow } from 'types/IWindow';
 
 interface FolderNavigationProps {

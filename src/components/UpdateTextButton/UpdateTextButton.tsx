@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './UpdateTextButton.module.scss';
 import { IoMdCheckmark } from 'react-icons/io';
 import { useAppDispatch } from 'hooks/redux';
-import { updateTextFile } from 'store/reducers/thunks';
+import { updateTextFile } from 'store/thunks';
 import { IMediaFile } from 'types/IMediaFile';
 
 interface UpdateTextButtonProps {
