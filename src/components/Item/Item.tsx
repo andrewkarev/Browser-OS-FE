@@ -1,18 +1,12 @@
 import { contextMenuModel } from 'data/contextMenuModel';
-import { useAppDispatch } from 'hooks/redux';
 import { useContextMenu } from 'hooks/useContextMenu';
 import React from 'react';
-import { getMediaFile, getTextFile, updateWindow } from 'store/reducers/thunks';
 import { IDirItem } from 'types/IDirItem';
 import { getItemIcon } from 'utils/getItemsIcon';
 import DIRECTORY from '../../assets/icons/folder.png';
 import styles from './Item.module.scss';
-import ItemType from 'common/itemType';
-import WindowOperation from 'common/windowOperation';
-import { getFileType } from 'utils/getFileType';
-import FileType from 'common/fileType';
-import { setIsWarningModalDisplayed, setSelectedFileName } from 'store/reducers/desktopSlice';
 import { IWindow } from 'types/IWindow';
+import { useOpenOperation } from 'hooks/useOpenOperation';
 
 interface ItemProps {
   item: IDirItem;
@@ -20,71 +14,14 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = ({ item, windowData }) => {
-  const dispatch = useAppDispatch();
-
   const { handleContextMenu } = useContextMenu();
-
-  const handleItemClick = (dirItem: IDirItem) => {
-    if (dirItem.type === ItemType.directory) {
-      dispatch(
-        updateWindow({
-          itemPath: dirItem.path,
-          windowId: windowData.id,
-          operation: WindowOperation.update,
-        })
-      );
-    } else {
-      const fileType = getFileType(dirItem.extension ?? '');
-
-      dispatch(setSelectedFileName(dirItem.name));
-
-      switch (fileType) {
-        case null:
-          dispatch(setIsWarningModalDisplayed(true));
-          break;
-        case FileType.text:
-          dispatch(
-            getTextFile({
-              filePath: dirItem.path,
-              fileType,
-            })
-          );
-          break;
-        case FileType.image:
-          dispatch(
-            getMediaFile({
-              filePath: dirItem.path,
-              fileType,
-            })
-          );
-          break;
-        case FileType.audio:
-          dispatch(
-            getMediaFile({
-              filePath: dirItem.path,
-              fileType,
-            })
-          );
-          break;
-        case FileType.video:
-          dispatch(
-            getMediaFile({
-              filePath: dirItem.path,
-              fileType,
-            })
-          );
-          break;
-        default:
-          break;
-      }
-    }
-  };
+  const { handleOpenOperation } = useOpenOperation();
 
   return (
     <div className={styles.wrapper}>
       <div
         className={styles.content}
-        onDoubleClick={() => handleItemClick(item)}
+        onDoubleClick={() => handleOpenOperation(item, windowData.id)}
         onContextMenu={(e) =>
           handleContextMenu(
             e,
