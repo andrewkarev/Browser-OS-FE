@@ -65,7 +65,7 @@ const TaskBarItem: React.FC<TaskBarItemProps> = ({ item }) => {
       onClick={handleClick}
       onContextMenu={(e) => handleContextMenuClick(e)}
     >
-      {item.title}
+      <span className={styles.textWrapper}>{item.title}</span>
     </div>
   );
 };
