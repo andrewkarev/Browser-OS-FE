@@ -35,6 +35,7 @@ interface DesktopState {
   selectedFileName: string | null;
   activeWindow: IWindow | IMediaFile | null;
   isPending: boolean;
+  isError: boolean;
 }
 
 const initialState: DesktopState = {
@@ -50,6 +51,7 @@ const initialState: DesktopState = {
   selectedFileName: null,
   activeWindow: null,
   isPending: false,
+  isError: false,
 };
 
 export const desktopSlice = createSlice({
@@ -152,6 +154,9 @@ export const desktopSlice = createSlice({
         }
       });
     },
+    setIsError(state, action: PayloadAction<boolean>) {
+      state.isError = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getItems.pending, (state) => {
@@ -175,8 +180,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(getItems.rejected, (state, action) => {
+    builder.addCase(getItems.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(updateWindow.pending, (state) => {
@@ -205,8 +211,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(updateWindow.rejected, (state, action) => {
+    builder.addCase(updateWindow.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(addFile.pending, (state) => {
@@ -221,8 +228,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(addFile.rejected, (state, action) => {
+    builder.addCase(addFile.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(deleteFile.pending, (state) => {
@@ -237,8 +245,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(deleteFile.rejected, (state, action) => {
+    builder.addCase(deleteFile.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(addFolder.pending, (state) => {
@@ -253,8 +262,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(addFolder.rejected, (state, action) => {
+    builder.addCase(addFolder.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(removeFolder.pending, (state) => {
@@ -273,8 +283,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(removeFolder.rejected, (state, action) => {
+    builder.addCase(removeFolder.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(renameItem.pending, (state) => {
@@ -289,8 +300,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(renameItem.rejected, (state, action) => {
+    builder.addCase(renameItem.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(copyItem.pending, (state) => {
@@ -305,8 +317,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(copyItem.rejected, (state, action) => {
+    builder.addCase(copyItem.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(cutItem.pending, (state) => {
@@ -327,8 +340,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(cutItem.rejected, (state, action) => {
+    builder.addCase(cutItem.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(getTextFile.pending, (state) => {
@@ -350,8 +364,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(getTextFile.rejected, (state, action) => {
+    builder.addCase(getTextFile.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(updateTextFile.pending, (state) => {
@@ -366,8 +381,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(updateTextFile.rejected, (state, action) => {
+    builder.addCase(updateTextFile.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
 
     builder.addCase(getMediaFile.pending, (state) => {
@@ -389,8 +405,9 @@ export const desktopSlice = createSlice({
 
       state.isPending = false;
     });
-    builder.addCase(getMediaFile.rejected, (state, action) => {
+    builder.addCase(getMediaFile.rejected, (state) => {
       state.isPending = false;
+      state.isError = true;
     });
   },
 });
@@ -408,5 +425,6 @@ export const {
   setActiveWindow,
   setOpenedPlayers,
   updateOpenedPlayers,
+  setIsError,
 } = desktopSlice.actions;
 export default desktopSlice.reducer;
